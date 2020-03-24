@@ -1,0 +1,40 @@
+name: fast_app
+description: A new Flutter package project.
+version: 0.0.1
+author: qiuguian <fastappchina@gmail.com>
+homepage: https://github.com/qiuguian/fast_app_master
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dio: any
+  grpc: ^2.1.2
+  protobuf: ^1.0.0
+  intl: any
+  scoped_model: 1.0.1
+  shared_preferences: any
+  dio_http2_adapter: any
+  html: 0.14.0+3
+  flutter_swiper: any
+  cached_network_image: any
+  cupertino_icons: ^0.1.2
+  fluwx: any
+  json_annotation: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter  
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # To add assets to your package, add an assets section, like this:
+  assets:
+    - assets/ic_common_empty.png
+    - assets/loading.gif

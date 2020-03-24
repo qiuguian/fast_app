@@ -1,0 +1,69 @@
+///
+/// fast_config.dart
+/// fast_app
+/// Created by qiuguian on 2019/10/21.
+/// Copyright © 2019 fastapp. All rights reserved.
+///
+/// website: http://www.fastapp.top
+///
+///
+
+import 'package:fast_app/util/enum_util.dart';
+
+export 'package:fast_app/util/enum_util.dart';
+
+EnvironmentConfig environmentConfig;
+
+class EnvironmentConfig {
+  final FastAppEnvironment environment;
+  String address;
+  bool showLog;
+  String proxy;
+  bool grpc;
+  bool restful;
+
+  EnvironmentConfig({
+    this.environment,
+    this.address,
+    this.showLog,
+    this.proxy,
+    this.grpc,
+    this.restful,
+  });
+
+  factory EnvironmentConfig.share() {
+
+    switch(environmentConfig.environment){
+      case FastAppEnvironment.dev:
+        environmentConfig.address = fastApiHostConfig.devAddress;
+        break;
+      case FastAppEnvironment.test:
+        environmentConfig.address = fastApiHostConfig.testAddress;
+        break;
+      case FastAppEnvironment.local:
+        environmentConfig.address = "http://localhost.com";
+        break;
+      case FastAppEnvironment.product:
+        environmentConfig.address = fastApiHostConfig.productAddress;
+        break;
+    }
+
+    return environmentConfig;
+  }
+}
+
+FastApiHostConfig fastApiHostConfig = new FastApiHostConfig();
+
+class FastApiHostConfig {
+  final String devAddress;
+  final String testAddress;
+  final String productAddress;
+
+  FastApiHostConfig({
+    this.devAddress,
+    this.testAddress,
+    this.productAddress,
+  });
+
+  factory FastApiHostConfig.share() => fastApiHostConfig;
+}

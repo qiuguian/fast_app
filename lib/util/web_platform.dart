@@ -1,0 +1,4 @@
+
+String getPlatform (){
+  return "web";
+}
