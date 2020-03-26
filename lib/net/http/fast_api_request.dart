@@ -58,7 +58,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
           headers: obj.header(),
         );
       } catch (e) {
-
+        print("post => ${e.toString()}");
         return '-1::网络连接失败::$url-$id';
       }
     } else {

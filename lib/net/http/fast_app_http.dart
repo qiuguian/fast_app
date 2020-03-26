@@ -12,6 +12,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart' as adio;
+import 'package:dio/dio.dart';
 import 'package:fast_app/cache/fast_cache.dart';
 import 'package:fast_app/net/fast_request.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -111,18 +112,27 @@ class FastAppHttp {
       contentType: headers['Content-Type'],
     );
 
+    print("request data => ${body.toString()}");
+    print("request url => ${url.toString()}");
+
+    FormData formData;
+
+    if(headers['Content-Type'] == "application/formData"){
+      formData = FormData.fromMap(body);
+    }
+
     Map result = {};
     adio.Dio dio = new adio.Dio(options);
     FastHttpResponse httpResponse;
-
     try {
       adio.Response response = await dio.post(
         url,
-        data: body,
+        data: formData??body,
 //        data: true ? adio.FormData.fromMap(body) : body,
       );
 
       if (response.statusCode == HttpStatus.ok) {
+
         var data = response.data;
 
         if (data is String) {
