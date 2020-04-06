@@ -58,7 +58,9 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
           headers: obj.header(),
         );
       } catch (e) {
-        print("post => ${e.toString()}");
+        print('HTTP_RESPONSE_TIME::[$id]::${DateTime.now()}');
+        print('HTTP_REQUEST_URL::[$id]::$httpUrl');
+        print('HTTP_REQUEST_BODY::[$id]::${jsonEncode(requstBody)}');
         return '-1::网络连接失败::$url-$id';
       }
     } else {
@@ -91,6 +93,9 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
           headers: obj.header(),
         );
       } catch (e) {
+        print('HTTP_RESPONSE_TIME::[$id]::${DateTime.now()}');
+        print('HTTP_REQUEST_URL::[$id]::$httpUrl');
+        print('HTTP_REQUEST_BODY::[$id]::${jsonEncode(requstBody)}');
         return '-1::网络连接失败::$url-$id';
       }
     }

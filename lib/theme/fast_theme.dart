@@ -13,10 +13,24 @@ FastTheme fastTheme = new FastTheme();
 
 class FastTheme {
 
-  Color lineColor = const Color(0xffF7F7F7);
+  Color lineColor;
 
-  Color fontColor = const Color(0xFF3C3C3C);
+  Color fontColor;
 
-  Color grayFontColor = const Color(0xFF9E9E9E);
+  Color appBarColor;
+  Color appBarTextColor;
+  Color backgroundColor;
+  Color mainColor;
+  Brightness brightness;
+
+  FastTheme({
+    this.appBarColor = const Color(0xFFFFFFFF),
+    this.appBarTextColor = const Color(0xFF000000),
+    this.backgroundColor = const Color(0xFFF7F6FB),
+    this.mainColor = const Color(0xFFCC1D2A),
+    this.lineColor = const Color(0xffF7F7F7),
+    this.brightness = Brightness.light,
+    this.fontColor = const Color(0xFF3C3C3C),
+  });
 }
 

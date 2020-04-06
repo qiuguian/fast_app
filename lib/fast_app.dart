@@ -27,3 +27,5 @@ export 'package:fast_app/ui/button/fast_button.dart';
 export 'package:fast_app/ui/textfield/fast_row_view.dart';
 export 'package:fast_app/ui/textfield/fast_search_view.dart';
 export 'package:fast_app/ui/select/fast_select_image_view.dart';
+export 'package:fast_app/ui/alert/fast_alert.dart';
+export 'package:fast_app/util/fast_theme.dart';

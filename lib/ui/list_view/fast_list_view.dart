@@ -42,7 +42,7 @@ class FastListViewState extends State<FastListView> with PageMini {
   void initState() {
     super.initState();
 
-    if(widget.controller != null){
+    if (widget.controller != null) {
       pageScrollController = widget.controller;
     }
 
@@ -90,12 +90,12 @@ class FastListViewState extends State<FastListView> with PageMini {
                   widget.headerView ?? new Container(),
                   widget.builder != null
                       ? new Wrap(
-                          spacing: widget.space,
-                          runSpacing: widget.runSpacing,
-                          children: widget.viewModel.dataList
-                              .map(widget.builder)
-                              .toList(growable: false),
-                        )
+                    spacing: widget.space,
+                    runSpacing: widget.runSpacing,
+                    children: widget.viewModel.dataList
+                        .map(widget.builder)
+                        .toList(growable: false),
+                  )
                       : widget.child,
                   widget.footerView ?? new Container(),
                 ],
@@ -185,8 +185,8 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
     super.initState();
     initPage();
 
-    if(widget.controller != null){
-       pageScrollController = widget.controller;
+    if (widget.controller != null) {
+      pageScrollController = widget.controller;
     }
 
     widget.viewModel.addRequestListener(start: () {
@@ -212,18 +212,22 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
 
   @override
   Widget build(BuildContext context) {
+    int count = widget.viewModel.dataList.length +
+        (widget.headerView != null ? 1 : 0) +
+        (widget.footerView != null ? 1 : 0);
+
     return new Stack(
       children: <Widget>[
         new Visibility(
-          visible: widget.viewModel.dataList.length > 0 || widget.headerView != null,
+          visible: widget.viewModel.dataList.length > 0 ||
+              widget.headerView != null,
           child: new Padding(
             padding: widget.padding,
             child: new ListView.builder(
               padding: EdgeInsets.all(0),
               controller: pageScrollController,
               physics: const BouncingScrollPhysics(),
-              itemCount: widget.viewModel.dataList.length +
-                  (widget.headerView != null ? 1 : 0),
+              itemCount: count,
               itemBuilder: (context, index) {
                 if (widget.headerView != null) {
                   if (index == 0) {
@@ -233,7 +237,7 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
                   } else {
                     return widget.viewModel.dataList.length > 0 ? BitmapCache(
                       child: widget.builder(context, index - 1),
-                    ): new Center(
+                    ) : new Center(
                       child: new InkWell(
                         onTap: () => refreshData(),
                         child: new Wrap(
@@ -253,6 +257,8 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
                       ),
                     );
                   }
+                } else if (widget.footerView != null && index == count - 1) {
+                  return widget.footerView;
                 } else {
                   return BitmapCache(
                     child: widget.builder(context, index),
@@ -405,11 +411,11 @@ class FastPageDataBindState extends State<FastPageDataBind> with PageMini {
   Widget build(BuildContext context) {
     return new StreamBuilder(
       initialData:
-          widget.viewModel.dataList.isNotEmpty || widget.viewModel.datas != null
-              ? widget.viewModel.dataList.isNotEmpty
-                  ? widget.viewModel.dataList
-                  : widget.viewModel.datas
-              : widget.viewModel.getData(),
+      widget.viewModel.dataList.isNotEmpty || widget.viewModel.datas != null
+          ? widget.viewModel.dataList.isNotEmpty
+          ? widget.viewModel.dataList
+          : widget.viewModel.datas
+          : widget.viewModel.getData(),
       stream: widget.viewModel.stream,
       builder: (context, snapshot) {
         List data = snapshot.data ?? [];
@@ -466,13 +472,14 @@ class BitmapCache extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => FutureBuilder<double>(
+  Widget build(BuildContext context) =>
+      FutureBuilder<double>(
         future: Future<double>.value(1),
         builder: (BuildContext context, AsyncSnapshot<double> snapshot) =>
             Transform.scale(
-          scale: snapshot.hasData ? snapshot.data : 0.0001,
-          alignment: Alignment.topLeft,
-          child: RepaintBoundary(child: child),
-        ),
+              scale: snapshot.hasData ? snapshot.data : 0.0001,
+              alignment: Alignment.topLeft,
+              child: RepaintBoundary(child: child),
+            ),
       );
 }

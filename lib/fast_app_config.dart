@@ -1,5 +1,7 @@
+import 'package:fast_app/fast_app.dart';
 import 'package:fast_app/net/fast_config.dart';
 import 'package:fast_app/util/enum_util.dart';
+import 'package:flutter/material.dart';
 
 class FastApp {
   /*
@@ -23,6 +25,8 @@ class FastApp {
     String testAddress,
     String productAddress,
   }) {
+    WidgetsFlutterBinding.ensureInitialized();
+
     environmentConfig = new EnvironmentConfig(
       environment: environment,
       showLog: showLog,
@@ -36,5 +40,38 @@ class FastApp {
       testAddress: testAddress,
       productAddress: productAddress,
     );
+  }
+
+  static setTheme({
+    Color appBarColor,
+    Color appBarTextColor,
+    Color backgroundColor,
+    Color mainColor,
+    Color lineColor,
+    Brightness brightness,
+  }) {
+    if (appBarColor != null) {
+      fastTheme.appBarColor = appBarColor;
+    }
+
+    if (appBarTextColor != null) {
+      fastTheme.appBarTextColor = appBarTextColor;
+    }
+
+    if (backgroundColor != null) {
+      fastTheme.backgroundColor = backgroundColor;
+    }
+
+    if (mainColor != null) {
+      fastTheme.mainColor = mainColor;
+    }
+
+    if (lineColor != null) {
+      fastTheme.lineColor = lineColor;
+    }
+
+    if (brightness != null) {
+      fastTheme.brightness = brightness;
+    }
   }
 }

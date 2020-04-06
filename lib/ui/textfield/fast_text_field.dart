@@ -9,7 +9,6 @@
 
 part of fast_app_ui;
 
-
 enum FastTextFieldType {
   normal,
   titleSingle,
@@ -28,6 +27,7 @@ class FastTextField extends StatefulWidget {
   final TextStyle style;
   final TextStyle hintStyle;
   final bool obscureText;
+  final EdgeInsetsGeometry padding;
 
   FastTextField({
     this.name,
@@ -41,6 +41,7 @@ class FastTextField extends StatefulWidget {
     this.hintStyle = const TextStyle(color: Color(0xffDFE0EB)),
     this.obscureText = false,
     this.labelValue,
+    this.padding = EdgeInsets.zero,
   });
 
   @override
@@ -53,6 +54,7 @@ class _FastTextFieldState extends State<FastTextField> {
     return new Container(
       margin: EdgeInsets.only(
           top: widget.type == FastTextFieldType.titleSingle ? 10.0 : 0),
+      padding: widget.padding,
       decoration: BoxDecoration(
         border: Border(
           bottom: new BorderSide(
@@ -64,75 +66,90 @@ class _FastTextFieldState extends State<FastTextField> {
       ),
       child: widget.type == FastTextFieldType.titleSingle
           ? new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          widget.name != null
-              ? new Text('${widget.name}',
-              style: widget.style ??
-                  TextStyle(
-                      color: Color(0xff343243),
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500))
-              : new Container(),
-          new Row(
-            children: <Widget>[
-              new Expanded(
-                child: new TextField(
-                  controller: widget.controller,
-                  keyboardType: widget.keyboardType ?? null,
-                  style: widget.style,
-                  decoration: InputDecoration(
-                    hintText: widget.placeholder,
-                    hintStyle: widget.hintStyle ?? null,
-                    hintMaxLines: 2,
-                    border: InputBorder.none,
-                  ),
-                  onChanged: widget.onChanged ?? (str) {},
-                  obscureText: widget.obscureText,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                widget.name != null
+                    ? new Text('${widget.name}',
+                        style: widget.style ??
+                            TextStyle(
+                                color: Color(0xff343243),
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w500))
+                    : new Container(),
+                new Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: new TextField(
+                        controller: widget.controller,
+                        keyboardType: widget.keyboardType ?? null,
+                        style: widget.style,
+                        decoration: InputDecoration(
+                          hintText: widget.placeholder,
+                          hintStyle: widget.hintStyle ?? null,
+                          hintMaxLines: 2,
+                          border: InputBorder.none,
+                        ),
+                        onChanged: widget.onChanged ?? (str) {},
+                        obscureText: widget.obscureText,
+                      ),
+                    ),
+                    widget.suffix ?? new Container(),
+                  ],
                 ),
-              ),
-              widget.suffix ?? new Container(),
-            ],
-          ),
-        ],
-      )
-          : new Container(
-        height: 55.0,
-        child: new Row(
-          children: <Widget>[
-            widget.name != null
-                ? new Container(
-              width: 100.0,
-              child: new Text(
-                '${widget.name}',
-                style: new TextStyle(
-                    color: Color(0xff888697),
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w500),
-              ),
+              ],
             )
-                : new Container(),
-            new Expanded(
-              child: widget.type == FastTextFieldType.readonly
-                  ? new Text('')
-                  : new TextField(
-                controller: widget.controller,
-                keyboardType: widget.keyboardType ?? null,
-                style: widget.style,
-                decoration: InputDecoration(
-                  hintText: widget.placeholder,
-                  hintStyle: TextStyle(
-                      color: Color(0xffDFE0EB), fontSize: 15.0),
-                  border: InputBorder.none,
-                ),
-                onChanged: widget.onChanged ?? (str) {},
-                obscureText: widget.obscureText,
+          : new Container(
+              height: 55.0,
+              child: new Row(
+                children: <Widget>[
+                  widget.name != null
+                      ? new Container(
+                          width: 100.0,
+                          child: new Text(
+                            '${widget.name}',
+                            style: new TextStyle(
+                                color: Color(0xff888697),
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      : new Container(),
+                  new Expanded(
+                    child: widget.type == FastTextFieldType.readonly
+                        ? new Text('')
+                        : new TextField(
+                            controller: widget.controller,
+                            keyboardType: widget.keyboardType ?? null,
+                            style: widget.style,
+                            decoration: InputDecoration(
+                              hintText: widget.placeholder,
+                              hintStyle: TextStyle(
+                                  color: Color(0xffDFE0EB), fontSize: 15.0),
+                              border: InputBorder.none,
+                            ),
+                            onChanged: widget.onChanged ?? (str) {},
+                            obscureText: widget.obscureText,
+                          ),
+                  ),
+                  widget.suffix ?? new Container(),
+                ],
               ),
             ),
-            widget.suffix ?? new Container(),
-          ],
-        ),
-      ),
+    );
+  }
+}
+
+class FastKeyboardControl extends StatelessWidget {
+  final Widget child;
+
+  FastKeyboardControl({this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return new GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      child: child,
     );
   }
 }

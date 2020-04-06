@@ -1,6 +1,7 @@
 import 'dart:convert' show jsonDecode, jsonEncode;
 
 import 'package:fast_app/cache/fast_cache.dart';
+import 'package:fast_app/fast_app.dart';
 import 'package:fast_app/notice/fast_notification.dart';
 
 class FastActions {
@@ -22,6 +23,8 @@ class FastActions {
 
   static String toTab(int index) => 'toTab$index';
 
+  static String toTabBar() => 'toTabBar';
+
   static String loginInfo() => 'loginInfo';
 
   static String isShowStartup() => 'isShowStartup';
@@ -39,17 +42,23 @@ class FastActions {
   static String shopId() => 'shopId';
 
   static String imageHost() => 'imageHost';
+
+  static String timer() => 'fastTimer';
 }
+
+Map userStoreData = new Map();
 
 class FastData {
   static initData() {
     getStoreValue(FastActions.loginInfo()).then((onValue) {
       if (onValue != null) {
         Map data = jsonDecode(onValue);
+        userStoreData = data;
         FastCache(FastActions.isLogin()).value = true;
         FastCache(FastActions.token()).value = data['token'];
         FastCache(FastActions.userId()).value = data["userInfo"]['userId'];
         FastCache(FastActions.loginAccount()).value = data["userInfo"]["phone"];
+        FastCache(FastActions.userName()).value = data["userInfo"]["username"];
       }
     });
   }
@@ -66,13 +75,25 @@ class FastData {
 
   static bool get isLogin => FastCache(FastActions.isLogin()).value ?? false;
 
-  static setIsLogin(isLogin) {
+  static setIsLogin([isLogin = true]) {
     FastCache(FastActions.isLogin()).value = isLogin;
     FastNotification.push(FastActions.isLogin(), isLogin);
     if (isLogin) {
       storeString(FastActions.isLogin(), '1');
     } else {
       storeString(FastActions.isLogin(), '0');
+      popToRootPage();
+    }
+  }
+
+  static setLoginOut([isLogin = false]) {
+    FastCache(FastActions.isLogin()).value = isLogin;
+    FastNotification.push(FastActions.isLogin(), isLogin);
+    if (isLogin) {
+      storeString(FastActions.isLogin(), '1');
+    } else {
+      storeString(FastActions.isLogin(), '0');
+      popToRootPage();
     }
   }
 
@@ -80,6 +101,8 @@ class FastData {
 
   static void setToken(token) {
     FastCache(FastActions.token()).value = token;
+    userStoreData['token'] = token;
+    storeString(FastActions.loginInfo(), jsonEncode(userStoreData));
   }
 
   static String get username => FastCache(FastActions.userName()).value ?? '';
@@ -91,10 +114,12 @@ class FastData {
 
   static int get role => FastCache(FastActions.role()).value;
 
-  static String get imageHost => FastCache(FastActions.imageHost()).value??'';
+  static String get imageHost => FastCache(FastActions.imageHost()).value ?? '';
+
   static void setImageHost(imageHost) {
     FastCache(FastActions.imageHost()).value = imageHost;
   }
 
-  static String get imageDemo => "http://pic1.win4000.com/mobile/2020-02-28/5e5876a79a76e_200_300.jpg";
+  static String get imageDemo =>
+      "http://pic1.win4000.com/mobile/2020-02-28/5e5876a79a76e_200_300.jpg";
 }

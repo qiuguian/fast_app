@@ -83,7 +83,7 @@ class FastAppHttp {
           result = data;
         }
       } else {
-        result = {};
+        result = {"code":response.statusCode,"msg":response.statusMessage,"data":""};
       }
       httpResponse = new FastHttpResponse(
           jsonEncode(result), response.statusCode, result['headers']);
@@ -112,14 +112,13 @@ class FastAppHttp {
       contentType: headers['Content-Type'],
     );
 
-    print("request data => ${body.toString()}");
-    print("request url => ${url.toString()}");
-
     FormData formData;
 
     if(headers['Content-Type'] == "application/formData"){
       formData = FormData.fromMap(body);
     }
+
+    print('data = > ${body.toString()}');
 
     Map result = {};
     adio.Dio dio = new adio.Dio(options);

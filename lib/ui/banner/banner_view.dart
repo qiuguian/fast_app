@@ -24,7 +24,10 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize =>
-      new Size(MediaQueryData.fromWindow(window).size.width, height);
+      new Size(MediaQueryData
+          .fromWindow(window)
+          .size
+          .width, height);
 
   clickBanner([index = 0]) {
     if (onTap != null) {
@@ -50,10 +53,10 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
             onTap: () => clickBanner(index),
             child: new ClipRRect(
               borderRadius: new BorderRadius.circular(radius),
-              child: new CachedNetworkImage(
+              child: imgSrc.contains('http') ? new CachedNetworkImage(
                 imageUrl: '$imgSrc',
                 fit: BoxFit.cover,
-              ),
+              ) : new Image.asset('$imgSrc', fit: BoxFit.cover,),
             ),
           );
         },

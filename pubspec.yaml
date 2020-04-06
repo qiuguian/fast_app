@@ -23,6 +23,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   fluwx: any
   json_annotation: any
+  toast: any
 
 dev_dependencies:
   flutter_test:
@@ -38,3 +39,4 @@ flutter:
   assets:
     - assets/ic_common_empty.png
     - assets/loading.gif
+    - assets/ic_confirm.webp

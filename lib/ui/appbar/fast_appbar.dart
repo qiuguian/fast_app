@@ -15,13 +15,13 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.showBackIcon = true,
     this.showShadow = false,
     this.rightDMActions,
-    this.backgroundColor = Colors.white,
-    this.mainColor = const Color(0xFF212121),
+    this.backgroundColor,
+    this.mainColor,
     this.titleW,
     this.bottom,
     this.leading,
     this.isCenterTitle = true,
-    this.brightness = Brightness.light,
+    this.brightness,
   });
 
   final String title;
@@ -41,6 +41,10 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    Brightness _brightness = brightness ?? fastTheme.brightness;
+    Color _backgroundColor = backgroundColor ?? fastTheme.appBarColor;
+    Color _mainColor = mainColor ?? fastTheme.appBarTextColor;
+
     return showShadow
         ? new Container(
             decoration: BoxDecoration(
@@ -52,29 +56,31 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
               title: titleW == null
                   ? new Text(
                       title,
-                      style: new TextStyle(color: mainColor),
+                      style: new TextStyle(color: _mainColor),
                     )
                   : titleW,
-              backgroundColor: backgroundColor,
+              backgroundColor: _backgroundColor,
               elevation: 0.0,
-              brightness: brightness,
+              brightness: _brightness,
               leading: leading == null
                   ? showBackIcon
                       ? new InkWell(
-                          child: new Container(
-                            width: 15,
-                            height: 28,
-                            child: new Icon(
-                              CupertinoIcons.left_chevron,
-                              color: mainColor,
+                          child: new Padding(
+                            padding:
+                                EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                            child: new Container(
+                              width: 15,
+                              height: 28,
+                              child: new Icon(
+                                CupertinoIcons.left_chevron,
+                                color: _mainColor,
+                              ),
                             ),
                           ),
                           onTap: () {
-                            if (Navigator.canPop(context)) {
-                              FocusScope.of(context)
-                                  .requestFocus(new FocusNode());
-                              Navigator.pop(context);
-                            }
+                            FocusScope.of(context)
+                                .requestFocus(new FocusNode());
+                            Navigator.pop(context);
                           },
                         )
                       : null
@@ -88,21 +94,25 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
             title: titleW == null
                 ? new Text(
                     title,
-                    style: new TextStyle(color: mainColor),
+                    style: new TextStyle(color: _mainColor),
                   )
                 : titleW,
-            backgroundColor: backgroundColor,
+            backgroundColor: _backgroundColor,
             elevation: 0.0,
-            brightness: brightness,
+            brightness: _brightness,
             leading: leading == null
                 ? showBackIcon
                     ? new InkWell(
-                        child: new Container(
-                          width: 15,
-                          height: 28,
-                          child: new Icon(
-                            CupertinoIcons.left_chevron,
-                            color: mainColor,
+                        child: new Padding(
+                          padding:
+                              EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                          child: new Container(
+                            width: 15,
+                            height: 28,
+                            child: new Icon(
+                              CupertinoIcons.left_chevron,
+                              color: _mainColor,
+                            ),
                           ),
                         ),
                         onTap: () {
