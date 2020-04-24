@@ -106,7 +106,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
       case HttpStatus.ok:
         final body = response.body;
 
-        if(obj.isShowLog()){
+        if (obj.isShowLog()) {
           print('HTTP_RESPONSE_TIME::[$id]::${DateTime.now()}');
           print('HTTP_REQUEST_URL::[$id]::$httpUrl');
           print('HTTP_REQUEST_BODY::[$id]::${jsonEncode(requstBody)}');
@@ -116,13 +116,14 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
         if (retJson) {
           final json = jsonDecode(body);
 
-          if (json['${obj.codeKey()}'].toString() == '${obj.successCode()}') {
+          List codes = obj.successCode();
 
+          if (codes.contains(json['${obj.codeKey()}'].toString())) {
             var result;
 
-            if(obj.responseKey() != null){
+            if (obj.responseKey() != null) {
               result = json['${obj.responseKey()}'];
-            }else{
+            } else {
               result = json;
             }
 
@@ -140,7 +141,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
               }
             }
 
-            if(onHeaders != null){
+            if (onHeaders != null) {
               onHeaders(response.headers);
             }
 
@@ -150,10 +151,9 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
 //            LoginViewModel.loginOut();
           }
 
-          return '${json['code']}::${json['msg']}::$url-$id';
+          return '${json['code']}::${json['msg']}::$url-$id::${jsonEncode(json['${obj.responseKey()}'])}';
         } else {
-
-          if(obj.isShowLog()){
+          if (obj.isShowLog()) {
             print('HTTP_REQUEST_URL::[$id]::$httpUrl');
             print('HTTP_REQUEST_BODY::[$id]::$requstBody');
             print('HTTP_RESPONSE_BODY::[$id]::$body');

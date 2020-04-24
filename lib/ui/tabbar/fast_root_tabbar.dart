@@ -18,12 +18,14 @@ class FastRootTabBar extends StatefulWidget {
     this.checkLogin,
     this.currentIndex = 0,
     this.color,
+    this.needLogins = const [],
   });
 
   final List pages;
   final CheckLogin checkLogin;
   final int currentIndex;
   final Color color;
+  final List needLogins;
 
   @override
   _FastRootTabBarState createState() => _FastRootTabBarState();
@@ -40,8 +42,8 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
 
     currentIndex = widget.currentIndex;
 
-    FastNotification.addListener(FastActions.toTabBar(), (index){
-      if(mounted){
+    FastNotification.addListener(FastActions.toTabBar(), (index) {
+      if (mounted) {
         setState(() {
           currentIndex = index;
         });
@@ -62,15 +64,19 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
 
   @override
   Widget build(BuildContext context) {
-
     final BottomNavigationBar bottomNavigationBar = new BottomNavigationBar(
       items: pages,
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
 //      fixedColor: Color.fromRGBO(45, 45, 45, 1.0),
-      selectedItemColor: widget.color??Colors.grey,
+      selectedItemColor: widget.color ?? Colors.grey,
       onTap: (int index) {
-        setState(() => currentIndex = index);
+        if (widget.checkLogin != null && widget.needLogins.contains(index) &&
+            !FastData.isLogin) {
+          widget.checkLogin(index);
+        } else {
+          setState(() => currentIndex = index);
+        }
       },
       iconSize: 18.0,
     );

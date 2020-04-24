@@ -171,6 +171,51 @@ class FastFormat {
       throw e;
     }
   }
+
+  static String getWeek(int week,[type = 2]){
+
+    String weekString;
+    List data = new List();
+
+    List data1 = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+    List data2 = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    List data3 = ["星期一","星期二","星期三","星期四","星期五","星期六","星期日"];
+
+    if(type == 1){
+      data = data1;
+    }else if(type == 2){
+      data = data2;
+    }else if(type == 3){
+      data = data3;
+    }
+
+    if(0 < week && week < 8){
+      weekString = data[week - 1];
+    }
+
+    return weekString;
+  }
+
+  static String getMonth(int month,[type = 2]){
+
+    String monthString;
+    List data = new List();
+
+    List data1 = ["January","February","March","April","Friday","May","June","July","August","September","October","November","December"];
+    List data2 = ["Jan","Feb","Wed","Mar","Apr","Sat","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    if(type == 1){
+      data = data1;
+    }else if(type == 2){
+      data = data2;
+    }
+
+    if(0 < month && month < 13){
+      monthString = data[month - 1];
+    }
+
+    return monthString;
+  }
 }
 
 

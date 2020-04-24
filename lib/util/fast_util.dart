@@ -11,8 +11,9 @@ library fast_util;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:html/parser.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 part 'param_util.dart';
 
@@ -59,4 +60,16 @@ pushReplacement(Widget page) {
 
 popToRootPage() {
   navGK.currentState.popUntil(ModalRoute.withName('/'));
+}
+
+fastCall([url = '18176681925']) async {
+  await launch("tel:$url");
+}
+
+fastOpenUrl([url]) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  }else{
+    print("bad url");
+  }
 }

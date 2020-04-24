@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class FastHudView {
@@ -29,8 +30,8 @@ class FastHudView {
 
   static void show(BuildContext context, {msg = '加载中...'}) {
 
-    if(context == null){
-       return;
+    if (context == null) {
+      return;
     }
 
     WidgetsBinding widgetsBinding = WidgetsBinding.instance;
@@ -67,7 +68,7 @@ class FastHudView {
                     new Container(
                       width: double.infinity,
                       alignment: Alignment.center,
-                      child: new Image.asset(icon,package: package),
+                      child: new Image.asset(icon, package: package),
                     ),
                     new Padding(
                       padding: EdgeInsets.only(top: 10),
@@ -87,15 +88,16 @@ class FastHudView {
         },
       );
 
-      if (overlayEntry != null) {
-        Overlay.of(_context).insert(overlayEntry);
+      if (overlayEntry != null && _context != null) {
+        _context?.findAncestorStateOfType();
+//        Overlay.of(_context).insert(overlayEntry);
       }
     });
   }
 
   static void dismiss() {
     if (isLoading && overlayEntry != null) {
-      overlayEntry.remove();
+      overlayEntry?.remove();
       overlayEntry = null;
     }
     isLoading = false;
@@ -106,10 +108,6 @@ class FastHudView {
     WidgetsBinding widgetsBinding = WidgetsBinding.instance;
     widgetsBinding.addPostFrameCallback((callback) {
       dismiss();
-
-      if (isLoading) {
-        return;
-      }
 
       isLoading = true;
       isAutoShow = true;
@@ -127,7 +125,7 @@ class FastHudView {
                 child: new Container(
                   decoration: BoxDecoration(
                     borderRadius:
-                        new BorderRadius.all(new Radius.circular(4.0)),
+                    new BorderRadius.all(new Radius.circular(4.0)),
                     color: Color.fromRGBO(0, 0, 0, 0.3),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 4),
@@ -140,7 +138,7 @@ class FastHudView {
                       new Container(
                         width: double.infinity,
                         alignment: Alignment.center,
-                        child: new Image.asset(icon,package: package),
+                        child: new Image.asset(icon, package: package),
                       ),
                       new Padding(
                         padding: EdgeInsets.only(top: 10),

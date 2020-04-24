@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:fast_app/net/fast_hud.dart';
 import 'package:fast_app/net/fast_respone_model.dart';
@@ -30,7 +31,7 @@ class FastRequest {
 
   String codeKey() => 'code';
 
-  String successCode() => '200';
+  List successCode() => ['200'];
 
   FastViewModel _viewModel;
 
@@ -55,8 +56,8 @@ class FastRequest {
       FastHudView.show(context, msg: hud);
     }
 
-    var result = await api(
-        this.url(), this.doPost(), this.retJson(), onHeaders, this, this.cacheTime());
+    var result = await api(this.url(), this.doPost(), this.retJson(), onHeaders,
+        this, this.cacheTime());
 
     if (context != null && hud != null) {
       FastHudView.dismiss();
@@ -67,6 +68,7 @@ class FastRequest {
     }
 
     if (result is String && result.contains('::')) {
+
       List data = result.toString().split('::');
       if (data.length == 3) {
         if (onError != null) {
@@ -74,6 +76,13 @@ class FastRequest {
         }
         throw FastResponseModel.fromError(
             data[1], int.parse(data[0].toString()));
+      }
+      if (data.length == 4) {
+        if (onError != null) {
+          onError(data[1], int.parse(data[0].toString()));
+        }
+        throw FastResponseModel.fromError(data[1],
+            int.parse(data[0].toString()), jsonDecode(data[3] ?? '{}'));
       }
     }
 

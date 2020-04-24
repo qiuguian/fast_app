@@ -12,11 +12,12 @@ class FastResponseModel {
   * 请求返回错误
   *
   * */
-  factory FastResponseModel.fromError(msg,code){
+  factory FastResponseModel.fromError(msg,code,[d]){
     FastResponseModel rep;
 
     rep = new FastResponseModel()
       ..code = code
+      ..data = d
       ..message = msg;
 
     return rep;

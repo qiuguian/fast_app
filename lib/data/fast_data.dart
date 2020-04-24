@@ -80,13 +80,15 @@ class FastData {
     FastNotification.push(FastActions.isLogin(), isLogin);
     if (isLogin) {
       storeString(FastActions.isLogin(), '1');
+      popToRootPage();
     } else {
       storeString(FastActions.isLogin(), '0');
       popToRootPage();
+      FastNotification.push(FastActions.toTabBar(), 0);
     }
   }
 
-  static setLoginOut([isLogin = false]) {
+  static loginOut([isLogin = false]) {
     FastCache(FastActions.isLogin()).value = isLogin;
     FastNotification.push(FastActions.isLogin(), isLogin);
     if (isLogin) {
@@ -94,6 +96,7 @@ class FastData {
     } else {
       storeString(FastActions.isLogin(), '0');
       popToRootPage();
+      FastNotification.push(FastActions.toTabBar(), 0);
     }
   }
 
@@ -118,6 +121,16 @@ class FastData {
 
   static void setImageHost(imageHost) {
     FastCache(FastActions.imageHost()).value = imageHost;
+  }
+
+  static String image(String imageUrl) {
+    if (imageUrl == null || imageUrl == '') {
+      return null;
+    } else if (imageUrl.contains('http')) {
+      return imageUrl;
+    } else {
+      return '${FastCache(FastActions.imageHost()).value}$imageUrl';
+    }
   }
 
   static String get imageDemo =>

@@ -28,6 +28,9 @@ class FastTextField extends StatefulWidget {
   final TextStyle hintStyle;
   final bool obscureText;
   final EdgeInsetsGeometry padding;
+  final FormFieldValidator<String> validator;
+  final bool autovalidate;
+  final Color borderColor;
 
   FastTextField({
     this.name,
@@ -42,6 +45,9 @@ class FastTextField extends StatefulWidget {
     this.obscureText = false,
     this.labelValue,
     this.padding = EdgeInsets.zero,
+    this.validator,
+    this.autovalidate = false,
+    this.borderColor = const Color(0xffEBEBEB),
   });
 
   @override
@@ -60,81 +66,85 @@ class _FastTextFieldState extends State<FastTextField> {
           bottom: new BorderSide(
               color: widget.type == FastTextFieldType.readonly
                   ? Colors.transparent
-                  : Color(0xffEBEBEB),
+                  : widget.borderColor,
               width: 0.5),
         ),
       ),
       child: widget.type == FastTextFieldType.titleSingle
           ? new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                widget.name != null
-                    ? new Text('${widget.name}',
-                        style: widget.style ??
-                            TextStyle(
-                                color: Color(0xff343243),
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w500))
-                    : new Container(),
-                new Row(
-                  children: <Widget>[
-                    new Expanded(
-                      child: new TextField(
-                        controller: widget.controller,
-                        keyboardType: widget.keyboardType ?? null,
-                        style: widget.style,
-                        decoration: InputDecoration(
-                          hintText: widget.placeholder,
-                          hintStyle: widget.hintStyle ?? null,
-                          hintMaxLines: 2,
-                          border: InputBorder.none,
-                        ),
-                        onChanged: widget.onChanged ?? (str) {},
-                        obscureText: widget.obscureText,
-                      ),
-                    ),
-                    widget.suffix ?? new Container(),
-                  ],
-                ),
-              ],
-            )
-          : new Container(
-              height: 55.0,
-              child: new Row(
-                children: <Widget>[
-                  widget.name != null
-                      ? new Container(
-                          width: 100.0,
-                          child: new Text(
-                            '${widget.name}',
-                            style: new TextStyle(
-                                color: Color(0xff888697),
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        )
-                      : new Container(),
-                  new Expanded(
-                    child: widget.type == FastTextFieldType.readonly
-                        ? new Text('')
-                        : new TextField(
-                            controller: widget.controller,
-                            keyboardType: widget.keyboardType ?? null,
-                            style: widget.style,
-                            decoration: InputDecoration(
-                              hintText: widget.placeholder,
-                              hintStyle: TextStyle(
-                                  color: Color(0xffDFE0EB), fontSize: 15.0),
-                              border: InputBorder.none,
-                            ),
-                            onChanged: widget.onChanged ?? (str) {},
-                            obscureText: widget.obscureText,
-                          ),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          widget.name != null
+              ? new Text('${widget.name}',
+              style: widget.style ??
+                  TextStyle(
+                      color: Color(0xff343243),
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500))
+              : new Container(),
+          new Row(
+            children: <Widget>[
+              new Expanded(
+                child: new TextFormField(
+                  controller: widget.controller,
+                  keyboardType: widget.keyboardType ?? null,
+                  style: widget.style,
+                  decoration: InputDecoration(
+                    hintText: widget.placeholder,
+                    hintStyle: widget.hintStyle ?? null,
+                    hintMaxLines: 2,
+                    border: InputBorder.none,
                   ),
-                  widget.suffix ?? new Container(),
-                ],
+                  onChanged: widget.onChanged ?? (str) {},
+                  obscureText: widget.obscureText,
+                  validator: widget.validator,
+                  autovalidate: widget.autovalidate,
+                ),
+              ),
+              widget.suffix ?? new Container(),
+            ],
+          ),
+        ],
+      )
+          : new Container(
+        height: 55.0,
+        child: new Row(
+          children: <Widget>[
+            widget.name != null
+                ? new Container(
+              width: 100.0,
+              child: new Text(
+                '${widget.name}',
+                style: new TextStyle(
+                    color: Color(0xff888697),
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w500),
+              ),
+            )
+                : new Container(),
+            new Expanded(
+              child: widget.type == FastTextFieldType.readonly
+                  ? new Text('')
+                  : new TextFormField(
+                controller: widget.controller,
+                keyboardType: widget.keyboardType ?? null,
+                style: widget.style,
+                decoration: InputDecoration(
+                  hintText: widget.placeholder,
+                  hintStyle: TextStyle(
+                      color: Color(0xffDFE0EB), fontSize: 15.0),
+                  border: InputBorder.none,
+                ),
+                onChanged: widget.onChanged ?? (str) {},
+                obscureText: widget.obscureText,
+                validator: widget.validator,
+                autovalidate: widget.autovalidate,
               ),
             ),
+            widget.suffix ?? new Container(),
+          ],
+        ),
+      ),
     );
   }
 }

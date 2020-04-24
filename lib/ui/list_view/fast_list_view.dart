@@ -220,7 +220,7 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
       children: <Widget>[
         new Visibility(
           visible: widget.viewModel.dataList.length > 0 ||
-              widget.headerView != null,
+              widget.headerView != null || widget.footerView != null,
           child: new Padding(
             padding: widget.padding,
             child: new ListView.builder(
@@ -269,7 +269,7 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
           ),
         ),
         new Visibility(
-          visible: widget.viewModel.dataList.length == 0 && !isPageLoading,
+          visible: widget.viewModel.dataList.length == 0 && !isPageLoading && widget.headerView == null && widget.footerView == null,
           child: new Padding(
             padding: EdgeInsets.symmetric(vertical: 80.0),
             child: new Center(

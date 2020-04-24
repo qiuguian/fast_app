@@ -77,6 +77,8 @@ void fastSelectBottomView(BuildContext context,
       Color titleColor = Colors.grey,
       Color valueColor = Colors.blue,
       Color cancelColor = Colors.blue,
+      Color currentColor = Colors.red,
+      String currentValue,
     }) {
   List data = menu ?? [
     '请输入选项',
@@ -127,7 +129,7 @@ void fastSelectBottomView(BuildContext context,
                                         color: Color(0xffEBEBEB), width: 0.5))),
                             child: new Text('$item',
                                 style: new TextStyle(
-                                    color: valueColor, fontSize: 19)),
+                                    color: currentValue == item ? currentColor : valueColor, fontSize: 19)),
                           ),
                         );
                       }).toList(growable: false),

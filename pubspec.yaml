@@ -21,9 +21,10 @@ dependencies:
   flutter_swiper: any
   cached_network_image: any
   cupertino_icons: ^0.1.2
-  fluwx: any
+#  fluwx: any
   json_annotation: any
   toast: any
+  url_launcher: any
 
 dev_dependencies:
   flutter_test:
