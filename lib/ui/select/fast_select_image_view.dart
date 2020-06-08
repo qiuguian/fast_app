@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 typedef DidSelect(item);
 
-void fastSelectImageView(BuildContext context, {DidSelect didSelect}) {
+void fastSelectImageView(BuildContext context, {DidSelect didSelect,VoidCallback didCancel,}) {
   showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -68,12 +68,15 @@ void fastSelectImageView(BuildContext context, {DidSelect didSelect}) {
       });
 }
 
+typedef DidSelectItem(item,index);
+
 void fastSelectBottomView(BuildContext context,
     {
       String title = "Select",
       String cancelName = "Cancel",
       List menu,
-      DidSelect didSelect,
+      DidSelectItem didSelect,
+      VoidCallback didCancel,
       Color titleColor = Colors.grey,
       Color valueColor = Colors.blue,
       Color cancelColor = Colors.blue,
@@ -87,10 +90,12 @@ void fastSelectBottomView(BuildContext context,
   showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return new Material(
           child: new Column(
-            mainAxisSize: MainAxisSize.min,
+//            mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               new Container(
                 margin: EdgeInsets.symmetric(horizontal: 10.0),
@@ -112,11 +117,11 @@ void fastSelectBottomView(BuildContext context,
                               color: titleColor, fontSize: 15)),
                     ),
                     new Wrap(
-                      children: data.map((item) {
+                      children: List.generate(menu.length, (index){
                         return new InkWell(
                           onTap: () {
                             if (didSelect != null) {
-                              didSelect(item);
+                              didSelect(menu[index],index);
                               Navigator.of(context).pop();
                             }
                           },
@@ -127,12 +132,12 @@ void fastSelectBottomView(BuildContext context,
                                 border: Border(
                                     bottom: new BorderSide(
                                         color: Color(0xffEBEBEB), width: 0.5))),
-                            child: new Text('$item',
+                            child: new Text('${menu[index]}',
                                 style: new TextStyle(
-                                    color: currentValue == item ? currentColor : valueColor, fontSize: 19)),
+                                    color: currentValue == menu[index] ? currentColor : valueColor, fontSize: 19)),
                           ),
                         );
-                      }).toList(growable: false),
+                      })
                     ),
                   ],
                 ),
@@ -152,6 +157,9 @@ void fastSelectBottomView(BuildContext context,
                 ),
                 onTap: () {
                   Navigator.pop(context);
+                  if(didCancel != null){
+                    didCancel();
+                  }
                 },
               )
             ],

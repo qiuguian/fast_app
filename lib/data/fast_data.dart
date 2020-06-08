@@ -49,7 +49,11 @@ class FastActions {
 Map userStoreData = new Map();
 
 class FastData {
-  static initData() {
+  static initData() async {
+
+    String login = await getStoreValue(FastActions.isLogin());
+    FastCache(FastActions.isLogin()).value = login == '1';
+
     getStoreValue(FastActions.loginInfo()).then((onValue) {
       if (onValue != null) {
         Map data = jsonDecode(onValue);

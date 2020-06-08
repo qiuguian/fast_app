@@ -19,6 +19,7 @@ class FastRootTabBar extends StatefulWidget {
     this.currentIndex = 0,
     this.color,
     this.needLogins = const [],
+    this.isFirtBlackColor = false,
   });
 
   final List pages;
@@ -26,6 +27,7 @@ class FastRootTabBar extends StatefulWidget {
   final int currentIndex;
   final Color color;
   final List needLogins;
+  final bool isFirtBlackColor;
 
   @override
   _FastRootTabBarState createState() => _FastRootTabBarState();
@@ -69,7 +71,8 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
 //      fixedColor: Color.fromRGBO(45, 45, 45, 1.0),
-      selectedItemColor: widget.color ?? Colors.grey,
+      selectedItemColor: widget.color ?? Colors.blue,
+      unselectedItemColor: Colors.grey,
       onTap: (int index) {
         if (widget.checkLogin != null && widget.needLogins.contains(index) &&
             !FastData.isLogin) {
@@ -90,7 +93,8 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
 
     return new Scaffold(
       bottomNavigationBar: new Theme(
-          data: new ThemeData(canvasColor: Colors.grey[50]),
+          data: new ThemeData(
+              canvasColor: currentIndex == 0 && widget.isFirtBlackColor ? Colors.black : Colors.white),
           child: bottomNavigationBar),
       body: new Stack(
         children: contents.toList(growable: false),

@@ -29,7 +29,6 @@ class FastHudView {
   }
 
   static void show(BuildContext context, {msg = '加载中...'}) {
-
     if (context == null) {
       return;
     }
@@ -37,10 +36,6 @@ class FastHudView {
     WidgetsBinding widgetsBinding = WidgetsBinding.instance;
     widgetsBinding.addPostFrameCallback((callback) {
       dismiss();
-
-      if (isLoading) {
-        return;
-      }
       isLoading = true;
       isAutoShow = false;
       _context = context;
@@ -89,15 +84,19 @@ class FastHudView {
       );
 
       if (overlayEntry != null && _context != null) {
-        _context?.findAncestorStateOfType();
-//        Overlay.of(_context).insert(overlayEntry);
+        Overlay.of(_context).insert(overlayEntry);
       }
     });
   }
 
+  static void reset() {
+    isLoading = false;
+    isAutoShow = false;
+  }
+
   static void dismiss() {
     if (isLoading && overlayEntry != null) {
-      overlayEntry?.remove();
+      overlayEntry.remove();
       overlayEntry = null;
     }
     isLoading = false;
@@ -125,7 +124,7 @@ class FastHudView {
                 child: new Container(
                   decoration: BoxDecoration(
                     borderRadius:
-                    new BorderRadius.all(new Radius.circular(4.0)),
+                        new BorderRadius.all(new Radius.circular(4.0)),
                     color: Color.fromRGBO(0, 0, 0, 0.3),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 4),

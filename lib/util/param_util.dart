@@ -32,6 +32,14 @@ class FastValidate {
   }
 
   /*
+  * 验证参数是否为空
+  *
+  * */
+  static bool isNumberNotNull(value) {
+    return value != null && value.toString().trim().length > 0 && value.toString().trim() != '0';
+  }
+
+  /*
   * 验证手机号
   *
   * */
@@ -215,6 +223,25 @@ class FastFormat {
     }
 
     return monthString;
+  }
+
+  static String stringDisposeWithDouble(v, [fix = 2]) {
+    double b = double.parse(v.toString());
+    String vStr = b.toStringAsFixed(fix);
+    int len = vStr.length;
+    for (int i = 0; i < len; i++) {
+      if (vStr.contains('.') && vStr.endsWith('0')) {
+        vStr = vStr.substring(0, vStr.length - 1);
+      } else {
+        break;
+      }
+    }
+
+    if (vStr.endsWith('.')) {
+      vStr = vStr.substring(0, vStr.length - 1);
+    }
+
+    return vStr;
   }
 }
 

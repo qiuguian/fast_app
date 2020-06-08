@@ -128,11 +128,18 @@ class FastAppHttp {
         url,
         data: formData??body,
 //        data: true ? adio.FormData.fromMap(body) : body,
-      );
+      ).whenComplete((){
+        print('whenComplete=>$url');
+      }).catchError((e){
+        print('catchError=>${e.toString()}');
+        return;
+      });
 
       if (response.statusCode == HttpStatus.ok) {
 
         var data = response.data;
+
+        print('response.data=>${response.data}');
 
         if (data is String) {
           result = jsonDecode(data);
@@ -140,16 +147,17 @@ class FastAppHttp {
           result = data;
         }
       } else {
+        print('response.data 01=>${response.data}');
         result = {"msg":"error","code":response.statusCode,"msgCode":"1"};
       }
 
       httpResponse = new FastHttpResponse(
           jsonEncode(result), response.statusCode, response.headers.map);
     } on adio.DioError catch (e) {
+      print('response.error：' + e.toString());
       print('request.token：' + headers['token']);
       print('request.url：' + url.toString());
       print('request.body：' + jsonEncode(body));
-      print('response.error：' + e.toString());
     }
 
     return httpResponse;

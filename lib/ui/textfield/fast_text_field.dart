@@ -31,6 +31,7 @@ class FastTextField extends StatefulWidget {
   final FormFieldValidator<String> validator;
   final bool autovalidate;
   final Color borderColor;
+  List<TextInputFormatter> inputFormatters;
 
   FastTextField({
     this.name,
@@ -48,6 +49,7 @@ class FastTextField extends StatefulWidget {
     this.validator,
     this.autovalidate = false,
     this.borderColor = const Color(0xffEBEBEB),
+    this.inputFormatters = const <TextInputFormatter>[],
   });
 
   @override
@@ -99,6 +101,7 @@ class _FastTextFieldState extends State<FastTextField> {
                   obscureText: widget.obscureText,
                   validator: widget.validator,
                   autovalidate: widget.autovalidate,
+                  inputFormatters: widget.inputFormatters,
                 ),
               ),
               widget.suffix ?? new Container(),
@@ -139,6 +142,7 @@ class _FastTextFieldState extends State<FastTextField> {
                 obscureText: widget.obscureText,
                 validator: widget.validator,
                 autovalidate: widget.autovalidate,
+                inputFormatters: widget.inputFormatters,
               ),
             ),
             widget.suffix ?? new Container(),

@@ -68,7 +68,6 @@ class FastRequest {
     }
 
     if (result is String && result.contains('::')) {
-
       List data = result.toString().split('::');
       if (data.length == 3) {
         if (onError != null) {

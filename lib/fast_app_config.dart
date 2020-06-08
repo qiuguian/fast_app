@@ -3,6 +3,8 @@ import 'package:fast_app/net/fast_config.dart';
 import 'package:fast_app/util/enum_util.dart';
 import 'package:flutter/material.dart';
 
+String fastVersion = '1.0.0';
+
 class FastApp {
   /*
   * 配置应用
@@ -24,8 +26,11 @@ class FastApp {
     String devAddress,
     String testAddress,
     String productAddress,
+    String version,
   }) {
     WidgetsFlutterBinding.ensureInitialized();
+
+    fastVersion = version;
 
     environmentConfig = new EnvironmentConfig(
       environment: environment,

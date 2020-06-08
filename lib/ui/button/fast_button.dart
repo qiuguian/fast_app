@@ -27,7 +27,7 @@ class FastButton extends StatelessWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 5.0),
     this.margin,
     this.style = const TextStyle(color: Colors.black, fontSize: 16.0),
-    this.color = const Color(0xff2F87FF),
+    this.color,
     this.isBorder = false,
     this.gradient = const LinearGradient(
       colors: [
@@ -42,7 +42,7 @@ class FastButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color _color = color.withOpacity(enable ? 1 : 0.3);
+    Color _color = color == null ? null : color.withOpacity(enable ? 1 : 0.3);
 
     return new Visibility(
       visible: isShow,
@@ -55,26 +55,18 @@ class FastButton extends StatelessWidget {
             width: width,
             height: height,
             decoration: color == null
-                ? BoxDecoration(
-                    gradient: gradient,
-                    boxShadow: boxShadow,
-                    border: isBorder
-                        ? Border.all(width: 0.5, color: Color(borderColor))
-                        : null,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(radius),
-                    ),
-                  )
+                ?
+            BoxDecoration()
                 : BoxDecoration(
-                    color: _color,
-                    boxShadow: boxShadow,
-                    border: isBorder
-                        ? Border.all(width: 0.5, color: Color(borderColor))
-                        : null,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(radius),
-                    ),
-                  ),
+              color: _color,
+              boxShadow: boxShadow,
+              border: isBorder
+                  ? Border.all(width: 0.5, color: Color(borderColor))
+                  : null,
+              borderRadius: BorderRadius.all(
+                Radius.circular(radius),
+              ),
+            ),
             child: new Text(
               '$text',
               style: style != null

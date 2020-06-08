@@ -56,7 +56,7 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
               title: titleW == null
                   ? new Text(
                       title,
-                      style: new TextStyle(color: _mainColor),
+                      style: new TextStyle(color: _mainColor,fontSize: 16),
                     )
                   : titleW,
               backgroundColor: _backgroundColor,
@@ -94,7 +94,7 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
             title: titleW == null
                 ? new Text(
                     title,
-                    style: new TextStyle(color: _mainColor),
+                    style: new TextStyle(color: _mainColor,fontSize: 16),
                   )
                 : titleW,
             backgroundColor: _backgroundColor,

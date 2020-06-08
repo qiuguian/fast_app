@@ -18,12 +18,18 @@ fastToastSuccess(BuildContext context, String msg, {Function timeOutCall}) {
   OverlayEntry overlayEntry = new OverlayEntry(builder: (context) {
     //外层使用Positioned进行定位，控制在Overlay中的位置
     return new Positioned(
-        top: MediaQuery.of(context).size.height * 0.5,
+        top: MediaQuery
+            .of(context)
+            .size
+            .height * 0.5,
         child: new Material(
           color: Colors.transparent,
           child: new Container(
             color: Colors.transparent,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             alignment: Alignment.center,
             child: new Center(
               child: new Material(
@@ -32,12 +38,11 @@ fastToastSuccess(BuildContext context, String msg, {Function timeOutCall}) {
                 child: new Container(
                   decoration: BoxDecoration(
                     borderRadius:
-                        new BorderRadius.all(new Radius.circular(12.0)),
+                    new BorderRadius.all(new Radius.circular(12.0)),
                     color: Color.fromRGBO(0, 0, 0, 0.7),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   width: 120,
-                  height: 120,
                   child: new Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: <Widget>[
@@ -53,11 +58,10 @@ fastToastSuccess(BuildContext context, String msg, {Function timeOutCall}) {
                       ),
                       new Padding(
                         padding: EdgeInsets.only(top: 15),
-                        child: new Center(
-                          child: new Text(msg,
-                              style: TextStyle(color: Colors.white),
-                              maxLines: 3),
-                        ),
+                        child: new Text(msg,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                          maxLines: 5,),
                       ),
                     ],
                   ),
@@ -70,7 +74,7 @@ fastToastSuccess(BuildContext context, String msg, {Function timeOutCall}) {
   //往Overlay中插入插入OverlayEntry
   Overlay.of(context).insert(overlayEntry);
   //两秒后，移除Toast
-  new Future.delayed(Duration(seconds: 2)).then((value) {
+  new Future.delayed(Duration(seconds: 1)).then((value) {
     overlayEntry.remove();
 
     if (timeOutCall != null) {

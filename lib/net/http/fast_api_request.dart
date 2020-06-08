@@ -61,7 +61,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
         print('HTTP_RESPONSE_TIME::[$id]::${DateTime.now()}');
         print('HTTP_REQUEST_URL::[$id]::$httpUrl');
         print('HTTP_REQUEST_BODY::[$id]::${jsonEncode(requstBody)}');
-        return '-1::网络连接失败::$url-$id';
+        return '-1::服务错误::$url-$id';
       }
     } else {
       var query = new StringBuffer('?');
@@ -96,7 +96,8 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
         print('HTTP_RESPONSE_TIME::[$id]::${DateTime.now()}');
         print('HTTP_REQUEST_URL::[$id]::$httpUrl');
         print('HTTP_REQUEST_BODY::[$id]::${jsonEncode(requstBody)}');
-        return '-1::网络连接失败::$url-$id';
+        print('server e => ${e.toString()}');
+        return '-1::服务错误::$url-$id';
       }
     }
 
@@ -157,13 +158,13 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
             print('HTTP_REQUEST_URL::[$id]::$httpUrl');
             print('HTTP_REQUEST_BODY::[$id]::$requstBody');
             print('HTTP_RESPONSE_BODY::[$id]::$body');
+            print('server e => ${body.toString()}');
           }
-
           return body;
         }
         break;
       default:
-        return '$statusCode::网络连接失败::$url-$id';
+        return '$statusCode::服务错误::$url-$id';
     }
   }
 }
