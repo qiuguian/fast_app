@@ -209,8 +209,8 @@ class FastFormat {
     String monthString;
     List data = new List();
 
-    List data1 = ["January","February","March","April","Friday","May","June","July","August","September","October","November","December"];
-    List data2 = ["Jan","Feb","Wed","Mar","Apr","Sat","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    List data1 = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    List data2 = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
     if(type == 1){
       data = data1;

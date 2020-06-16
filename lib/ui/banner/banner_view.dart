@@ -13,6 +13,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
     this.scale = 1.0,
     this.viewportFraction = 1.0,
     this.radius = 0.0,
+    this.alignment = Alignment.bottomCenter,
   });
 
   final double height;
@@ -21,6 +22,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
   final double scale;
   final double viewportFraction;
   final double radius;
+  final Alignment alignment;
 
   @override
   Size get preferredSize =>
@@ -62,7 +64,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
         },
         autoplay: banners.length > 1,
         pagination: new SwiperPagination(
-          alignment: Alignment.bottomCenter,
+          alignment: alignment,
           builder: new SwiperCustomPagination(
             builder: (context, config) {
               return new Wrap(

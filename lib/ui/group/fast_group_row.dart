@@ -39,13 +39,16 @@ class FastGroupRow extends StatelessWidget {
           return new InkWell(
             onTap: () {
               if (onTap != null) {
-                onTap(model.index??0);
+                onTap(model.index ?? 0);
               }
             },
             child: new Container(
               width:
-                  (MediaQuery.of(context).size.width - 10 * (rowNum + 1)) /
-                      rowNum,
+              (MediaQuery
+                  .of(context)
+                  .size
+                  .width - 10 * (rowNum + 1)) /
+                  rowNum,
               alignment: Alignment.center,
               child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +58,12 @@ class FastGroupRow extends StatelessWidget {
                     height: 55.0,
                     margin: EdgeInsets.only(bottom: 5),
                     child:
-                        new CachedNetworkImage(imageUrl: model.icon, width: 50,height: 50,fit:BoxFit.fill,),
+                    model.icon.contains('http') ? new CachedNetworkImage(
+                      imageUrl: model.icon,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.fill,) : new Image.asset(
+                        model.icon, width: 50, height: 50, fit: BoxFit.fill),
                   ),
                   new Text('${model.name}',
                       textAlign: TextAlign.center,
