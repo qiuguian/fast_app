@@ -44,13 +44,14 @@ class FastActions {
   static String imageHost() => 'imageHost';
 
   static String timer() => 'fastTimer';
+
+  static String isGuest() => 'isGuest';
 }
 
 Map userStoreData = new Map();
 
 class FastData {
   static initData() async {
-
     String login = await getStoreValue(FastActions.isLogin());
     FastCache(FastActions.isLogin()).value = login == '1';
 
@@ -90,6 +91,9 @@ class FastData {
       popToRootPage();
       FastNotification.push(FastActions.toTabBar(), 0);
     }
+    if (!isLogin) {
+      FastApp.reCoverEnvironment();
+    }
   }
 
   static loginOut([isLogin = false]) {
@@ -101,6 +105,9 @@ class FastData {
       storeString(FastActions.isLogin(), '0');
       popToRootPage();
       FastNotification.push(FastActions.toTabBar(), 0);
+    }
+    if (!isLogin) {
+      FastApp.reCoverEnvironment();
     }
   }
 
@@ -139,4 +146,10 @@ class FastData {
 
   static String get imageDemo =>
       "http://pic1.win4000.com/mobile/2020-02-28/5e5876a79a76e_200_300.jpg";
+
+  static bool get isGuest => FastCache(FastActions.isGuest()).value ?? false;
+
+  static void setIsGuest() {
+    FastCache(FastActions.isGuest()).value = true;
+  }
 }

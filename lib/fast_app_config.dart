@@ -4,6 +4,7 @@ import 'package:fast_app/util/enum_util.dart';
 import 'package:flutter/material.dart';
 
 String fastVersion = '1.0.0';
+FastAppEnvironment currentEnvironment = FastAppEnvironment.product;
 
 class FastApp {
   /*
@@ -26,11 +27,13 @@ class FastApp {
     String devAddress,
     String testAddress,
     String productAddress,
+    String guestAddress,
     String version,
-  }) {
+  }) async {
     WidgetsFlutterBinding.ensureInitialized();
 
     fastVersion = version;
+    currentEnvironment = environment;
 
     environmentConfig = new EnvironmentConfig(
       environment: environment,
@@ -44,7 +47,29 @@ class FastApp {
       devAddress: devAddress,
       testAddress: testAddress,
       productAddress: productAddress,
+      geustAddress: guestAddress,
     );
+
+    String e = await getStoreValue("GeustEnvironment");
+
+    if(FastData.isLogin && e == '1'){
+       FastApp.setGeustEnvironment();
+    }
+  }
+
+  static setGeustEnvironment(){
+    storeString('GeustEnvironment', '1');
+    FastData.setIsGuest();
+    environmentConfig.environment = FastAppEnvironment.guest;
+  }
+
+  static bool isGuest(){
+    return environmentConfig.environment == FastAppEnvironment.guest;
+  }
+
+  static reCoverEnvironment(){
+    storeString('GeustEnvironment', '0');
+    environmentConfig.environment = currentEnvironment;
   }
 
   static setTheme({

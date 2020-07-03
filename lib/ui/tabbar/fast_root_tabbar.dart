@@ -78,6 +78,7 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
             !FastData.isLogin) {
           widget.checkLogin(index);
         } else {
+          FastNotification.push(FastActions.toTab(index));
           setState(() => currentIndex = index);
         }
       },

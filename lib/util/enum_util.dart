@@ -3,6 +3,7 @@ enum FastAppEnvironment {
   test, //测试环境
   product, //生产环境
   local, //本地环境
+  guest, //游客环境
 }
 
 enum FastAppPlatform {

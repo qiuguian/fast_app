@@ -15,7 +15,7 @@ export 'package:fast_app/util/enum_util.dart';
 EnvironmentConfig environmentConfig;
 
 class EnvironmentConfig {
-  final FastAppEnvironment environment;
+  FastAppEnvironment environment;
   String address;
   bool showLog;
   String proxy;
@@ -46,6 +46,9 @@ class EnvironmentConfig {
       case FastAppEnvironment.product:
         environmentConfig.address = fastApiHostConfig.productAddress;
         break;
+      case FastAppEnvironment.guest:
+        environmentConfig.address = fastApiHostConfig.geustAddress;
+        break;
     }
 
     return environmentConfig;
@@ -58,11 +61,13 @@ class FastApiHostConfig {
   final String devAddress;
   final String testAddress;
   final String productAddress;
+  final String geustAddress;
 
   FastApiHostConfig({
     this.devAddress,
     this.testAddress,
     this.productAddress,
+    this.geustAddress,
   });
 
   factory FastApiHostConfig.share() => fastApiHostConfig;

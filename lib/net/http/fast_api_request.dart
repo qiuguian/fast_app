@@ -54,14 +54,16 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
       try {
         response = await _client.post(
           httpUrl,
-          body: requstBody,
+          requstBody,
           headers: obj.header(),
+          isReconnectStrategyStart: obj.reconnectStrategyStart(),
+          reconnectTime: obj.reconnectTime(),
         );
       } catch (e) {
         print('HTTP_RESPONSE_TIME::[$id]::${DateTime.now()}');
         print('HTTP_REQUEST_URL::[$id]::$httpUrl');
         print('HTTP_REQUEST_BODY::[$id]::${jsonEncode(requstBody)}');
-        return '-1::服务错误::$url-$id';
+        return '-1::Server busy::$url-$id';
       }
     } else {
       var query = new StringBuffer('?');
@@ -97,7 +99,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
         print('HTTP_REQUEST_URL::[$id]::$httpUrl');
         print('HTTP_REQUEST_BODY::[$id]::${jsonEncode(requstBody)}');
         print('server e => ${e.toString()}');
-        return '-1::服务错误::$url-$id';
+        return '-1::Server busy::$url-$id';
       }
     }
 
@@ -164,21 +166,43 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
         }
         break;
       default:
-        return '$statusCode::服务错误::$url-$id';
+        return '$statusCode::Server busy::$url-$id';
     }
   }
 }
 
 class HttpClient {
-  Future<FastHttpResponse> get(url, body,
-      {Map<String, dynamic> headers}) async {
-    final response = await FastAppHttp.doGet(url, body, headers);
+  Future<FastHttpResponse> get(
+    url,
+    body, {
+    Map<String, dynamic> headers,
+    bool isReconnectStrategyStart,
+    int reconnectTime,
+  }) async {
+    final response = await FastAppHttp.doGet(
+      url,
+      body,
+      headers,
+      isReconnectStrategyStart: isReconnectStrategyStart,
+      reconnectTime: reconnectTime,
+    );
     return response;
   }
 
-  Future<FastHttpResponse> post(url,
-      {Map<String, dynamic> headers, body}) async {
-    final response = await FastAppHttp.doPost(url, body, headers);
+  Future<FastHttpResponse> post(
+    url,
+    body, {
+    Map<String, dynamic> headers,
+    bool isReconnectStrategyStart,
+    int reconnectTime,
+  }) async {
+    final response = await FastAppHttp.doPost(
+      url,
+      body,
+      headers,
+      isReconnectStrategyStart: isReconnectStrategyStart,
+      reconnectTime: reconnectTime,
+    );
     return response;
   }
 

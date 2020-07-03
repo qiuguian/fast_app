@@ -58,10 +58,13 @@ fastToastSuccess(BuildContext context, String msg, {Function timeOutCall}) {
                       ),
                       new Padding(
                         padding: EdgeInsets.only(top: 15),
-                        child: new Text(msg,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white),
-                          maxLines: 5,),
+                        child: new Center(
+                          child: new Text(msg,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white),
+                            maxLines: 5,
+                          ),
+                        ),
                       ),
                     ],
                   ),

@@ -20,43 +20,26 @@ import 'package:flutter/services.dart' show rootBundle;
 class FastHttpResponse {
   final String body;
   final int code;
-  final Map<String,dynamic> headers;
+  final Map<String, dynamic> headers;
 
   FastHttpResponse(this.body, this.code, this.headers);
 }
 
 class FastAppHttp {
-  static const int CONNECT_TIMEOUT = 30000;
-  static const int RECEIVE_TIMEOUT = 30000;
+  static const int CONNECT_TIMEOUT = 15000;
+  static const int RECEIVE_TIMEOUT = 15000;
 
   /*
   * doGet
   *
   * */
   static Future<FastHttpResponse> doGet(
-      String url, body, Map<String, dynamic> headers) async {
-//    var httpClient = new HttpClient();
-//
-//    String result;
-//    FastHttpResponse httpResponse;
-//
-//    try {
-//      var request = await httpClient.getUrl(Uri.parse(url));
-//      var response = await request.close();
-//      if (response.statusCode == HttpStatus.ok) {
-//        var json = await response.transform(utf8.decoder).join();
-//        var data = jsonDecode(json);
-//        result = data['origin'];
-//      } else {
-//        result =
-//            'Error getting IP address:\nHttp status ${response.statusCode}';
-//      }
-//    } catch (exception) {
-//      result = 'Failed getting IP address';
-//    }
-//
-//    return httpResponse;
-
+    String url,
+    body,
+    Map<String, dynamic> headers, {
+    bool isReconnectStrategyStart = false,
+    int reconnectTime = 0,
+  }) async {
     adio.BaseOptions options = new adio.BaseOptions(
       connectTimeout: CONNECT_TIMEOUT,
       receiveTimeout: RECEIVE_TIMEOUT,
@@ -66,33 +49,61 @@ class FastAppHttp {
     adio.Dio dio = new adio.Dio(options);
     FastHttpResponse httpResponse;
 
-    try {
-      adio.Response response = await dio.get(
-        url,
-        options: adio.Options(
-          headers: headers,
-        ),
-      );
+    adio.Response response = await dio
+        .get(
+      url,
+      options: adio.Options(
+        headers: headers,
+      ),
+    )
+        .catchError((e) async {
+      DioError error = e;
 
-      if (response.statusCode == HttpStatus.ok) {
-        var data = response.data;
+      print('catchError => ${error.message}');
 
-        if (data is String) {
-          result = jsonDecode(data);
-        } else if (data is Map) {
-          result = data;
-        }
+      if (reconnectTime > 0 &&
+          isReconnectStrategyStart &&
+          (error.type == DioErrorType.SEND_TIMEOUT ||
+              error.type == DioErrorType.RECEIVE_TIMEOUT ||
+              error.type == DioErrorType.CONNECT_TIMEOUT)) {
+        print('start reconnect reconnectTime left: $reconnectTime');
+        httpResponse = await doGet(
+          url,
+          body,
+          headers,
+          isReconnectStrategyStart: isReconnectStrategyStart,
+          reconnectTime: reconnectTime--,
+        );
+        return httpResponse;
       } else {
-        result = {"code":response.statusCode,"msg":response.statusMessage,"data":""};
+        result = {
+          "msg": "Server busy,please try again later",
+          "code": -1,
+          "msgCode": "1"
+        };
+        httpResponse = new FastHttpResponse(jsonEncode(result), -1, null);
+        return httpResponse;
       }
-      httpResponse = new FastHttpResponse(
-          jsonEncode(result), response.statusCode, result['headers']);
-    } on adio.DioError catch (e) {
-      print('request.token：' + headers['token']);
-      print('request.url：' + url.toString());
-      print('request.body：' + jsonEncode(body));
-      print('response.error：' + e.toString());
+    });
+
+    if (response.statusCode == HttpStatus.ok) {
+      var data = response.data;
+
+      if (data is String) {
+        result = jsonDecode(data);
+      } else if (data is Map) {
+        result = data;
+      }
+    } else {
+      result = {
+        "code": response.statusCode,
+        "msg": response.statusMessage,
+        "data": ""
+      };
     }
+
+    httpResponse = new FastHttpResponse(
+        jsonEncode(result), response.statusCode, result['headers']);
 
     return httpResponse;
   }
@@ -102,9 +113,12 @@ class FastAppHttp {
   *
   * */
   static Future<FastHttpResponse> doPost(
-      String url, body, Map<String, dynamic> headers) async {
-    var encryptResult = '';
-
+    String url,
+    body,
+    Map<String, dynamic> headers, {
+    bool isReconnectStrategyStart = false,
+    int reconnectTime = 0,
+  }) async {
     adio.BaseOptions options = new adio.BaseOptions(
       connectTimeout: CONNECT_TIMEOUT,
       receiveTimeout: RECEIVE_TIMEOUT,
@@ -114,51 +128,69 @@ class FastAppHttp {
 
     FormData formData;
 
-    if(headers['Content-Type'] == "application/formData"){
+    if (headers['Content-Type'] == "application/formData") {
       formData = FormData.fromMap(body);
     }
-
-    print('data = > ${body.toString()}');
 
     Map result = {};
     adio.Dio dio = new adio.Dio(options);
     FastHttpResponse httpResponse;
-    try {
-      adio.Response response = await dio.post(
-        url,
-        data: formData??body,
-//        data: true ? adio.FormData.fromMap(body) : body,
-      ).whenComplete((){
-        print('whenComplete=>$url');
-      }).catchError((e){
-        print('catchError=>${e.toString()}');
-        return;
-      });
 
-      if (response.statusCode == HttpStatus.ok) {
+    adio.Response response = await dio
+        .post(
+      url,
+      data: formData ?? body,
+    )
+        .whenComplete(() {
+//      print('whenComplete=>$url');
+    }).catchError((e) async {
+      DioError error = e;
 
-        var data = response.data;
+      print('catchError => ${error.message}');
 
-        print('response.data=>${response.data}');
-
-        if (data is String) {
-          result = jsonDecode(data);
-        } else if (data is Map) {
-          result = data;
-        }
+      if (reconnectTime > 0 &&
+          isReconnectStrategyStart &&
+          (error.type == DioErrorType.SEND_TIMEOUT ||
+              error.type == DioErrorType.RECEIVE_TIMEOUT ||
+              error.type == DioErrorType.CONNECT_TIMEOUT)) {
+        print('start reconnect reconnectTime left: $reconnectTime');
+        httpResponse = await doPost(
+          url,
+          body,
+          headers,
+          isReconnectStrategyStart: isReconnectStrategyStart,
+          reconnectTime: reconnectTime--,
+        );
+        return httpResponse;
       } else {
-        print('response.data 01=>${response.data}');
-        result = {"msg":"error","code":response.statusCode,"msgCode":"1"};
+        result = {
+          "msg": "Server busy,please try again later",
+          "code": -1,
+          "msgCode": "1"
+        };
+        httpResponse = new FastHttpResponse(jsonEncode(result), -1, null);
+        return httpResponse;
       }
+    });
 
-      httpResponse = new FastHttpResponse(
-          jsonEncode(result), response.statusCode, response.headers.map);
-    } on adio.DioError catch (e) {
-      print('response.error：' + e.toString());
-      print('request.token：' + headers['token']);
-      print('request.url：' + url.toString());
-      print('request.body：' + jsonEncode(body));
+    if (response.statusCode == HttpStatus.ok) {
+      var data = response.data;
+
+      if (data is String) {
+        result = jsonDecode(data);
+      } else if (data is Map) {
+        result = data;
+      }
+    } else {
+      result = {
+        "msg": "Server busy",
+        "code": response.statusCode,
+        "msgCode": "1"
+      };
     }
+
+    httpResponse = new FastHttpResponse(
+        jsonEncode(result), response.statusCode, response.headers.map);
 
     return httpResponse;
   }
@@ -216,7 +248,8 @@ class FastAppHttp {
   }
 
   //上传图片
-  Future<Map> upLoadFile(String url,File file,{Map<String, dynamic> headers}) async {
+  Future<Map> upLoadFile(String url, File file,
+      {Map<String, dynamic> headers}) async {
     String path = file.path;
     var name = path.substring(path.lastIndexOf("/") + 1, path.length);
     adio.FormData formData = new adio.FormData.fromMap({
@@ -242,11 +275,11 @@ class FastAppHttp {
       } else if (data is Map) {
         result = response.data;
       }
-    }else{
-      result = {"msg":"error","code":response.statusCode,"msgCode":"1"};
+    } else {
+      result = {"msg": "error", "code": response.statusCode, "msgCode": "1"};
     }
 
-    return result??{};
+    return result ?? {};
   }
 }
 

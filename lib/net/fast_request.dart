@@ -33,6 +33,10 @@ class FastRequest {
 
   List successCode() => ['200'];
 
+  bool reconnectStrategyStart() => false;
+
+  int reconnectTime() => 0;
+
   FastViewModel _viewModel;
 
   //from-data application/json application/x-www-form-urlencoded
