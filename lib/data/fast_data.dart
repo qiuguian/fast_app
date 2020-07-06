@@ -53,7 +53,6 @@ Map userStoreData = new Map();
 
 class FastData {
   static initData() async {
-
     WidgetsFlutterBinding.ensureInitialized();
 
     String login = await getStoreValue(FastActions.isLogin());
@@ -65,22 +64,24 @@ class FastData {
         userStoreData = data;
         FastCache(FastActions.isLogin()).value = true;
         FastCache(FastActions.token()).value = data['token'];
-        FastCache(FastActions.userId()).value = data["userInfo"]['userId'];
-        FastCache(FastActions.loginAccount()).value = data["userInfo"]["phone"];
-        FastCache(FastActions.userName()).value = data["userInfo"]["username"];
+        if (data["userInfo"] != null) {
+          FastCache(FastActions.userId()).value = data["userInfo"]['userId'];
+          FastCache(FastActions.loginAccount()).value =
+              data["userInfo"]["phone"];
+          FastCache(FastActions.userName()).value =
+              data["userInfo"]["username"];
+        }
       }
     });
   }
 
   static int get userId => FastCache(FastActions.userId()).value ?? 0;
 
-  static setUserId(userId) =>
-      FastCache(FastActions.userId()).value = userId;
+  static setUserId(userId) => FastCache(FastActions.userId()).value = userId;
 
   static int get shopId => FastCache(FastActions.shopId()).value ?? 0;
 
-  static setShopId(shopId) =>
-      FastCache(FastActions.shopId()).value = shopId;
+  static setShopId(shopId) => FastCache(FastActions.shopId()).value = shopId;
 
   static bool get isLogin => FastCache(FastActions.isLogin()).value ?? false;
 
