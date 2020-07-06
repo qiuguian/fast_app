@@ -154,7 +154,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
 //            LoginViewModel.loginOut();
           }
 
-          return '${json['code']}::${json['msg']}::$url-$id::${jsonEncode(json['${obj.responseKey()}'])}';
+          return '${json['${obj.codeKey()}']}::${json['${obj.msgKey()}']}::$url-$id::${jsonEncode(json['${obj.responseKey()}'])}';
         } else {
           if (obj.isShowLog()) {
             print('HTTP_REQUEST_URL::[$id]::$httpUrl');

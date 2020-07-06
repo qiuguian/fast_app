@@ -31,6 +31,8 @@ class FastRequest {
 
   String codeKey() => 'code';
 
+  String msgKey() => 'msg';
+
   List successCode() => ['200'];
 
   bool reconnectStrategyStart() => false;
