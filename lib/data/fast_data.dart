@@ -3,6 +3,7 @@ import 'dart:convert' show jsonDecode, jsonEncode;
 import 'package:fast_app/cache/fast_cache.dart';
 import 'package:fast_app/fast_app.dart';
 import 'package:fast_app/notice/fast_notification.dart';
+import 'package:flutter/material.dart';
 
 class FastActions {
   static String userId() => 'userId';
@@ -52,6 +53,9 @@ Map userStoreData = new Map();
 
 class FastData {
   static initData() async {
+
+    WidgetsFlutterBinding.ensureInitialized();
+
     String login = await getStoreValue(FastActions.isLogin());
     FastCache(FastActions.isLogin()).value = login == '1';
 
