@@ -221,7 +221,7 @@ class FastAppHttp {
   *
   * */
   Future<Map> downloadFile(String urlPath, String savePath,
-      {int localId = 0, cDio}) async {
+      {int localId = 0, cDio,ProgressCallback onReceiveProgress}) async {
     adio.Response response;
     int _total = 0;
     adio.CancelToken cancelToken = new adio.CancelToken();
@@ -229,6 +229,11 @@ class FastAppHttp {
       adio.Dio dio = cDio ?? new adio.Dio();
       response = await dio.download(urlPath, savePath, cancelToken: cancelToken,
           onReceiveProgress: (int count, int total) {
+
+        if(onReceiveProgress != null){
+          onReceiveProgress(count,total);
+        }
+
         //进度
         _total = total;
         FastCache('$localId').value = {
