@@ -126,12 +126,11 @@ class _FastTextFieldState extends State<FastTextField> {
             )
                 : new Container(),
             new Expanded(
-              child: widget.type == FastTextFieldType.readonly
-                  ? new Text('')
-                  : new TextFormField(
+              child: new TextFormField(
                 controller: widget.controller,
                 keyboardType: widget.keyboardType ?? null,
                 style: widget.style,
+                enabled: widget.type != FastTextFieldType.readonly,
                 decoration: InputDecoration(
                   hintText: widget.placeholder,
                   hintStyle: TextStyle(

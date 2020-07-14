@@ -1,7 +1,7 @@
 name: fast_app
 description: A new Flutter package project.
-version: 0.0.2
-author: guian qiu <fastappchina@gmail.com>
+version: 0.0.3
+author: qiuguian <fastappchina@gmail.com>
 homepage: https://github.com/qiuguian/fast_app
 
 environment:
