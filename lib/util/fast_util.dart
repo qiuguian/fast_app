@@ -43,11 +43,7 @@ Future<dynamic> routeReplace(Widget widget) {
 }
 
 popToPage(Widget page) {
-  navGK.currentState.pushAndRemoveUntil(new MaterialPageRoute<dynamic>(
-    builder: (BuildContext context) {
-      return page;
-    },
-  ), (Route<dynamic> route) => false);
+  navGK.currentState.popUntil(ModalRoute.withName('$page'));
 }
 
 pushReplacement(Widget page) {

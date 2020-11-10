@@ -5,7 +5,7 @@ typedef PageMiniListener(double pixels);
 
 class PageMini {
   ScrollController pageScrollController = new ScrollController();
-  bool isPageLoading = true;
+  bool isPageLoading = false;
 
   PageOptionModel pageOptionModel = new PageOptionModel.empty();
   PageResultModel pageResultModel = new PageResultModel.empty();

@@ -20,6 +20,7 @@ class FastTextField extends StatefulWidget {
   final String placeholder;
   final String labelValue;
   final TextEditingController controller;
+  final Widget prefix;
   final Widget suffix;
   final FastTextFieldType type;
   final ValueChanged<String> onChanged;
@@ -31,12 +32,15 @@ class FastTextField extends StatefulWidget {
   final FormFieldValidator<String> validator;
   final bool autovalidate;
   final Color borderColor;
+  final bool enable;
   List<TextInputFormatter> inputFormatters;
+  final double titleWidth;
 
   FastTextField({
     this.name,
     this.placeholder,
     this.controller,
+    this.prefix,
     this.suffix,
     this.type = FastTextFieldType.titleSingle,
     this.onChanged,
@@ -50,6 +54,8 @@ class FastTextField extends StatefulWidget {
     this.autovalidate = false,
     this.borderColor = const Color(0xffEBEBEB),
     this.inputFormatters = const <TextInputFormatter>[],
+    this.enable = true,
+    this.titleWidth = 100.0,
   });
 
   @override
@@ -86,6 +92,7 @@ class _FastTextFieldState extends State<FastTextField> {
               : new Container(),
           new Row(
             children: <Widget>[
+              widget.prefix ?? new Container(),
               new Expanded(
                 child: new TextFormField(
                   controller: widget.controller,
@@ -102,6 +109,7 @@ class _FastTextFieldState extends State<FastTextField> {
                   validator: widget.validator,
                   autovalidate: widget.autovalidate,
                   inputFormatters: widget.inputFormatters,
+                  enabled: widget.enable,
                 ),
               ),
               widget.suffix ?? new Container(),
@@ -115,13 +123,14 @@ class _FastTextFieldState extends State<FastTextField> {
           children: <Widget>[
             widget.name != null
                 ? new Container(
-              width: 100.0,
+              width: widget.titleWidth,
               child: new Text(
                 '${widget.name}',
-                style: new TextStyle(
-                    color: Color(0xff888697),
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w500),
+                  style: widget.style ??
+                      TextStyle(
+                          color: Color(0xff343243),
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w500)
               ),
             )
                 : new Container(),
@@ -130,7 +139,7 @@ class _FastTextFieldState extends State<FastTextField> {
                 controller: widget.controller,
                 keyboardType: widget.keyboardType ?? null,
                 style: widget.style,
-                enabled: widget.type != FastTextFieldType.readonly,
+                enabled: widget.type != FastTextFieldType.readonly && widget.enable,
                 decoration: InputDecoration(
                   hintText: widget.placeholder,
                   hintStyle: TextStyle(

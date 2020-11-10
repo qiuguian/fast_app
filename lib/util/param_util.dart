@@ -149,6 +149,11 @@ class FastFormat {
   }
 
   static DateTime getDateTime({String formartDate = "1970-10-01 00:00:00"}) {
+
+    if(formartDate == null || formartDate == ''){
+       return DateTime.now();
+    }
+
     //年必须大于1970年
     String mYear = formartDate.substring(0, 4);
     if (int.parse(mYear) < 1970) {
