@@ -6,8 +6,10 @@ class FastSearchView extends StatelessWidget {
   final String text;
   final EdgeInsetsGeometry margin;
   final TextEditingController controller;
+  final double radius;
 
-  FastSearchView({this.onTap, this.text, this.margin, this.controller});
+  FastSearchView(
+      {this.onTap, this.text, this.margin, this.controller, this.radius = 10.0,});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class FastSearchView extends StatelessWidget {
         decoration: BoxDecoration(
           color: Color(0xffF2F2F7),
           borderRadius: BorderRadius.all(
-            Radius.circular(10),
+            Radius.circular(radius),
           ),
         ),
         height: 40.0,

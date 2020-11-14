@@ -29,14 +29,37 @@ class FastAppHttp {
   static const int CONNECT_TIMEOUT = 15000;
   static const int RECEIVE_TIMEOUT = 15000;
 
+  static Dio fastDio;
+
+  /*
+  *  初始始化Dio
+  * */
+  static Dio initDio({String baseUrl, Interceptor interceptor}) {
+    if (fastDio == null) {
+      final adio.BaseOptions options = new adio.BaseOptions(
+        connectTimeout: CONNECT_TIMEOUT,
+        receiveTimeout: RECEIVE_TIMEOUT,
+        baseUrl: baseUrl,
+      );
+
+      final _dio = Dio(options);
+
+      if (interceptor != null) {
+        _dio.interceptors.add(interceptor);
+      }
+      fastDio = _dio;
+    }
+    return fastDio;
+  }
+
   /*
   * doGet
   *
   * */
-  static Future<FastHttpResponse> doGet(
+  static Future<FastHttpResponse> doGet({
     String url,
     body,
-    Map<String, dynamic> headers, {
+    Map<String, dynamic> headers,
     bool isReconnectStrategyStart = false,
     int reconnectTime = 0,
   }) async {
@@ -46,7 +69,7 @@ class FastAppHttp {
     );
 
     Map result;
-    adio.Dio dio = new adio.Dio(options);
+    adio.Dio dio = fastDio ?? new adio.Dio(options);
     FastHttpResponse httpResponse;
 
     adio.Response response = await dio
@@ -68,9 +91,9 @@ class FastAppHttp {
               error.type == DioErrorType.CONNECT_TIMEOUT)) {
         print('start reconnect reconnectTime left: $reconnectTime');
         httpResponse = await doGet(
-          url,
-          body,
-          headers,
+          url:url,
+          body:body,
+          headers: headers,
           isReconnectStrategyStart: isReconnectStrategyStart,
           reconnectTime: reconnectTime--,
         );
@@ -112,10 +135,10 @@ class FastAppHttp {
   * doPost
   *
   * */
-  static Future<FastHttpResponse> doPost(
+  static Future<FastHttpResponse> doPost({
     String url,
     body,
-    Map<String, dynamic> headers, {
+    Map<String, dynamic> headers,
     bool isReconnectStrategyStart = false,
     int reconnectTime = 0,
   }) async {
@@ -123,17 +146,17 @@ class FastAppHttp {
       connectTimeout: CONNECT_TIMEOUT,
       receiveTimeout: RECEIVE_TIMEOUT,
       headers: headers,
-      contentType: headers['Content-Type'],
+      contentType: headers != null ? headers['Content-Type'] : "",
     );
 
     FormData formData;
 
-    if (headers['Content-Type'] == "application/formData") {
+    if (headers != null && headers['Content-Type'] == "application/formData") {
       formData = FormData.fromMap(body);
     }
 
     Map result = {};
-    adio.Dio dio = new adio.Dio(options);
+    adio.Dio dio = fastDio ?? new adio.Dio(options);
     FastHttpResponse httpResponse;
 
     adio.Response response = await dio
@@ -155,9 +178,9 @@ class FastAppHttp {
               error.type == DioErrorType.CONNECT_TIMEOUT)) {
         print('start reconnect reconnectTime left: $reconnectTime');
         httpResponse = await doPost(
-          url,
-          body,
-          headers,
+          url:url,
+          body:body,
+          headers: headers,
           isReconnectStrategyStart: isReconnectStrategyStart,
           reconnectTime: reconnectTime--,
         );
@@ -175,7 +198,6 @@ class FastAppHttp {
 
     if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
-
       if (data is String) {
         result = jsonDecode(data);
       } else if (data is Map) {
@@ -188,7 +210,6 @@ class FastAppHttp {
         "msgCode": "1"
       };
     }
-
     httpResponse = new FastHttpResponse(
         jsonEncode(result), response.statusCode, response.headers.map);
 
@@ -221,7 +242,7 @@ class FastAppHttp {
   *
   * */
   Future<Map> downloadFile(String urlPath, String savePath,
-      {int localId = 0, cDio,ProgressCallback onReceiveProgress}) async {
+      {int localId = 0, cDio, ProgressCallback onReceiveProgress}) async {
     adio.Response response;
     int _total = 0;
     adio.CancelToken cancelToken = new adio.CancelToken();
@@ -229,9 +250,8 @@ class FastAppHttp {
       adio.Dio dio = cDio ?? new adio.Dio();
       response = await dio.download(urlPath, savePath, cancelToken: cancelToken,
           onReceiveProgress: (int count, int total) {
-
-        if(onReceiveProgress != null){
-          onReceiveProgress(count,total);
+        if (onReceiveProgress != null) {
+          onReceiveProgress(count, total);
         }
 
         //进度
@@ -270,7 +290,7 @@ class FastAppHttp {
       contentType: headers != null ? headers['Content-Type'] : null,
     );
 
-    adio.Dio dio = new adio.Dio(options);
+    adio.Dio dio = fastDio ?? new adio.Dio(options);
     var response = await dio.post("$url", data: formData);
     if (response.statusCode == HttpStatus.ok) {
       var data = response.data;

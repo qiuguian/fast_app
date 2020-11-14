@@ -180,9 +180,9 @@ class HttpClient {
     int reconnectTime,
   }) async {
     final response = await FastAppHttp.doGet(
-      url,
-      body,
-      headers,
+      url: url,
+      body: body,
+      headers: headers,
       isReconnectStrategyStart: isReconnectStrategyStart,
       reconnectTime: reconnectTime,
     );
@@ -197,9 +197,9 @@ class HttpClient {
     int reconnectTime,
   }) async {
     final response = await FastAppHttp.doPost(
-      url,
-      body,
-      headers,
+      url: url,
+      body: body,
+      headers: headers,
       isReconnectStrategyStart: isReconnectStrategyStart,
       reconnectTime: reconnectTime,
     );

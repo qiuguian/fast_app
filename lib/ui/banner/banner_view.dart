@@ -14,6 +14,8 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
     this.viewportFraction = 1.0,
     this.radius = 0.0,
     this.alignment = Alignment.bottomCenter,
+    this.padding = EdgeInsets.zero,
+    this.backgroundColor = Colors.transparent,
   });
 
   final double height;
@@ -23,6 +25,8 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
   final double viewportFraction;
   final double radius;
   final Alignment alignment;
+  final EdgeInsetsGeometry padding;
+  final Color backgroundColor;
 
   @override
   Size get preferredSize =>
@@ -47,6 +51,8 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
 
     return new Container(
       height: height,
+      padding: padding,
+      color: backgroundColor,
       child: new Swiper(
         itemCount: banners.length,
         itemBuilder: (BuildContext context, int index) {

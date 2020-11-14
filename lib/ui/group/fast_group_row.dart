@@ -17,6 +17,7 @@ class FastGroupRow extends StatelessWidget {
   final Color backgroundColor;
   final EdgeInsetsGeometry padding;
   final FastGroupRowItem onTap;
+  final double iconSize;
 
   FastGroupRow({
     this.groups,
@@ -24,6 +25,7 @@ class FastGroupRow extends StatelessWidget {
     this.backgroundColor = Colors.transparent,
     this.padding = const EdgeInsets.all(10),
     this.onTap,
+    this.iconSize = 55,
   });
 
   @override
@@ -31,6 +33,7 @@ class FastGroupRow extends StatelessWidget {
     return new Container(
       padding: padding,
       color: backgroundColor,
+      width: double.infinity,
       child: new Wrap(
         spacing: 10,
         runSpacing: 10,
@@ -54,16 +57,18 @@ class FastGroupRow extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   new Container(
-                    width: 55.0,
-                    height: 55.0,
+                    width: iconSize + 5,
+                    height: iconSize + 5,
                     margin: EdgeInsets.only(bottom: 5),
                     child:
                     model.icon.contains('http') ? new CachedNetworkImage(
                       imageUrl: model.icon,
-                      width: 50,
-                      height: 50,
+                      width: iconSize,
+                      height: iconSize,
                       fit: BoxFit.fill,) : new Image.asset(
-                        model.icon, width: 50, height: 50, fit: BoxFit.fill),
+                        model.icon, width: iconSize,
+                        height: iconSize,
+                        fit: BoxFit.fill),
                   ),
                   new Text('${model.name}',
                       textAlign: TextAlign.center,
