@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:fast_app/net/fast_hud.dart';
 import 'package:fast_app/net/fast_respone_model.dart';
 import 'package:fast_app/net/fast_view_model.dart';
 import 'package:fast_app/net/http/fast_api_request.dart';
@@ -160,12 +159,12 @@ class DefaultStatusListener extends TaskStatusListener {
 
   @override
   onFinish() {
-    FastHud.hidden();
+    // FastHud.hidden();
   }
 
   @override
   onStart() {
-    FastHud.show(hud: hud);
+    // FastHud.show(hud: hud);
   }
 }
 

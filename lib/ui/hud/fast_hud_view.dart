@@ -95,10 +95,10 @@ class FastHudView {
   }
 
   static void dismiss() {
-    if (isLoading && overlayEntry != null) {
-      overlayEntry.remove();
-      overlayEntry = null;
-    }
+    // if (isLoading && overlayEntry != null) {
+    //   overlayEntry.remove();
+    //   overlayEntry = null;
+    // }
     isLoading = false;
     isAutoShow = false;
   }

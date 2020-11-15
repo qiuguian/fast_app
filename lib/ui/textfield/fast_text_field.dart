@@ -35,6 +35,7 @@ class FastTextField extends StatefulWidget {
   final bool enable;
   List<TextInputFormatter> inputFormatters;
   final double titleWidth;
+  final double spacing;
 
   FastTextField({
     this.name,
@@ -56,6 +57,7 @@ class FastTextField extends StatefulWidget {
     this.inputFormatters = const <TextInputFormatter>[],
     this.enable = true,
     this.titleWidth = 100.0,
+    this.spacing = 10,
   });
 
   @override
@@ -93,6 +95,7 @@ class _FastTextFieldState extends State<FastTextField> {
           new Row(
             children: <Widget>[
               widget.prefix ?? new Container(),
+              new Container(width: widget.spacing),
               new Expanded(
                 child: new TextFormField(
                   controller: widget.controller,

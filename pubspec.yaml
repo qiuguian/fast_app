@@ -22,13 +22,14 @@ dependencies:
   cached_network_image: 2.2.0+1
   cupertino_icons: ^0.1.2
 #  fluwx: any
-  json_annotation: ^3.0.1
+  json_annotation: ^3.1.0
   toast:  ^0.1.5
   url_launcher: ^5.4.2
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter  
+    sdk: flutter
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
