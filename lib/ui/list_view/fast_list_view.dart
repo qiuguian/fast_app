@@ -231,13 +231,10 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
               itemBuilder: (context, index) {
                 if (widget.headerView != null) {
                   if (index == 0) {
-                    return BitmapCache(
-                      child: widget.headerView,
-                    );
+                    return widget.headerView;
                   } else {
-                    return widget.viewModel.dataList.length > 0 ? BitmapCache(
-                      child: widget.builder(context, index - 1),
-                    ) : new Center(
+                    return widget.viewModel.dataList.length > 0 ? widget
+                        .builder(context, index - 1) : new Center(
                       child: new InkWell(
                         onTap: () => refreshData(),
                         child: new Wrap(
@@ -260,16 +257,15 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
                 } else if (widget.footerView != null && index == count - 1) {
                   return widget.footerView;
                 } else {
-                  return BitmapCache(
-                    child: widget.builder(context, index),
-                  );
+                  return widget.builder(context, index);
                 }
               },
             ),
           ),
         ),
         new Visibility(
-          visible: widget.viewModel.dataList.length == 0 && !isPageLoading && widget.headerView == null && widget.footerView == null,
+          visible: widget.viewModel.dataList.length == 0 && !isPageLoading &&
+              widget.headerView == null && widget.footerView == null,
           child: new Padding(
             padding: EdgeInsets.symmetric(vertical: 80.0),
             child: new Center(

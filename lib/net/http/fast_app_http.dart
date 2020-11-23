@@ -15,8 +15,8 @@ import 'package:dio/dio.dart' as adio;
 import 'package:dio/dio.dart';
 import 'package:fast_app/cache/fast_cache.dart';
 import 'package:fast_app/net/fast_request.dart';
-import 'package:fast_app/ui/hud/fast_hud.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class FastHttpResponse {
   final String body;
@@ -77,7 +77,7 @@ class FastAppHttp {
 
     //如果要提示加载中之类的hud
     if (hud != null && hud.isNotEmpty) {
-      FastHud.show(msg: hud);
+      EasyLoading.show(status: hud);
     }
 
     adio.Response response = await dio
@@ -87,7 +87,7 @@ class FastAppHttp {
             headers: headers,
           ),
         )
-        .whenComplete(() => FastHud.dismiss())
+        .whenComplete(() => EasyLoading.dismiss())
         .catchError((e) async {
       DioError error = e;
       if (reconnectTime > 0 &&
@@ -169,7 +169,7 @@ class FastAppHttp {
 
     //如果要提示加载中之类的hud
     if (hud != null && hud.isNotEmpty) {
-      FastHud.show(msg: hud);
+      EasyLoading.show(status: hud);
     }
 
     adio.Response response = await dio
@@ -177,7 +177,7 @@ class FastAppHttp {
           url,
           data: formData ?? body,
         )
-        .whenComplete(() => FastHud.dismiss())
+        .whenComplete(() => EasyLoading.dismiss())
         .catchError((e) async {
       DioError error = e;
 
@@ -228,6 +228,96 @@ class FastAppHttp {
 
     return httpResponse;
   }
+
+  static Future<FastHttpResponse> doPut({
+    String url,
+    body,
+    Map<String, dynamic> headers,
+    bool isReconnectStrategyStart = false,
+    int reconnectTime = 0,
+    String hud,
+  }) async {
+    adio.BaseOptions options = new adio.BaseOptions(
+      connectTimeout: CONNECT_TIMEOUT,
+      receiveTimeout: RECEIVE_TIMEOUT,
+      headers: headers,
+      contentType: headers != null ? headers['Content-Type'] : "",
+    );
+
+    FormData formData;
+
+    print('request body => ${jsonEncode(body)}');
+
+    if (headers != null && headers['Content-Type'] == "application/formData") {
+      formData = FormData.fromMap(body);
+    }
+
+    Map result = {};
+    adio.Dio dio = fastDio ?? new adio.Dio(options);
+    FastHttpResponse httpResponse;
+
+    //如果要提示加载中之类的hud
+    if (hud != null && hud.isNotEmpty) {
+      EasyLoading.show(status: hud);
+    }
+
+    adio.Response response = await dio
+        .put(
+      url,
+      data: formData ?? body,
+    )
+        .whenComplete(() => EasyLoading.dismiss())
+        .catchError((e) async {
+      DioError error = e;
+
+      print('catchError => ${error.message}');
+
+      if (reconnectTime > 0 &&
+          isReconnectStrategyStart &&
+          (error.type == DioErrorType.SEND_TIMEOUT ||
+              error.type == DioErrorType.RECEIVE_TIMEOUT ||
+              error.type == DioErrorType.CONNECT_TIMEOUT)) {
+        print('start reconnect reconnectTime left: $reconnectTime');
+        httpResponse = await doPost(
+          url: url,
+          body: body,
+          headers: headers,
+          isReconnectStrategyStart: isReconnectStrategyStart,
+          reconnectTime: reconnectTime--,
+        );
+        return httpResponse;
+      } else {
+        result = {
+          "msg": "Server busy,please try again later",
+          "code": -1,
+          "msgCode": "1"
+        };
+        httpResponse =
+        new FastHttpResponse(jsonEncode(result), -1, null, result);
+        return httpResponse;
+      }
+    });
+
+    if (response.statusCode == HttpStatus.ok) {
+      var data = response.data;
+      if (data is String) {
+        result = jsonDecode(data);
+      } else if (data is Map) {
+        result = data;
+      }
+    } else {
+      result = {
+        "msg": "Server busy",
+        "code": response.statusCode,
+        "msgCode": "1"
+      };
+    }
+    httpResponse = new FastHttpResponse(
+        jsonEncode(result), response.statusCode, response.headers.map, result);
+
+    return httpResponse;
+  }
+
 
   static Future<FastHttpResponse> doGetTestData(
       FastRequest request, body, Map<String, String> headers) async {

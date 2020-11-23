@@ -5,6 +5,7 @@ class FastRowView extends StatelessWidget {
   final String title;
   final bool hiddenRightArrow;
   final Widget trail;
+  final Widget prefix;
   final BuildContext context;
   final VoidCallback onTap;
   final double height;
@@ -13,6 +14,7 @@ class FastRowView extends StatelessWidget {
     this.title,
     this.hiddenRightArrow = false,
     this.trail,
+    this.prefix,
     this.context,
     this.onTap,
     this.height = 60.0,
@@ -39,9 +41,11 @@ class FastRowView extends StatelessWidget {
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            prefix ?? Container(),
             new Text(
               '$title',
             ),
+            Expanded(child: Container()),
             new Wrap(
               spacing: 10.0,
               crossAxisAlignment: WrapCrossAlignment.center,

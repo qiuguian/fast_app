@@ -36,6 +36,7 @@ class FastTextField extends StatefulWidget {
   List<TextInputFormatter> inputFormatters;
   final double titleWidth;
   final double spacing;
+  final int maxLine;
 
   FastTextField({
     this.name,
@@ -58,6 +59,7 @@ class FastTextField extends StatefulWidget {
     this.enable = true,
     this.titleWidth = 100.0,
     this.spacing = 10,
+    this.maxLine = 1,
   });
 
   @override
@@ -101,6 +103,7 @@ class _FastTextFieldState extends State<FastTextField> {
                   controller: widget.controller,
                   keyboardType: widget.keyboardType ?? null,
                   style: widget.style,
+                  maxLines: widget.maxLine,
                   decoration: InputDecoration(
                     hintText: widget.placeholder,
                     hintStyle: widget.hintStyle ?? null,
@@ -143,6 +146,7 @@ class _FastTextFieldState extends State<FastTextField> {
                 keyboardType: widget.keyboardType ?? null,
                 style: widget.style,
                 enabled: widget.type != FastTextFieldType.readonly && widget.enable,
+                maxLines: widget.maxLine,
                 decoration: InputDecoration(
                   hintText: widget.placeholder,
                   hintStyle: TextStyle(

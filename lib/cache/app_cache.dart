@@ -21,6 +21,10 @@ class AppCache {
     _prefs.setString(k, v);
   }
 
+  static saveBool(k, v) {
+    _prefs.setBool(k, v);
+  }
+
   static dynamic get(k) {
     return _prefs.get(k);
   }
