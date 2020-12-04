@@ -9,6 +9,7 @@ class FastRowView extends StatelessWidget {
   final BuildContext context;
   final VoidCallback onTap;
   final double height;
+  final EdgeInsets margin;
 
   FastRowView({
     this.title,
@@ -18,6 +19,7 @@ class FastRowView extends StatelessWidget {
     this.context,
     this.onTap,
     this.height = 60.0,
+    this.margin = EdgeInsets.zero,
   });
 
   actions(v) {
@@ -28,11 +30,14 @@ class FastRowView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isNeed = title.contains("*");
+    String _title = title.replaceAll("*", "");
     return new InkWell(
-      onTap: () => actions(title),
+      onTap: () => actions(_title),
       child: Container(
         height: height ?? 50,
         padding: EdgeInsets.only(left: 15, right: 10.0),
+        margin: margin,
         decoration: BoxDecoration(
             color: Colors.white,
             border: new Border(
@@ -43,7 +48,14 @@ class FastRowView extends StatelessWidget {
           children: <Widget>[
             prefix ?? Container(),
             new Text(
-              '$title',
+              '$_title',
+            ),
+            Visibility(
+              visible: isNeed,
+              child: new Text(
+                '*',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
             Expanded(child: Container()),
             new Wrap(

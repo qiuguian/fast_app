@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 typedef DidSelect(item);
 
-void fastSelectImageView(BuildContext context, {DidSelect didSelect,VoidCallback didCancel,}) {
+void fastSelectImageView(BuildContext context,
+    {DidSelect didSelect, VoidCallback didCancel,}) {
   showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -68,7 +69,7 @@ void fastSelectImageView(BuildContext context, {DidSelect didSelect,VoidCallback
       });
 }
 
-typedef DidSelectItem(item,index);
+typedef DidSelectItem(item, index);
 
 void fastSelectBottomView(BuildContext context,
     {
@@ -93,9 +94,9 @@ void fastSelectBottomView(BuildContext context,
       isScrollControlled: true,
       builder: (BuildContext context) {
         return new Material(
+          color: Colors.transparent,
           child: new Column(
-//            mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               new Container(
                 margin: EdgeInsets.symmetric(horizontal: 10.0),
@@ -106,7 +107,7 @@ void fastSelectBottomView(BuildContext context,
                 child: new Wrap(
                   children: <Widget>[
                     new Container(
-                      height: 40.0,
+                      height: 50.0,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         border: Border(
@@ -117,27 +118,30 @@ void fastSelectBottomView(BuildContext context,
                               color: titleColor, fontSize: 15)),
                     ),
                     new Wrap(
-                      children: List.generate(menu.length, (index){
-                        return new InkWell(
-                          onTap: () {
-                            if (didSelect != null) {
-                              didSelect(menu[index],index);
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          child: new Container(
-                            height: 55.0,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: new BorderSide(
-                                        color: Color(0xffEBEBEB), width: 0.5))),
-                            child: new Text('${menu[index]}',
-                                style: new TextStyle(
-                                    color: currentValue == menu[index] ? currentColor : valueColor, fontSize: 19)),
-                          ),
-                        );
-                      })
+                        children: List.generate(menu.length, (index) {
+                          return new InkWell(
+                            onTap: () {
+                              if (didSelect != null) {
+                                Navigator.of(context).pop();
+                                didSelect(menu[index], index);
+                              }
+                            },
+                            child: new Container(
+                              height: 55.0,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: new BorderSide(
+                                          color: Color(0xffEBEBEB),
+                                          width: 0.5))),
+                              child: new Text('${menu[index]}',
+                                  style: new TextStyle(
+                                      color: currentValue == menu[index]
+                                          ? currentColor
+                                          : valueColor, fontSize: 19)),
+                            ),
+                          );
+                        })
                     ),
                   ],
                 ),
@@ -157,7 +161,7 @@ void fastSelectBottomView(BuildContext context,
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  if(didCancel != null){
+                  if (didCancel != null) {
                     didCancel();
                   }
                 },

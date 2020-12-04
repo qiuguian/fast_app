@@ -80,6 +80,8 @@ class FastAppHttp {
       EasyLoading.show(status: hud);
     }
 
+    print('request body => ${jsonEncode(body)}');
+
     adio.Response response = await dio
         .get(
           url,
@@ -116,7 +118,7 @@ class FastAppHttp {
       }
     });
 
-    if (response.statusCode == HttpStatus.ok) {
+    if (response?.statusCode == HttpStatus.ok) {
       var data = response.data;
 
       if (data is String) {
@@ -126,14 +128,17 @@ class FastAppHttp {
       }
     } else {
       result = {
-        "code": response.statusCode,
+        "code": response?.statusCode,
         "msg": response.statusMessage,
         "data": ""
       };
+      if (fastDio != null) {
+        throw result; //新版本 兼容旧版本
+      }
     }
 
     httpResponse = new FastHttpResponse(
-        jsonEncode(result), response.statusCode, result['headers'], result);
+        jsonEncode(result), response?.statusCode, result['headers'], result);
 
     return httpResponse;
   }
@@ -172,6 +177,8 @@ class FastAppHttp {
       EasyLoading.show(status: hud);
     }
 
+    print('request body => ${jsonEncode(body)}');
+
     adio.Response response = await dio
         .post(
           url,
@@ -209,7 +216,7 @@ class FastAppHttp {
       }
     });
 
-    if (response.statusCode == HttpStatus.ok) {
+    if (response?.statusCode == HttpStatus.ok) {
       var data = response.data;
       if (data is String) {
         result = jsonDecode(data);
@@ -219,12 +226,16 @@ class FastAppHttp {
     } else {
       result = {
         "msg": "Server busy",
-        "code": response.statusCode,
+        "code": response?.statusCode,
         "msgCode": "1"
       };
+
+      if (fastDio != null) {
+        throw result; //新版本 兼容旧版本
+      }
     }
     httpResponse = new FastHttpResponse(
-        jsonEncode(result), response.statusCode, response.headers.map, result);
+        jsonEncode(result), response?.statusCode, response.headers.map, result);
 
     return httpResponse;
   }
@@ -263,9 +274,9 @@ class FastAppHttp {
 
     adio.Response response = await dio
         .put(
-      url,
-      data: formData ?? body,
-    )
+          url,
+          data: formData ?? body,
+        )
         .whenComplete(() => EasyLoading.dismiss())
         .catchError((e) async {
       DioError error = e;
@@ -293,12 +304,12 @@ class FastAppHttp {
           "msgCode": "1"
         };
         httpResponse =
-        new FastHttpResponse(jsonEncode(result), -1, null, result);
+            new FastHttpResponse(jsonEncode(result), -1, null, result);
         return httpResponse;
       }
     });
 
-    if (response.statusCode == HttpStatus.ok) {
+    if (response?.statusCode == HttpStatus.ok) {
       var data = response.data;
       if (data is String) {
         result = jsonDecode(data);
@@ -306,18 +317,116 @@ class FastAppHttp {
         result = data;
       }
     } else {
+      print(
+          "object response?.statusCoderesponse?.statusCoderesponse?.statusCoderesponse?.statusCode");
       result = {
         "msg": "Server busy",
-        "code": response.statusCode,
+        "code": response?.statusCode,
         "msgCode": "1"
       };
+      if (fastDio != null) {
+        throw result; //新版本 兼容旧版本
+      }
     }
     httpResponse = new FastHttpResponse(
-        jsonEncode(result), response.statusCode, response.headers.map, result);
+        jsonEncode(result), response?.statusCode, response.headers.map, result);
 
     return httpResponse;
   }
 
+  static Future<FastHttpResponse> doDelete({
+    String url,
+    body,
+    Map<String, dynamic> headers,
+    bool isReconnectStrategyStart = false,
+    int reconnectTime = 0,
+    String hud,
+  }) async {
+    adio.BaseOptions options = new adio.BaseOptions(
+      connectTimeout: CONNECT_TIMEOUT,
+      receiveTimeout: RECEIVE_TIMEOUT,
+      headers: headers,
+      contentType: headers != null ? headers['Content-Type'] : "",
+    );
+
+    FormData formData;
+
+    print('request body => ${jsonEncode(body)}');
+
+    if (headers != null && headers['Content-Type'] == "application/formData") {
+      formData = FormData.fromMap(body);
+    }
+
+    Map result = {};
+    adio.Dio dio = fastDio ?? new adio.Dio(options);
+    FastHttpResponse httpResponse;
+
+    //如果要提示加载中之类的hud
+    if (hud != null && hud.isNotEmpty) {
+      EasyLoading.show(status: hud);
+    }
+
+    adio.Response response = await dio
+        .delete(
+          url,
+          data: formData ?? body,
+        )
+        .whenComplete(() => EasyLoading.dismiss())
+        .catchError((e) async {
+      DioError error = e;
+
+      print('catchError => ${error.message}');
+
+      if (reconnectTime > 0 &&
+          isReconnectStrategyStart &&
+          (error.type == DioErrorType.SEND_TIMEOUT ||
+              error.type == DioErrorType.RECEIVE_TIMEOUT ||
+              error.type == DioErrorType.CONNECT_TIMEOUT)) {
+        print('start reconnect reconnectTime left: $reconnectTime');
+        httpResponse = await doPost(
+          url: url,
+          body: body,
+          headers: headers,
+          isReconnectStrategyStart: isReconnectStrategyStart,
+          reconnectTime: reconnectTime--,
+        );
+        return httpResponse;
+      } else {
+        result = {
+          "msg": "Server busy,please try again later",
+          "code": -1,
+          "msgCode": "1"
+        };
+        httpResponse =
+            new FastHttpResponse(jsonEncode(result), -1, null, result);
+        return httpResponse;
+      }
+    });
+
+    if (response?.statusCode == HttpStatus.ok) {
+      var data = response.data;
+      if (data is String) {
+        result = jsonDecode(data);
+      } else if (data is Map) {
+        result = data;
+      }
+    } else {
+      print(
+          "object response?.statusCoderesponse?.statusCoderesponse?.statusCoderesponse?.statusCode");
+      result = {
+        "msg": "Server busy",
+        "code": response?.statusCode,
+        "msgCode": "1"
+      };
+      if (fastDio != null) {
+        throw result; //新版本 兼容旧版本
+      }
+    }
+    httpResponse = new FastHttpResponse(
+        jsonEncode(result), response?.statusCode, response.headers.map, result);
+
+    return httpResponse;
+  }
 
   static Future<FastHttpResponse> doGetTestData(
       FastRequest request, body, Map<String, String> headers) async {
@@ -395,7 +504,7 @@ class FastAppHttp {
 
     adio.Dio dio = fastDio ?? new adio.Dio(options);
     var response = await dio.post("$url", data: formData);
-    if (response.statusCode == HttpStatus.ok) {
+    if (response?.statusCode == HttpStatus.ok) {
       var data = response.data;
 
       if (data is String) {
@@ -404,7 +513,7 @@ class FastAppHttp {
         result = response.data;
       }
     } else {
-      result = {"msg": "error", "code": response.statusCode, "msgCode": "1"};
+      result = {"msg": "error", "code": response?.statusCode, "msgCode": "1"};
     }
 
     return result ?? {};
