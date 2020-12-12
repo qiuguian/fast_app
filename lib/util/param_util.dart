@@ -102,8 +102,10 @@ class FastFormat {
   *
   * */
   static String stringToString(v, format) {
-    return FastFormat.timeStampToString(FastFormat.getMilliseconds(formartDate: v), format);
+    return FastFormat.timeStampToString(
+        FastFormat.getMilliseconds(formartDate: v), format);
   }
+
   /*
   * 时间戳转换格式
   *
@@ -307,6 +309,47 @@ class FastFormat {
     }
 
     return vStr;
+  }
+
+  static String timeFromNow(timeStamp) {
+    int time = 0;
+
+    if (timeStamp is int) {
+      time = timeStamp;
+    } else {
+      time = int.parse(timeStamp.toString());
+    }
+
+    if (time < 13) {
+      time = time * 1000;
+    }
+
+    var oldTime = DateTime.fromMillisecondsSinceEpoch(time);
+    var nowTime = DateTime.now();
+
+    var timeSting = '1秒前';
+
+    if (oldTime.isBefore(nowTime)) {
+      Duration duration = nowTime.difference(oldTime);
+      int day = duration.inDays;
+      int hour = duration.inHours.remainder(Duration.hoursPerDay);
+      int minute = duration.inMinutes.remainder(Duration.minutesPerHour);
+      int second = duration.inSeconds.remainder(Duration.secondsPerMinute);
+
+      if (minute < 1 && second > 0) {
+        timeSting = '$second秒前';
+      } else if (hour < 1 && minute >= 1) {
+        timeSting = '$minute分前';
+      } else if (day < 1 && hour >= 1) {
+        timeSting = '$hour小时前';
+      } else if (day < 1 && day >= 1) {
+        timeSting = '$day天前';
+      } else if (day >= 1) {
+        timeSting = '${timeStampToString(timeStamp, 'yyyy-MM-dd HH:mm')}';
+      }
+    }
+
+    return timeSting;
   }
 }
 

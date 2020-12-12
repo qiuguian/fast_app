@@ -80,8 +80,6 @@ class FastAppHttp {
       EasyLoading.show(status: hud);
     }
 
-    print('request body => ${jsonEncode(body)}');
-
     adio.Response response = await dio
         .get(
           url,
@@ -162,6 +160,8 @@ class FastAppHttp {
       contentType: headers != null ? headers['Content-Type'] : "",
     );
 
+    print('request body => ${jsonEncode(body)}');
+
     FormData formData;
 
     if (headers != null && headers['Content-Type'] == "application/formData") {
@@ -176,8 +176,6 @@ class FastAppHttp {
     if (hud != null && hud.isNotEmpty) {
       EasyLoading.show(status: hud);
     }
-
-    print('request body => ${jsonEncode(body)}');
 
     adio.Response response = await dio
         .post(
