@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fast_app/fast_app.dart';
 
 class FastSearchView extends StatelessWidget {
   final GestureTapCallback onTap;
@@ -7,9 +8,10 @@ class FastSearchView extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final TextEditingController controller;
   final double radius;
+  final Callback onChange;
 
   FastSearchView(
-      {this.onTap, this.text, this.margin, this.controller, this.radius = 10.0,});
+      {this.onTap, this.text, this.margin, this.controller, this.radius = 10.0, this.onChange});
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +26,20 @@ class FastSearchView extends StatelessWidget {
         ),
         height: 40.0,
         child: new TextField(
-            controller: controller ?? TextEditingController(),
-            decoration: InputDecoration(
-              hintText: text ?? '',
-              prefixIcon: new Icon(CupertinoIcons.search),
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 10, bottom: 10),
-            ),
-            textInputAction: TextInputAction.search,
-            onSubmitted: (v) {
-              onTap();
-            }),
+          controller: controller ?? TextEditingController(),
+          enabled: onTap == null,
+          decoration: InputDecoration(
+            hintText: text ?? '',
+            prefixIcon: new Icon(CupertinoIcons.search),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.only(top: 10, bottom: 10),
+          ),
+          textInputAction: TextInputAction.search,
+          onSubmitted: (v) {
+            onTap();
+          },
+          onChanged: (v) => onChange?.call(v),
+        ),
       ),
       onTap: onTap ?? () {},
     );

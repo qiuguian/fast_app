@@ -10,6 +10,7 @@ class FastRowView extends StatelessWidget {
   final VoidCallback onTap;
   final double height;
   final EdgeInsets margin;
+  final EdgeInsets padding;
 
   FastRowView({
     this.title,
@@ -20,6 +21,7 @@ class FastRowView extends StatelessWidget {
     this.onTap,
     this.height = 60.0,
     this.margin = EdgeInsets.zero,
+    this.padding = const EdgeInsets.only(left: 15, right: 10.0),
   });
 
   actions(v) {
@@ -36,7 +38,7 @@ class FastRowView extends StatelessWidget {
       onTap: () => actions(_title),
       child: Container(
         height: height ?? 50,
-        padding: EdgeInsets.only(left: 15, right: 10.0),
+        padding: padding,
         margin: margin,
         decoration: BoxDecoration(
             color: Colors.white,

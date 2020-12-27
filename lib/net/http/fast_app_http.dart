@@ -82,11 +82,11 @@ class FastAppHttp {
 
     adio.Response response = await dio
         .get(
-          url,
-          options: adio.Options(
-            headers: headers,
-          ),
-        )
+      url,
+      options: adio.Options(
+        headers: headers,
+      ),
+    )
         .whenComplete(() => EasyLoading.dismiss())
         .catchError((e) async {
       DioError error = e;
@@ -111,7 +111,7 @@ class FastAppHttp {
           "msgCode": "1"
         };
         httpResponse =
-            new FastHttpResponse(jsonEncode(result), -1, null, result);
+        new FastHttpResponse(jsonEncode(result), -1, null, result);
         return httpResponse;
       }
     });
@@ -160,6 +160,7 @@ class FastAppHttp {
       contentType: headers != null ? headers['Content-Type'] : "",
     );
 
+    print('request url => $url');
     print('request body => ${jsonEncode(body)}');
 
     FormData formData;
@@ -179,9 +180,9 @@ class FastAppHttp {
 
     adio.Response response = await dio
         .post(
-          url,
-          data: formData ?? body,
-        )
+      url,
+      data: formData ?? body,
+    )
         .whenComplete(() => EasyLoading.dismiss())
         .catchError((e) async {
       DioError error = e;
@@ -209,7 +210,7 @@ class FastAppHttp {
           "msgCode": "1"
         };
         httpResponse =
-            new FastHttpResponse(jsonEncode(result), -1, null, result);
+        new FastHttpResponse(jsonEncode(result), -1, null, result);
         return httpResponse;
       }
     });
@@ -272,9 +273,9 @@ class FastAppHttp {
 
     adio.Response response = await dio
         .put(
-          url,
-          data: formData ?? body,
-        )
+      url,
+      data: formData ?? body,
+    )
         .whenComplete(() => EasyLoading.dismiss())
         .catchError((e) async {
       DioError error = e;
@@ -302,7 +303,7 @@ class FastAppHttp {
           "msgCode": "1"
         };
         httpResponse =
-            new FastHttpResponse(jsonEncode(result), -1, null, result);
+        new FastHttpResponse(jsonEncode(result), -1, null, result);
         return httpResponse;
       }
     });
@@ -366,9 +367,9 @@ class FastAppHttp {
 
     adio.Response response = await dio
         .delete(
-          url,
-          data: formData ?? body,
-        )
+      url,
+      data: formData ?? body,
+    )
         .whenComplete(() => EasyLoading.dismiss())
         .catchError((e) async {
       DioError error = e;
@@ -396,7 +397,7 @@ class FastAppHttp {
           "msgCode": "1"
         };
         httpResponse =
-            new FastHttpResponse(jsonEncode(result), -1, null, result);
+        new FastHttpResponse(jsonEncode(result), -1, null, result);
         return httpResponse;
       }
     });
@@ -426,8 +427,8 @@ class FastAppHttp {
     return httpResponse;
   }
 
-  static Future<FastHttpResponse> doGetTestData(
-      FastRequest request, body, Map<String, String> headers) async {
+  static Future<FastHttpResponse> doGetTestData(FastRequest request, body,
+      Map<String, String> headers) async {
     FastHttpResponse httpResponse;
 
     String data = await loadAsset(request.localTestData());
@@ -460,19 +461,19 @@ class FastAppHttp {
       adio.Dio dio = cDio ?? new adio.Dio();
       response = await dio.download(urlPath, savePath, cancelToken: cancelToken,
           onReceiveProgress: (int count, int total) {
-        if (onReceiveProgress != null) {
-          onReceiveProgress(count, total);
-        }
+            if (onReceiveProgress != null) {
+              onReceiveProgress(count, total);
+            }
 
-        //进度
-        _total = total;
-        FastCache('$localId').value = {
-          'count': count,
-          'total': total,
-          'dio': dio,
-          'cancelToken': cancelToken
-        };
-      }).catchError((e) {
+            //进度
+            _total = total;
+            FastCache('$localId').value = {
+              'count': count,
+              'total': total,
+              'dio': dio,
+              'cancelToken': cancelToken
+            };
+          }).catchError((e) {
         throw e;
       });
       return {'savePath': savePath, 'total': _total};

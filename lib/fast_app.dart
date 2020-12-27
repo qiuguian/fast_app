@@ -33,3 +33,4 @@ export 'package:fast_app/util/fast_theme.dart';
 export 'package:fast_app/ui/separator/fast_separator.dart';
 export 'package:fast_app/ui/dialog/fast_confirm_dialog.dart';
 export 'package:fast_app/ui/button/fast_cutdown_button.dart';
+export 'package:fast_app/ui/photo_view/photo_view_page.dart';
