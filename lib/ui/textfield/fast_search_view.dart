@@ -4,6 +4,7 @@ import 'package:fast_app/fast_app.dart';
 
 class FastSearchView extends StatelessWidget {
   final GestureTapCallback onTap;
+  final GestureTapCallback onSubmitted;
   final String text;
   final EdgeInsetsGeometry margin;
   final TextEditingController controller;
@@ -11,7 +12,7 @@ class FastSearchView extends StatelessWidget {
   final Callback onChange;
 
   FastSearchView(
-      {this.onTap, this.text, this.margin, this.controller, this.radius = 10.0, this.onChange});
+      {this.onTap, this.text, this.margin, this.controller, this.radius = 10.0, this.onChange,this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class FastSearchView extends StatelessWidget {
           ),
           textInputAction: TextInputAction.search,
           onSubmitted: (v) {
-            onTap();
+            onSubmitted?.call();
           },
           onChanged: (v) => onChange?.call(v),
         ),
