@@ -68,8 +68,11 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
             ),
           );
         },
+        physics: banners.length > 1
+            ? AlwaysScrollableScrollPhysics()
+            : NeverScrollableScrollPhysics(),
         autoplay: banners.length > 1,
-        pagination: new SwiperPagination(
+        pagination: banners.length > 1 ? SwiperPagination(
           alignment: alignment,
           builder: new SwiperCustomPagination(
             builder: (context, config) {
@@ -87,7 +90,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
               );
             },
           ),
-        ),
+        ) : null,
         scale: scale,
         viewportFraction: viewportFraction,
       ),

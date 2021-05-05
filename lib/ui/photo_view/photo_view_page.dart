@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'dart:io';
 
 class PhotoViewPage extends StatefulWidget {
   final List pics;
@@ -42,10 +43,12 @@ class _PhotoViewPageState extends State<PhotoViewPage> {
               builder: (BuildContext context, int index) {
                 String img = widget.pics[index];
                 return new PhotoViewGalleryPageOptions(
-                  imageProvider: NetworkImage("$img"),
-                  initialScale: PhotoViewComputedScale.contained * 0.9,
-                  maxScale: 3.0,
-                  minScale: 0.3,
+                  imageProvider: img.startsWith('http')
+                      ? NetworkImage("$img")
+                      : FileImage(File(img)),
+                  initialScale: PhotoViewComputedScale.contained * 0.8,
+                  // maxScale: 3.0,
+                  // minScale: 0.3,
                 );
               },
               itemCount: widget.pics.length,

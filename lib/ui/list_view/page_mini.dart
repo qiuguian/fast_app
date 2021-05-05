@@ -11,6 +11,7 @@ class PageMini {
   PageResultModel pageResultModel = new PageResultModel.empty();
 
   initPage([PageMiniListener pageMiniListener]) {
+    print('======> 000');
     if (pageScrollController != null) {
       pageScrollController.addListener(() {
         if (pageScrollController.position.pixels >=

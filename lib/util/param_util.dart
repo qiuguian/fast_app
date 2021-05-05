@@ -311,7 +311,7 @@ class FastFormat {
     return vStr;
   }
 
-  static String timeFromNow(timeStamp) {
+  static String timeFromNow(timeStamp, [bad = false]) {
     int time = 0;
 
     if (timeStamp is int) {
@@ -336,16 +336,20 @@ class FastFormat {
       int minute = duration.inMinutes.remainder(Duration.minutesPerHour);
       int second = duration.inSeconds.remainder(Duration.secondsPerMinute);
 
-      if (minute < 1 && second > 0) {
-        timeSting = '$second秒前';
-      } else if (hour < 1 && minute >= 1) {
-        timeSting = '$minute分前';
-      } else if (day < 1 && hour >= 1) {
-        timeSting = '$hour小时前';
-      } else if (day < 1 && day >= 1) {
+      if (day > 7) {
+        if (bad) {
+          timeSting = '7天前';
+        } else {
+          timeSting = '${timeStampToString(timeStamp, 'yyyy-MM-dd HH:mm')}';
+        }
+      } else if (day > 1 && day <= 7) {
         timeSting = '$day天前';
-      } else if (day >= 1) {
-        timeSting = '${timeStampToString(timeStamp, 'yyyy-MM-dd HH:mm')}';
+      } else if (hour >= 1 && day <= 1) {
+        timeSting = '$hour小时前';
+      } else if (minute >= 1 && hour < 1) {
+        timeSting = '$minute分前';
+      } else if (second > 0 && minute < 1) {
+        timeSting = '$second秒前';
       }
     }
 

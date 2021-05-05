@@ -10,9 +10,17 @@ class FastSearchView extends StatelessWidget {
   final TextEditingController controller;
   final double radius;
   final Callback onChange;
+  final Color backgroundColor;
 
-  FastSearchView(
-      {this.onTap, this.text, this.margin, this.controller, this.radius = 10.0, this.onChange,this.onSubmitted});
+  FastSearchView({this.onTap,
+    this.text,
+    this.margin,
+    this.controller,
+    this.radius = 10.0,
+    this.onChange,
+    this.onSubmitted,
+    this.backgroundColor = const Color(0xffF2F2F7),
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class FastSearchView extends StatelessWidget {
       child: new Container(
         margin: margin,
         decoration: BoxDecoration(
-          color: Color(0xffF2F2F7),
+          color: backgroundColor,
           borderRadius: BorderRadius.all(
             Radius.circular(radius),
           ),

@@ -11,6 +11,7 @@ import 'dart:convert';
 
 import 'dart:io';
 
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart' as adio;
 import 'package:dio/dio.dart';
 import 'package:fast_app/cache/fast_cache.dart';
@@ -36,7 +37,7 @@ class FastAppHttp {
   /*
   *  初始始化Dio
   * */
-  static Dio initDio({String baseUrl, Interceptor interceptor}) {
+  static Dio initDio({String baseUrl, Interceptor interceptor,String proxy = ''}) {
     if (fastDio == null) {
       final adio.BaseOptions options = new adio.BaseOptions(
         connectTimeout: CONNECT_TIMEOUT,
@@ -50,6 +51,11 @@ class FastAppHttp {
         _dio.interceptors.add(interceptor);
       }
       fastDio = _dio;
+
+      if(proxy.isNotEmpty){
+        setProxy(fastDio,proxyUrl:proxy);
+      }
+
     }
     return fastDio;
   }
@@ -159,9 +165,6 @@ class FastAppHttp {
       headers: headers,
       contentType: headers != null ? headers['Content-Type'] : "",
     );
-
-    print('request url => $url');
-    print('request body => ${jsonEncode(body)}');
 
     FormData formData;
 
@@ -483,16 +486,41 @@ class FastAppHttp {
     }
   }
 
-  //上传图片
-  Future<Map> upLoadFile(String url, File file,
-      {Map<String, dynamic> headers}) async {
+  //上传文件
+  static Future<FastHttpResponse> upLoadFile({
+    String url,
+    File file,
+    Map<String, dynamic> headers,
+    Map<String, dynamic> data, //可选
+    String hud,
+    bool isMultiFile = true,
+  }) async {
     String path = file.path;
     var name = path.substring(path.lastIndexOf("/") + 1, path.length);
-    adio.FormData formData = new adio.FormData.fromMap({
-      "file": [adio.MultipartFile.fromFileSync(path, filename: name)],
-    });
+
+    Map<String, dynamic> body = new Map<String, dynamic>();
+
+    if (data != null) {
+      body.addAll(data);
+    }
+
+    if (isMultiFile) {
+      body.addAll({
+        "file": [adio.MultipartFile.fromFileSync(path, filename: name)],
+      });
+    } else {
+      body.addAll({
+        "file": adio.MultipartFile.fromFileSync(path, filename: name),
+      });
+    }
+
+    adio.FormData formData = new adio.FormData.fromMap(body);
 
     var result;
+
+    if (hud != null && hud.isNotEmpty) {
+      EasyLoading.show(status: hud);
+    }
 
     adio.BaseOptions options = new adio.BaseOptions(
       connectTimeout: CONNECT_TIMEOUT,
@@ -502,7 +530,9 @@ class FastAppHttp {
     );
 
     adio.Dio dio = fastDio ?? new adio.Dio(options);
-    var response = await dio.post("$url", data: formData);
+    var response = await dio
+        .post("$url", data: formData)
+        .whenComplete(() => EasyLoading.dismiss());
     if (response?.statusCode == HttpStatus.ok) {
       var data = response.data;
 
@@ -515,16 +545,22 @@ class FastAppHttp {
       result = {"msg": "error", "code": response?.statusCode, "msgCode": "1"};
     }
 
-    return result ?? {};
+    return new FastHttpResponse(
+        jsonEncode(result), response?.statusCode, response.headers.map, result);
   }
 }
 
-proxy(adio.Dio dio) {
-//  (dio.httpClientAdapter as adio.DefaultHttpClientAdapter).onHttpClientCreate = (client) {
-//    client.findProxy = (uri) {
-//      return "PROXY $proxyUrl";
-//    };
-//  };
+setProxy(adio.Dio dio,{String proxyUrl}) {
+  (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+      (client) {
+    client.findProxy = (uri) {
+      return "PROXY $proxyUrl";
+    };
+
+    ///忽略证书
+    client.badCertificateCallback =
+        (X509Certificate cert, String host, int port) => true;
+  };
 }
 
 Future<String> loadAsset(String path) async {

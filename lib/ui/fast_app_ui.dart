@@ -18,6 +18,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:fast_app/net/fast_view_model.dart';
 import 'package:fast_app/theme/fast_theme.dart';
 import 'package:fast_app/ui/list_view/page_mini.dart';
+import 'package:fast_app/ui/list_view/refresh_view.dart';
 import 'package:flutter/services.dart';
 
 part './appbar/fast_appbar.dart';

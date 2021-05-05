@@ -55,9 +55,9 @@ class FastCustomButton extends StatelessWidget {
           alignment: WrapAlignment.center,
           children:  icon != null ? <Widget>[
             icon,
-            new Text('$text',style: new TextStyle(color: color)),
+            new Text('$text',style: new TextStyle(color: color,fontSize: fontSize)),
           ] : <Widget>[
-            new Text('$text',style: new TextStyle(color: color)),
+            new Text('$text',style: new TextStyle(color: color,fontSize: fontSize)),
           ],
         ),
       ),
