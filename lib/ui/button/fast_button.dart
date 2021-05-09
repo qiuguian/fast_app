@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class FastButton extends StatelessWidget {
-  final double width;
+  final double? width;
   final double height;
   final List<BoxShadow> boxShadow;
   final double radius;
   final String text;
-  final VoidCallback onTap;
-  final EdgeInsetsGeometry padding;
-  final EdgeInsetsGeometry margin;
+  final VoidCallback? onTap;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
   final TextStyle style;
-  final Color color;
+  final Color? color;
   final bool isBorder;
   final int borderColor;
   final Gradient gradient;
@@ -20,7 +20,7 @@ class FastButton extends StatelessWidget {
   FastButton({
     this.width,
     this.height = 45.0,
-    this.boxShadow,
+    this.boxShadow = const [],
     this.radius = 30.0,
     this.text = '按钮1',
     this.onTap,
@@ -42,7 +42,7 @@ class FastButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color _color = color == null ? null : color.withOpacity(enable ? 1 : 0.3);
+    Color _color = color??color!.withOpacity(enable ? 1 : 0.3);
 
     return new Visibility(
       visible: isShow,
@@ -69,16 +69,10 @@ class FastButton extends StatelessWidget {
             ),
             child: new Text(
               '$text',
-              style: style != null
-                  ? style
-                  : TextStyle(fontSize: 15.0, color: _color),
+              style: style,
             ),
           ),
-          onTap: () {
-            if (enable && onTap != null) {
-              onTap();
-            }
-          },
+          onTap: () => onTap?.call()
         ),
       ),
     );

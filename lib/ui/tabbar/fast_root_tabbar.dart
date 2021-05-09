@@ -14,7 +14,7 @@ typedef CheckLogin(index);
 class FastRootTabBar extends StatefulWidget {
 
   FastRootTabBar({
-    this.pages,
+    required this.pages,
     this.checkLogin,
     this.currentIndex = 0,
     this.color,
@@ -23,9 +23,9 @@ class FastRootTabBar extends StatefulWidget {
   });
 
   final List pages;
-  final CheckLogin checkLogin;
+  final CheckLogin? checkLogin;
   final int currentIndex;
-  final Color color;
+  final Color? color;
   final List needLogins;
   final bool isFirtBlackColor;
 
@@ -34,9 +34,9 @@ class FastRootTabBar extends StatefulWidget {
 }
 
 class _FastRootTabBarState extends State<FastRootTabBar> {
-  var pages = new List<BottomNavigationBarItem>();
-  int currentIndex;
-  var contents = new List<Offstage>();
+  var pages = <BottomNavigationBarItem>[];
+  int currentIndex = 0;
+  List<Widget> contents = [];
 
   @override
   void initState() {
@@ -56,17 +56,17 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
 
     for (int i = 0; i < widget.pages.length; i++) {
       FastTabBarModel model = widget.pages[i];
-      pages.add(new BottomNavigationBarItem(
+      pages.add(BottomNavigationBarItem(
         icon: model.icon,
         activeIcon: model.selectIcon,
-        title: new Text(model.title, style: new TextStyle(fontSize: 12.0)),
+        label: model.title,
       ));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final BottomNavigationBar bottomNavigationBar = new BottomNavigationBar(
+    final BottomNavigationBar bottomNavigationBar = BottomNavigationBar(
       items: pages,
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
@@ -76,7 +76,7 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
       onTap: (int index) {
         if (widget.checkLogin != null && widget.needLogins.contains(index) &&
             !FastData.isLogin) {
-          widget.checkLogin(index);
+          widget.checkLogin?.call(index);
         } else {
           FastNotification.push(FastActions.toTab(index));
           setState(() => currentIndex = index);
@@ -89,15 +89,15 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
     for (int i = 0; i < widget.pages.length; i++) {
       FastTabBarModel model = widget.pages[i];
       contents
-          .add(new Offstage(child: model.page, offstage: currentIndex != i));
+          .add(Offstage(child: model.page, offstage: currentIndex != i));
     }
 
-    return new Scaffold(
-      bottomNavigationBar: new Theme(
-          data: new ThemeData(
+    return Scaffold(
+      bottomNavigationBar: Theme(
+          data: ThemeData(
               canvasColor: currentIndex == 0 && widget.isFirtBlackColor ? Colors.black : Colors.white),
           child: bottomNavigationBar),
-      body: new Stack(
+      body: Stack(
         children: contents.toList(growable: false),
       ),
     );
@@ -105,7 +105,7 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
 }
 
 class FastTabBarModel {
-  const FastTabBarModel({this.title, this.page, this.icon, this.selectIcon});
+  const FastTabBarModel({this.title = '', required this.page, required this.icon, required this.selectIcon});
 
   final String title;
   final Widget icon;
@@ -115,22 +115,22 @@ class FastTabBarModel {
 
 class RootTabBar extends StatefulWidget {
   RootTabBar({
-    this.pages,
+    required this.pages,
     this.checkLogin,
     this.currentIndex = 0,
   });
 
   final List pages;
-  final CheckLogin checkLogin;
+  final CheckLogin? checkLogin;
   final int currentIndex;
 
   @override
-  State<StatefulWidget> createState() => new RootTabBarState();
+  State<StatefulWidget> createState() => RootTabBarState();
 }
 
 class RootTabBarState extends State<RootTabBar> {
-  int currentIndex;
-  var contents = new List<Offstage>();
+  int currentIndex = 0;
+  List<Widget> contents = [];
 
   @override
   void initState() {
@@ -149,32 +149,32 @@ class RootTabBarState extends State<RootTabBar> {
 
   List<BottomNavigationBarItem> pages() {
     List<BottomNavigationBarItem> barItems =
-    new List<BottomNavigationBarItem>();
+    [];
     for (int i = 0; i < widget.pages.length; i++) {
       FastTabBarModel model = widget.pages[i];
       barItems.add(
-        new BottomNavigationBarItem(
-          icon: new Container(),
-          activeIcon: new Container(),
-          title: new Wrap(
+        BottomNavigationBarItem(
+          icon: Container(),
+          activeIcon: Container(),
+          title: Wrap(
             spacing: 3,
             direction: Axis.vertical,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
-              new Text(model.title, style: new TextStyle(fontSize: 12.0)),
-              new Visibility(
+              Text(model.title, style: TextStyle(fontSize: 12.0)),
+              Visibility(
                 visible: currentIndex == i,
-                child: new Container(
+                child: Container(
                   height: 2,
                   width: 25,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient:
-                    LinearGradient(colors: [Colors.amber[500], Colors.red]),
-                    borderRadius: new BorderRadius.circular(1),
+                    LinearGradient(colors: [Colors.amber[500]!, Colors.red]),
+                    borderRadius: BorderRadius.circular(1),
                   ),
                 ),
               ),
-              new Visibility(
+              Visibility(
                 visible: currentIndex == i,
                 child: model.icon,
               ),
@@ -189,7 +189,7 @@ class RootTabBarState extends State<RootTabBar> {
   @override
   Widget build(BuildContext context) {
     BottomNavigationBar bottomNavigationBar() {
-      return new BottomNavigationBar(
+      return BottomNavigationBar(
         items: pages(),
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
@@ -209,15 +209,15 @@ class RootTabBarState extends State<RootTabBar> {
     for (int i = 0; i < widget.pages.length; i++) {
       FastTabBarModel model = widget.pages[i];
       contents
-          .add(new Offstage(child: model.page, offstage: currentIndex != i));
+          .add(Offstage(child: model.page, offstage: currentIndex != i));
     }
 
-    return new Scaffold(
-      bottomNavigationBar: new Theme(
-        data: new ThemeData(canvasColor: Colors.white),
+    return Scaffold(
+      bottomNavigationBar: Theme(
+        data: ThemeData(canvasColor: Colors.white),
         child: bottomNavigationBar(),
       ),
-      body: new Stack(
+      body: Stack(
         children: contents.toList(growable: false),
       ),
     );

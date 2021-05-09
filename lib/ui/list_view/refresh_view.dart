@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class RefreshView extends StatefulWidget {
-  RefreshView({this.child,this.onRefresh,this.onLoading});
+  RefreshView({required this.child,this.onRefresh,this.onLoading});
 
   final Widget child;
-  final VoidCallback onRefresh;
-  final VoidCallback onLoading;
+  final VoidCallback? onRefresh;
+  final VoidCallback? onLoading;
 
   @override
   _RefreshViewState createState() => _RefreshViewState();

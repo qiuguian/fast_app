@@ -16,20 +16,20 @@ enum FastTextFieldType {
 }
 
 class FastTextField extends StatefulWidget {
-  final String name;
-  final String placeholder;
-  final String labelValue;
-  final TextEditingController controller;
-  final Widget prefix;
-  final Widget suffix;
+  final String? name;
+  final String? placeholder;
+  final String? labelValue;
+  final TextEditingController? controller;
+  final Widget? prefix;
+  final Widget? suffix;
   final FastTextFieldType type;
-  final ValueChanged<String> onChanged;
-  final TextInputType keyboardType;
+  final ValueChanged<String>? onChanged;
+  final TextInputType? keyboardType;
   final TextStyle style;
   final TextStyle hintStyle;
   final bool obscureText;
   final EdgeInsetsGeometry padding;
-  final FormFieldValidator<String> validator;
+  final FormFieldValidator<String>? validator;
   final bool autovalidate;
   final Color borderColor;
   final Color backgroundColor;
@@ -87,93 +87,83 @@ class _FastTextFieldState extends State<FastTextField> {
       ),
       child: widget.type == FastTextFieldType.titleSingle
           ? new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          widget.name != null
-              ? new Text('${widget.name}',
-              style: widget.style ??
-                  TextStyle(
-                      color: Color(0xff343243),
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500))
-              : new Container(),
-          new Row(
-            children: <Widget>[
-              widget.prefix ?? new Container(),
-              new Container(width: widget.spacing),
-              new Expanded(
-                child: new TextFormField(
-                  controller: widget.controller,
-                  keyboardType: widget.keyboardType ?? null,
-                  style: widget.style,
-                  maxLines: widget.maxLine,
-                  decoration: InputDecoration(
-                    hintText: widget.placeholder,
-                    hintStyle: widget.hintStyle ?? null,
-                    hintMaxLines: 2,
-                    border: InputBorder.none,
-                  ),
-                  onChanged: widget.onChanged ?? (str) {},
-                  obscureText: widget.obscureText,
-                  validator: widget.validator,
-                  autovalidate: widget.autovalidate,
-                  inputFormatters: widget.inputFormatters,
-                  enabled: widget.enable,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                widget.name != null
+                    ? new Text(
+                        '${widget.name}',
+                        style: widget.style,
+                      )
+                    : new Container(),
+                new Row(
+                  children: <Widget>[
+                    widget.prefix ?? new Container(),
+                    new Container(width: widget.spacing),
+                    new Expanded(
+                      child: new TextFormField(
+                        controller: widget.controller,
+                        keyboardType: widget.keyboardType ?? null,
+                        style: widget.style,
+                        maxLines: widget.maxLine,
+                        decoration: InputDecoration(
+                          hintText: widget.placeholder,
+                          hintStyle: widget.hintStyle,
+                          hintMaxLines: 2,
+                          border: InputBorder.none,
+                        ),
+                        onChanged: widget.onChanged ?? (str) {},
+                        obscureText: widget.obscureText,
+                        validator: widget.validator,
+                        inputFormatters: widget.inputFormatters,
+                        enabled: widget.enable,
+                      ),
+                    ),
+                    widget.suffix ?? new Container(),
+                  ],
                 ),
-              ),
-              widget.suffix ?? new Container(),
-            ],
-          ),
-        ],
-      )
-          : new Container(
-        height: 55.0,
-        child: new Row(
-          children: <Widget>[
-            widget.name != null
-                ? new Container(
-              width: widget.titleWidth,
-              child: new Text(
-                  '${widget.name}',
-                  style: widget.style ??
-                      TextStyle(
-                          color: Color(0xff343243),
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500)
-              ),
+              ],
             )
-                : new Container(),
-            new Expanded(
-              child: new TextFormField(
-                controller: widget.controller,
-                keyboardType: widget.keyboardType ?? null,
-                style: widget.style,
-                enabled: widget.type != FastTextFieldType.readonly &&
-                    widget.enable,
-                maxLines: widget.maxLine,
-                decoration: InputDecoration(
-                  hintText: widget.placeholder,
-                  hintStyle: TextStyle(
-                      color: Color(0xffDFE0EB), fontSize: 15.0),
-                  border: InputBorder.none,
-                ),
-                onChanged: widget.onChanged ?? (str) {},
-                obscureText: widget.obscureText,
-                validator: widget.validator,
-                autovalidate: widget.autovalidate,
-                inputFormatters: widget.inputFormatters,
+          : new Container(
+              height: 55.0,
+              child: new Row(
+                children: <Widget>[
+                  widget.name != null
+                      ? new Container(
+                          width: widget.titleWidth,
+                          child: new Text('${widget.name}',
+                              style: widget.style),
+                        )
+                      : new Container(),
+                  new Expanded(
+                    child: new TextFormField(
+                      controller: widget.controller,
+                      keyboardType: widget.keyboardType ?? null,
+                      style: widget.style,
+                      enabled: widget.type != FastTextFieldType.readonly &&
+                          widget.enable,
+                      maxLines: widget.maxLine,
+                      decoration: InputDecoration(
+                        hintText: widget.placeholder,
+                        hintStyle:
+                            TextStyle(color: Color(0xffDFE0EB), fontSize: 15.0),
+                        border: InputBorder.none,
+                      ),
+                      onChanged: widget.onChanged ?? (str) {},
+                      obscureText: widget.obscureText,
+                      validator: widget.validator,
+                      inputFormatters: widget.inputFormatters,
+                    ),
+                  ),
+                  widget.suffix ?? new Container(),
+                ],
               ),
             ),
-            widget.suffix ?? new Container(),
-          ],
-        ),
-      ),
     );
   }
 }
 
 class FastKeyboardControl extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
 
   FastKeyboardControl({this.child});
 

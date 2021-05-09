@@ -19,16 +19,16 @@ class FastApp {
   * @param restful 默认使用 true, grpc与restful不可同时为true
   * */
   static setEnvironment({
-    FastAppEnvironment environment,
-    bool showLog,
-    String proxy,
-    bool grpc,
-    bool restful,
-    String devAddress,
-    String testAddress,
-    String productAddress,
-    String guestAddress,
-    String version,
+    FastAppEnvironment environment = FastAppEnvironment.product,
+    bool showLog = false,
+    String proxy = '',
+    bool grpc = false,
+    bool restful = true,
+    String devAddress = '',
+    String testAddress = '',
+    String productAddress = '',
+    String guestAddress = '',
+    String version = '',
   }) async {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -50,7 +50,7 @@ class FastApp {
       geustAddress: guestAddress,
     );
 
-    String e = await getStoreValue("GeustEnvironment");
+    String? e = await getStoreValue("GeustEnvironment");
 
     if(FastData.isLogin && e == '1'){
        FastApp.setGeustEnvironment();
@@ -73,12 +73,12 @@ class FastApp {
   }
 
   static setTheme({
-    Color appBarColor,
-    Color appBarTextColor,
-    Color backgroundColor,
-    Color mainColor,
-    Color lineColor,
-    Brightness brightness,
+    Color? appBarColor,
+    Color? appBarTextColor,
+    Color? backgroundColor,
+    Color? mainColor,
+    Color? lineColor,
+    Brightness? brightness,
   }) {
     if (appBarColor != null) {
       fastTheme.appBarColor = appBarColor;

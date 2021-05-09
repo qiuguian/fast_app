@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 class FastRowView extends StatelessWidget {
   final String title;
   final bool hiddenRightArrow;
-  final Widget trail;
-  final Widget prefix;
-  final BuildContext context;
-  final VoidCallback onTap;
+  final Widget? trail;
+  final Widget? prefix;
+  final BuildContext? context;
+  final VoidCallback? onTap;
   final double height;
   final EdgeInsets margin;
   final EdgeInsets padding;
 
   FastRowView({
-    this.title,
+    required this.title,
     this.hiddenRightArrow = false,
     this.trail,
     this.prefix,
@@ -24,11 +24,7 @@ class FastRowView extends StatelessWidget {
     this.padding = const EdgeInsets.only(left: 15, right: 10.0),
   });
 
-  actions(v) {
-    if (onTap != null) {
-      onTap();
-    }
-  }
+  actions(v) => onTap?.call();
 
   @override
   Widget build(BuildContext context) {
@@ -82,15 +78,15 @@ class FastRowView extends StatelessWidget {
 class FastCustomRowView extends StatelessWidget {
   final String title;
   final bool hiddenRightArrow;
-  final Widget trail;
-  final BuildContext context;
-  final VoidCallback onTap;
-  final Widget icon;
+  final Widget? trail;
+  final BuildContext? context;
+  final VoidCallback? onTap;
+  final Widget? icon;
   final EdgeInsetsGeometry padding;
   final double height;
 
   FastCustomRowView({
-    this.title,
+    required this.title,
     this.hiddenRightArrow = false,
     this.trail,
     this.context,
@@ -100,11 +96,7 @@ class FastCustomRowView extends StatelessWidget {
     this.height = 50,
   });
 
-  actions(v) {
-    if (onTap != null) {
-      onTap();
-    }
-  }
+  actions(v) => onTap?.call();
 
   @override
   Widget build(BuildContext context) {

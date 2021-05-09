@@ -17,37 +17,37 @@ import 'package:url_launcher/url_launcher.dart';
 
 part 'param_util.dart';
 
-final navGK = new GlobalKey<NavigatorState>();
-GlobalKey<ScaffoldState> scaffoldGK;
+final navGK = GlobalKey<NavigatorState>();
+GlobalKey<ScaffoldState> scaffoldGK = GlobalKey<ScaffoldState>();
 
-Future<dynamic> fastRoutePush(Widget widget) {
-  final route = new CupertinoPageRoute(
+Future<T?>? fastRoutePush<T extends Object?>(Widget widget) {
+  Route<T> route = CupertinoPageRoute(
     builder: (BuildContext context) => widget,
-    settings: new RouteSettings(
+    settings: RouteSettings(
       name: widget.toStringShort(),
 //      isInitialRoute: false,
     ),
   );
-  return navGK.currentState.push(route);
+  return navGK.currentState?.push<T>(route);
 }
 
-Future<dynamic> routeReplace(Widget widget) {
-  final route = new CupertinoPageRoute(
+Future<T?>? routeReplace<T extends Object?>(Widget widget) {
+  Route<T> route = new CupertinoPageRoute(
     builder: (BuildContext context) => widget,
     settings: new RouteSettings(
       name: widget.toStringShort(),
 //      isInitialRoute: false,
     ),
   );
-  return navGK.currentState.pushReplacement(route);
+  return navGK.currentState?.pushReplacement(route);
 }
 
 popToPage(Widget page) {
-  navGK.currentState.popUntil(ModalRoute.withName('$page'));
+  navGK.currentState?.popUntil(ModalRoute.withName('$page'));
 }
 
 pushReplacement(Widget page) {
-  navGK.currentState.pushReplacement(new MaterialPageRoute<dynamic>(
+  navGK.currentState?.pushReplacement(new MaterialPageRoute<dynamic>(
     builder: (BuildContext context) {
       return page;
     },
@@ -55,7 +55,7 @@ pushReplacement(Widget page) {
 }
 
 popToRootPage() {
-  navGK.currentState.popUntil(ModalRoute.withName('/'));
+  navGK.currentState?.popUntil(ModalRoute.withName('/'));
 }
 
 fastCall([url = '18176681925']) async {

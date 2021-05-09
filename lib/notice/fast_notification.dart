@@ -19,7 +19,7 @@ class FastNotification {
   static Callback addListener(String event, Callback call) {
     var callList = _eventMap[event];
     if (callList == null) {
-      callList = new List();
+      callList = [];
       _eventMap[event] = callList;
     }
 
@@ -37,8 +37,8 @@ class FastNotification {
     for (final k in keys) {
       final v = _eventMap[k];
 
-      final remove = v.remove(call);
-      if (remove && v.isEmpty) {
+      final remove = v?.remove(call);
+      if (remove != null && remove && v!.isEmpty) {
         _eventMap.remove(k);
       }
     }
@@ -74,10 +74,9 @@ class FastNotification {
 }
 
 mixin FastNotificationStateMixin<T extends StatefulWidget> on State<T> {
-  List<Callback> _listeners;
+  List<Callback> _listeners = [];
 
   void notice(String event, Callback call) {
-    _listeners ??= new List();
     _listeners.add(FastNotification.addListener(event, call));
   }
 
@@ -88,8 +87,8 @@ mixin FastNotificationStateMixin<T extends StatefulWidget> on State<T> {
   }
 
   void noticeDelAll() {
-    _listeners?.forEach(FastNotification.removeListener);
-    _listeners?.clear();
+    _listeners.forEach(FastNotification.removeListener);
+    _listeners.clear();
   }
 
   @override

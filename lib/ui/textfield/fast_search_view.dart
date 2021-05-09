@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:fast_app/fast_app.dart';
 
 class FastSearchView extends StatelessWidget {
-  final GestureTapCallback onTap;
-  final GestureTapCallback onSubmitted;
-  final String text;
-  final EdgeInsetsGeometry margin;
-  final TextEditingController controller;
+  final GestureTapCallback? onTap;
+  final GestureTapCallback? onSubmitted;
+  final String? text;
+  final EdgeInsetsGeometry? margin;
+  final TextEditingController? controller;
   final double radius;
-  final Callback onChange;
+  final Callback? onChange;
   final Color backgroundColor;
 
   FastSearchView({this.onTap,

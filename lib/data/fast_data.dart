@@ -55,7 +55,7 @@ class FastData {
   static initData() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    String login = await getStoreValue(FastActions.isLogin());
+    String? login = await getStoreValue(FastActions.isLogin());
     FastCache(FastActions.isLogin()).value = login == '1';
 
     getStoreValue(FastActions.loginInfo()).then((onValue) {
@@ -139,7 +139,7 @@ class FastData {
     FastCache(FastActions.imageHost()).value = imageHost;
   }
 
-  static String image(String imageUrl) {
+  static String? image(String? imageUrl) {
     if (imageUrl == null || imageUrl == '') {
       return null;
     } else if (imageUrl.contains('http')) {

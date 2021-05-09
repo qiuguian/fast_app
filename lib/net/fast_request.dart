@@ -12,21 +12,21 @@ typedef OnError(String msg, int code);
 typedef OnHeaders(headers);
 
 class FastRequest {
-  String url() => null;
+  String url() => '';
 
   bool doPost() => false;
 
   bool retJson() => true;
 
-  Duration cacheTime() => null;
+  Duration? cacheTime() => null;
 
-  String apiVersion() => null;
+  String? apiVersion() => null;
 
   bool needLogin() => false;
 
   bool isShowLog() => false;
 
-  String responseKey() => null;
+  String? responseKey() => null;
 
   String codeKey() => 'code';
 
@@ -38,13 +38,13 @@ class FastRequest {
 
   int reconnectTime() => 0;
 
-  FastViewModel _viewModel;
+  FastViewModel? _viewModel;
 
   //from-data application/json application/x-www-form-urlencoded
   Map<String, dynamic> header() =>
       <String, dynamic>{"Content-Type": "application/json"};
 
-  String localTestData() => null;
+  String? localTestData() => null;
 
   FastRequest inTarget(FastViewModel viewModel) {
     _viewModel = viewModel;
@@ -52,24 +52,24 @@ class FastRequest {
   }
 
   Future<dynamic> sendApiAction(BuildContext context,
-      {hud, OnData onData, OnError onError, OnHeaders onHeaders}) async {
+      {hud, OnData? onData, OnError? onError, OnHeaders? onHeaders}) async {
     if (_viewModel != null) {
-      _viewModel.start();
+      _viewModel?.start();
     }
 
-    if (context != null && hud != null) {
+    if (hud != null) {
       FastHudView.show(context, msg: hud);
     }
 
     var result = await api(this.url(), this.doPost(), this.retJson(), onHeaders,
         this, this.cacheTime());
 
-    if (context != null && hud != null) {
+    if (hud != null) {
       FastHudView.dismiss();
     }
 
     if (_viewModel != null) {
-      _viewModel.finish();
+      _viewModel?.finish();
     }
 
     if (result is String && result.contains('::')) {
@@ -93,7 +93,7 @@ class FastRequest {
     return result;
   }
 
-  sendApi({TaskStatusListener listener, OnData onData, OnError onError}) {
+  sendApi({TaskStatusListener? listener, OnData? onData, OnError? onError}) {
 //    this.sendByFuture(
 //      api(this.url(), this.doPost(), this.retJson(), this, this.cacheTime()),
 //      listener: listener,
@@ -104,9 +104,9 @@ class FastRequest {
 
   sendByFuture(
     Future future, {
-    TaskStatusListener listener,
-    OnData onData,
-    OnError onError,
+    TaskStatusListener? listener,
+    OnData? onData,
+    OnError? onError,
   }) {
     this.send(future, listener: listener, onData: onData, onError: onError);
 
@@ -114,7 +114,7 @@ class FastRequest {
   }
 
   send(Future observable,
-      {TaskStatusListener listener, OnData onData, OnError onError}) {
+      {TaskStatusListener? listener, OnData? onData, OnError? onError}) {
     final ls = listener ?? EmptyListener();
 
     ls.onStart();
@@ -122,7 +122,7 @@ class FastRequest {
     observable.then(
       (data) {
         final canCall = () => true && onData != null;
-        if (canCall()) Timer.run(() => canCall() ? onData(data) : null);
+        if (canCall()) Timer.run(() => onData?.call(data));
       },
       onError: (e, s) {
         List data = e.toString().split('::');
@@ -153,7 +153,7 @@ class EmptyListener extends TaskStatusListener {
 }
 
 class DefaultStatusListener extends TaskStatusListener {
-  final String hud;
+  final String? hud;
 
   DefaultStatusListener({this.hud});
 

@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 typedef PageMiniListener(double pixels);
 
 class PageMini {
-  ScrollController pageScrollController = new ScrollController();
+  ScrollController pageScrollController = ScrollController();
   bool isPageLoading = false;
 
-  PageOptionModel pageOptionModel = new PageOptionModel.empty();
-  PageResultModel pageResultModel = new PageResultModel.empty();
+  PageOptionModel pageOptionModel = PageOptionModel.empty();
+  PageResultModel pageResultModel = PageResultModel.empty();
 
-  initPage([PageMiniListener pageMiniListener]) {
-    print('======> 000');
+  initPage([PageMiniListener? pageMiniListener]) {
     if (pageScrollController != null) {
       pageScrollController.addListener(() {
         if (pageScrollController.position.pixels >=

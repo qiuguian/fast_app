@@ -71,10 +71,6 @@ class FastValidate {
   *
   * */
   static bool expHasMatch(String value, String express) {
-    if (express == null) {
-      throw '正则表达式不能为空';
-    }
-
     String exp = 'r"$express"';
     RegExp url = new RegExp(exp);
     return url.hasMatch(value);
@@ -90,9 +86,9 @@ class FastFormat {
   static String deleteHtmlTag(String context) {
     String _context = '';
 
-    var document = parse('${context ?? ''}');
+    var document = parse('$context');
 
-    _context = parse(document.body.text).documentElement.text;
+    _context = parse(document.body?.text).documentElement?.text??'';
 
     return _context;
   }
@@ -150,19 +146,19 @@ class FastFormat {
       if (formartDate
           .toString()
           .length >= 13 &&
-          formartDate.substring(10, 13) != null) {
+          formartDate.substring(10, 13).isNotEmpty) {
         result += "" + formartDate.substring(10, 13);
       }
       if (formartDate
           .toString()
           .length >= 17 &&
-          formartDate.toString().substring(14, 16) != null) {
+          formartDate.toString().substring(14, 16).isNotEmpty) {
         result += ":" + formartDate.substring(14, 16);
       }
       if (formartDate
           .toString()
           .length >= 19 &&
-          formartDate.substring(17, 19) != null) {
+          formartDate.substring(17, 19).isNotEmpty) {
         result += ":" + formartDate.substring(17, 19);
       }
       print(result);
@@ -174,7 +170,7 @@ class FastFormat {
   }
 
   static DateTime getDateTime({String formartDate = "1970-10-01 00:00:00"}) {
-    if (formartDate == null || formartDate == '') {
+    if (formartDate.isEmpty) {
       return DateTime.now();
     }
 
@@ -193,19 +189,19 @@ class FastFormat {
       if (formartDate
           .toString()
           .length >= 13 &&
-          formartDate.substring(10, 13) != null) {
+          formartDate.substring(10, 13).isNotEmpty) {
         result += "" + formartDate.substring(10, 13);
       }
       if (formartDate
           .toString()
           .length >= 17 &&
-          formartDate.toString().substring(14, 16) != null) {
+          formartDate.toString().substring(14, 16).isNotEmpty) {
         result += ":" + formartDate.substring(14, 16);
       }
       if (formartDate
           .toString()
           .length >= 19 &&
-          formartDate.substring(17, 19) != null) {
+          formartDate.substring(17, 19).isNotEmpty) {
         result += ":" + formartDate.substring(17, 19);
       }
       var dateTime = DateTime.parse(result);
@@ -216,8 +212,8 @@ class FastFormat {
   }
 
   static String getWeek(int week, [type = 2]) {
-    String weekString;
-    List data = new List();
+    String weekString = '';
+    List data = [];
 
     List data1 = [
       "Monday",
@@ -247,8 +243,8 @@ class FastFormat {
   }
 
   static String getMonth(int month, [type = 2]) {
-    String monthString;
-    List data = new List();
+    String monthString = '';
+    List data = [];
 
     List data1 = [
       "January",

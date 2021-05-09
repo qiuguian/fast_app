@@ -14,7 +14,7 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title = '',
     this.showBackIcon = true,
     this.showShadow = false,
-    this.rightDMActions,
+    this.rightDMActions = const [],
     this.backgroundColor,
     this.mainColor,
     this.titleW,
@@ -29,14 +29,14 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackIcon;
   final bool showShadow;
   final List<Widget> rightDMActions;
-  final Color backgroundColor;
-  final Color mainColor;
-  final Widget titleW;
-  final PreferredSizeWidget bottom;
-  final Widget leading;
+  final Color? backgroundColor;
+  final Color? mainColor;
+  final Widget? titleW;
+  final PreferredSizeWidget? bottom;
+  final Widget? leading;
   final bool isCenterTitle;
-  final Brightness brightness;
-  final VoidCallback onBack;
+  final Brightness? brightness;
+  final VoidCallback? onBack;
 
   @override
   Size get preferredSize => new Size(100, bottom != null ? 100 : 50);
@@ -45,7 +45,7 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
     FocusScope.of(context)
         .requestFocus(new FocusNode());
     if (onBack != null) {
-      onBack.call();
+      onBack?.call();
     } else {
       Navigator.pop(context);
     }

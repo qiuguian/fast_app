@@ -4,7 +4,7 @@ import 'package:toast/toast.dart';
 
 fastToast(BuildContext context, String msg, {duration = 1}) {
   return Toast.show(
-    msg ?? '请求失败',
+    msg,
     context,
     duration: duration,
     gravity: 3,
@@ -13,7 +13,7 @@ fastToast(BuildContext context, String msg, {duration = 1}) {
   );
 }
 
-fastToastSuccess(BuildContext context, String msg, {Function timeOutCall}) {
+fastToastSuccess(BuildContext context, String msg, {Function? timeOutCall}) {
   //创建一个OverlayEntry对象
   OverlayEntry overlayEntry = new OverlayEntry(builder: (context) {
     //外层使用Positioned进行定位，控制在Overlay中的位置
@@ -75,7 +75,7 @@ fastToastSuccess(BuildContext context, String msg, {Function timeOutCall}) {
         ));
   });
   //往Overlay中插入插入OverlayEntry
-  Overlay.of(context).insert(overlayEntry);
+  Overlay.of(context)?.insert(overlayEntry);
   //两秒后，移除Toast
   new Future.delayed(Duration(seconds: 1)).then((value) {
     overlayEntry.remove();

@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 class FastHudView {
   static bool isLoading = false;
   static bool isAutoShow = false;
-  static OverlayEntry overlayEntry;
-  static BuildContext _context;
-  static Timer _timer;
+  static OverlayEntry? overlayEntry;
+  static BuildContext? _context;
+  static Timer? _timer;
   static String icon = 'assets/loading.gif';
   static String package = 'fast_app';
 
   ///定时关闭
   static void timerTread() {
-    if (_timer != null && _timer.isActive) {
-      _timer.cancel();
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
       _timer = null;
     }
     int index = 0;
@@ -29,11 +29,8 @@ class FastHudView {
   }
 
   static void show(BuildContext context, {msg = '加载中...'}) {
-    if (context == null) {
-      return;
-    }
 
-    WidgetsBinding widgetsBinding = WidgetsBinding.instance;
+    WidgetsBinding widgetsBinding = WidgetsBinding.instance!;
     widgetsBinding.addPostFrameCallback((callback) {
       dismiss();
       isLoading = true;
@@ -83,8 +80,8 @@ class FastHudView {
         },
       );
 
-      if (overlayEntry != null && _context != null) {
-        Overlay.of(_context).insert(overlayEntry);
+      if (overlayEntry != null) {
+        Overlay.of(_context!)?.insert(overlayEntry!);
       }
     });
   }
@@ -104,7 +101,7 @@ class FastHudView {
   }
 
   static void autoShow(BuildContext context, {msg = '加载中...'}) {
-    WidgetsBinding widgetsBinding = WidgetsBinding.instance;
+    WidgetsBinding widgetsBinding = WidgetsBinding.instance!;
     widgetsBinding.addPostFrameCallback((callback) {
       dismiss();
 
@@ -158,14 +155,14 @@ class FastHudView {
         );
       }
 
-      Overlay.of(_context).insert(overlayEntry);
+      Overlay.of(_context!)?.insert(overlayEntry!);
     });
   }
 
   static void autoDismiss() {
     if (isAutoShow) {
       if (isLoading && overlayEntry != null) {
-        overlayEntry.remove();
+        overlayEntry?.remove();
         overlayEntry = null;
       }
       isLoading = false;

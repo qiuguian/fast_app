@@ -6,7 +6,7 @@ Future<void> fastConfirmDialog(BuildContext context, {
   String info = "",
   String cancelBtn = "Cancel",
   String sureBtn = "Sure",
-  Callback onTap,
+  Callback? onTap,
 }) async {
   showDialog(
     context: context,
@@ -110,7 +110,7 @@ Future<void> fastKnowDialog(BuildContext context, {
   String title = "Tips",
   String info = "",
   String sureBtn = "I have known",
-  Callback onTap,
+  Callback? onTap,
 }) async {
   showDialog(
     context: context,

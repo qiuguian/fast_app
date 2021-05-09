@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 class FastHud {
   static String icon = 'assets/loading.gif';
   static String package = 'fast_app';
-  static Timer _timer;
+  static Timer? _timer;
   static int _index = 0;
   static bool isLoading = false;
 
   ///定时关闭
   static void timerTread([end = 10]) {
-    if (_timer != null && _timer.isActive) {
-      _timer.cancel();
+    if (_timer != null && _timer!.isActive) {
+      _timer?.cancel();
       _timer = null;
     }
     int index = 0;
@@ -36,7 +36,7 @@ class FastHud {
     isLoading = true;
 
     showDialog(
-        context: navGK.currentContext,
+        context: navGK.currentContext!,
         barrierDismissible: false,
         barrierColor: Colors.transparent,
         builder: (context) {
@@ -89,7 +89,7 @@ class FastHud {
       _timer?.cancel();
       isLoading = false;
       _index = 0;
-      Navigator.maybePop(navGK.currentContext);
+      Navigator.maybePop(navGK.currentContext!);
     }
   }
 
@@ -103,7 +103,7 @@ class FastHud {
     isLoading = true;
 
     showDialog(
-      context: navGK.currentContext,
+      context: navGK.currentContext!,
       barrierDismissible: false,
       barrierColor: Colors.transparent,
       builder: (context) {

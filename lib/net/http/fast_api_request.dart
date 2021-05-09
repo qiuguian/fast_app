@@ -12,8 +12,8 @@ final timeoutShort = const Duration(seconds: 8);
 final _client = new HttpClient();
 var _id = 0;
 
-Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
-    [final obj, Duration cacheTime]) async {
+Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders? onHeaders,
+    [final obj, Duration? cacheTime]) async {
 //  Analytics.subEvent('API');
 
   final id = _id++;
@@ -31,10 +31,10 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
     );
   } else {
     String cacheKey;
-    FastHttpResponse response;
+    FastHttpResponse? response;
 
     if (EnvironmentConfig.share().environment == FastAppEnvironment.local) {
-      response = await _client.getTestData(obj);
+      response = await _client?.getTestData(obj);
     } else if (doPost) {
       if (obj is FastRequest) {
         requstBody = jsonDecode(jsonEncode(obj));
@@ -103,11 +103,11 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
       }
     }
 
-    final statusCode = response.code;
+    final statusCode = response?.code;
 
     switch (statusCode) {
       case HttpStatus.ok:
-        final body = response.body;
+        final body = response?.body;
 
         if (obj.isShowLog()) {
           print('HTTP_RESPONSE_TIME::[$id]::${DateTime.now()}');
@@ -117,7 +117,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
         }
 
         if (retJson) {
-          final json = jsonDecode(body);
+          final json = jsonDecode(body!);
 
           List codes = obj.successCode();
 
@@ -145,7 +145,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
             }
 
             if (onHeaders != null) {
-              onHeaders(response.headers);
+              onHeaders?.call(response?.headers);
             }
 
             return result;
@@ -164,7 +164,6 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders onHeaders,
           }
           return body;
         }
-        break;
       default:
         return '$statusCode::Server busy::$url-$id';
     }
@@ -175,9 +174,9 @@ class HttpClient {
   Future<FastHttpResponse> get(
     url,
     body, {
-    Map<String, dynamic> headers,
-    bool isReconnectStrategyStart,
-    int reconnectTime,
+    Map<String, dynamic> headers = const {},
+    bool isReconnectStrategyStart = false,
+    int reconnectTime = 0,
   }) async {
     final response = await FastAppHttp.doGet(
       url: url,
@@ -192,9 +191,9 @@ class HttpClient {
   Future<FastHttpResponse> post(
     url,
     body, {
-    Map<String, dynamic> headers,
-    bool isReconnectStrategyStart,
-    int reconnectTime,
+    Map<String, dynamic> headers = const {},
+        bool isReconnectStrategyStart = false,
+    int reconnectTime = 0,
   }) async {
     final response = await FastAppHttp.doPost(
       url: url,
@@ -207,7 +206,7 @@ class HttpClient {
   }
 
   Future<FastHttpResponse> getTestData(FastRequest request,
-      {Map<String, dynamic> headers, body}) async {
+      {Map<String, String> headers = const {}, body}) async {
     final response = await FastAppHttp.doGetTestData(request, body, headers);
     return response;
   }

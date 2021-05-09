@@ -54,7 +54,7 @@ class CacheWidget<T> extends StatefulWidget {
   final StoreBuilder<T> builder;
   final data;
 
-  CacheWidget(this.action, this.builder, {Key key, this.data})
+  CacheWidget(this.action, this.builder, {Key? key, this.data})
       : super(key: key);
 
   @override
@@ -63,7 +63,7 @@ class CacheWidget<T> extends StatefulWidget {
 
 class _CacheWidgetState<T> extends State<CacheWidget<T>>
     with FastNotificationStateMixin {
-  T item;
+  T? item;
 
   void init() {
     final action = widget.action;
@@ -77,11 +77,11 @@ class _CacheWidgetState<T> extends State<CacheWidget<T>>
   void initState() {
     super.initState();
     init();
-    widget.builder(item);
+    widget.builder(item!);
   }
 
   @override
-  void didUpdateWidget(CacheWidget oldWidget) {
+  void didUpdateWidget(CacheWidget<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     noticeDel(onData);
 
@@ -93,13 +93,13 @@ class _CacheWidgetState<T> extends State<CacheWidget<T>>
   }
 
   @override
-  Widget build(BuildContext context) => widget.builder(item);
+  Widget build(BuildContext context) => widget.builder(item!);
 }
 
 storeString(String k, v) async {
    storeKV(k, v);
 }
 
-Future<String> getStoreValue(String k) async {
+Future<String?> getStoreValue(String k) async {
   return await getStoreByKey(k);
 }

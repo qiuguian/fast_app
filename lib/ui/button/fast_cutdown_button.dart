@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fast_app/cache/app_cache.dart';
 
-_FastCutDownButtonState _state;
+_FastCutDownButtonState? _state;
 
 String cutDownDurationKey = "CutDownDurationKey";
 
@@ -20,13 +20,13 @@ class FastCutDownButton extends StatefulWidget {
     this.textStyle = const TextStyle(color: Colors.white),
   });
 
-  final double height;
-  final int time;
+  final double? height;
+  final int? time;
   final Color backgroundColor;
-  final Border border;
-  final BorderRadius borderRadius;
+  final Border? border;
+  final BorderRadius? borderRadius;
   final EdgeInsetsGeometry padding;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String text;
   final TextStyle textStyle;
 
@@ -37,13 +37,13 @@ class FastCutDownButton extends StatefulWidget {
   @override
   _FastCutDownButtonState createState() {
     _state = _FastCutDownButtonState();
-    return _state;
+    return _state!;
   }
 }
 
 class _FastCutDownButtonState extends State<FastCutDownButton> {
   String text = "";
-  Timer _timer;
+  Timer? _timer;
   int num = 0;
 
   @override
@@ -54,11 +54,11 @@ class _FastCutDownButtonState extends State<FastCutDownButton> {
   }
 
   //发送请求成功后 开始倒计时
-  sendSuccess([int cutDownTime]) {
+  sendSuccess([int? cutDownTime]) {
     createTimer(cutDownTime);
   }
 
-  createTimer([int cutDownTime]) async {
+  createTimer([int? cutDownTime]) async {
     num = 60;
 
     if (cutDownTime != null && cutDownTime > 0) {

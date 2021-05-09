@@ -21,7 +21,7 @@ export  'package:fast_app/util/enum_util.dart';
 export  'package:fast_app/util/fast_platform.dart';
 export 'package:fast_app/data/fast_data.dart';
 export 'package:fast_app/ui/banner/banner_view.dart';
-export 'package:flutter_swiper/flutter_swiper.dart';
+export 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:fast_app/ui/button/fast_button.dart';
 export 'package:fast_app/ui/button/fast_mini_button.dart';

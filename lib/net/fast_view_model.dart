@@ -9,8 +9,8 @@ typedef ApiCallBack();
 
 class FastViewModel extends Model with PageControlModel{
 
-  ApiCallBack finishCallBack;
-  ApiCallBack startCallBack;
+  ApiCallBack? finishCallBack;
+  ApiCallBack? startCallBack;
 
   bool isLoading = true;
 
@@ -18,7 +18,7 @@ class FastViewModel extends Model with PageControlModel{
 
   Sink get inDataController => dataController;
 
-  List dataList = new List();
+  List dataList = [];
   var datas;
 
   Stream<dynamic> get stream => dataController.stream.map((data){
@@ -42,11 +42,11 @@ class FastViewModel extends Model with PageControlModel{
 
     assert(repData is List);
 
-    List list = new List();
+    List list = [];
 
     repData.forEach((json) => list.add(model.from(json)));
 
-    inDataController.add(list??[]);
+    inDataController.add(list);
 
   }
 
@@ -54,7 +54,7 @@ class FastViewModel extends Model with PageControlModel{
 
     List repData = data;
 
-    List list = new List();
+    List list = [];
 
     repData.forEach((json) => list.add(model.from(json)));
 
@@ -63,7 +63,7 @@ class FastViewModel extends Model with PageControlModel{
 
   void updateViewModel() => notifyListeners();
 
-  void addRequestListener({ApiCallBack start,ApiCallBack finish,ApiCallBack lastCallBack}){
+  void addRequestListener({ApiCallBack? start,ApiCallBack? finish,ApiCallBack? lastCallBack}){
     startCallBack = start;
     finishCallBack = finish;
   }
@@ -71,7 +71,7 @@ class FastViewModel extends Model with PageControlModel{
   void start(){
     if(startCallBack != null){
       isLoading = true;
-      startCallBack();
+      startCallBack?.call();
     }
   }
 
@@ -79,7 +79,7 @@ class FastViewModel extends Model with PageControlModel{
     if(finishCallBack != null){
       new Future.delayed(new Duration(milliseconds: 200),(){
         isLoading = false;
-        finishCallBack();
+        finishCallBack?.call();
       });
     }
   }

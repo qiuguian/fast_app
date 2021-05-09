@@ -1,5 +1,8 @@
 #fast_app
 
+## 2.0.0
+* add null-safety
+
 ## 1.0.0
 * 增加dio proxy
 

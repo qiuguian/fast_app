@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fast_app/fast_app.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
   FastBannerView({
-    this.height,
-    this.banners,
+    required this.height,
+    required this.banners,
     this.onTap,
     this.scale = 1.0,
     this.viewportFraction = 1.0,
@@ -20,7 +20,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
 
   final double height;
   final List banners;
-  final Callback onTap;
+  final Callback? onTap;
   final double scale;
   final double viewportFraction;
   final double radius;
@@ -36,14 +36,12 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
           .width, height);
 
   clickBanner([index = 0]) {
-    if (onTap != null) {
-      onTap(index);
-    }
+    onTap?.call(index);
   }
 
   @override
   Widget build(BuildContext context) {
-    List indexS = new List();
+    List indexS = [];
 
     for (int i = 0; i < banners.length; i++) {
       indexS.add(i);

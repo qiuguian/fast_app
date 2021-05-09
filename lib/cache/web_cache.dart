@@ -1,3 +1,4 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
 storeKV(k, v) async {
@@ -8,7 +9,7 @@ storeKV(k, v) async {
 //  html.window.document.cookie;
 }
 
-Future<String> getStoreByKey(String k) async {
+Future<String?> getStoreByKey(String k) async {
 
   if(html.window.localStorage.containsKey("$k")){
     return html.window.localStorage['$k'];

@@ -12,7 +12,7 @@ import 'package:fast_app/util/enum_util.dart';
 
 export 'package:fast_app/util/enum_util.dart';
 
-EnvironmentConfig environmentConfig;
+EnvironmentConfig environmentConfig = EnvironmentConfig();
 
 class EnvironmentConfig {
   FastAppEnvironment environment;
@@ -23,12 +23,12 @@ class EnvironmentConfig {
   bool restful;
 
   EnvironmentConfig({
-    this.environment,
-    this.address,
-    this.showLog,
-    this.proxy,
-    this.grpc,
-    this.restful,
+    this.environment = FastAppEnvironment.product,
+    this.address = '',
+    this.showLog = false,
+    this.proxy = '',
+    this.grpc = false,
+    this.restful = true,
   });
 
   factory EnvironmentConfig.share() {
@@ -64,10 +64,10 @@ class FastApiHostConfig {
   final String geustAddress;
 
   FastApiHostConfig({
-    this.devAddress,
-    this.testAddress,
-    this.productAddress,
-    this.geustAddress,
+    this.devAddress = '',
+    this.testAddress = '',
+    this.productAddress = '',
+    this.geustAddress = '',
   });
 
   factory FastApiHostConfig.share() => fastApiHostConfig;

@@ -4,21 +4,21 @@ typedef Widget ItemWidget(item);
 
 class FastListView extends StatefulWidget {
   final FastViewModel viewModel;
-  final ItemWidget builder;
-  final Widget headerView;
-  final Widget footerView;
-  final Decoration decoration;
-  final EdgeInsetsGeometry padding;
-  final EdgeInsetsGeometry margin;
-  final Widget child;
-  final double space;
-  final double runSpacing;
-  final String emptyMsg;
-  final String loadingTip;
-  final ScrollController controller;
+  final ItemWidget? builder;
+  final Widget? headerView;
+  final Widget? footerView;
+  final Decoration? decoration;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
+  final Widget? child;
+  final double? space;
+  final double? runSpacing;
+  final String? emptyMsg;
+  final String? loadingTip;
+  final ScrollController? controller;
 
   FastListView({
-    this.viewModel,
+    required this.viewModel,
     this.builder,
     this.headerView,
     this.footerView,
@@ -34,7 +34,7 @@ class FastListView extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => new FastListViewState();
+  State<StatefulWidget> createState() => FastListViewState();
 }
 
 class FastListViewState extends State<FastListView> with PageMini {
@@ -43,7 +43,7 @@ class FastListViewState extends State<FastListView> with PageMini {
     super.initState();
 
     if (widget.controller != null) {
-      pageScrollController = widget.controller;
+      pageScrollController = widget.controller!;
     }
 
     initPage();
@@ -73,68 +73,68 @@ class FastListViewState extends State<FastListView> with PageMini {
 
   @override
   Widget build(BuildContext context) {
-    return new Stack(
+    return Stack(
       children: <Widget>[
-        new Visibility(
+        Visibility(
           visible: widget.viewModel.dataList.length > 0,
-          child: new Container(
+          child: Container(
             decoration: widget.decoration,
             padding: widget.padding,
             margin: widget.margin,
-            child: new SingleChildScrollView(
+            child: SingleChildScrollView(
               controller: pageScrollController,
               physics: const BouncingScrollPhysics(),
-              child: new Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  widget.headerView ?? new Container(),
+                  widget.headerView ?? Container(),
                   widget.builder != null
-                      ? new Wrap(
-                          spacing: widget.space,
-                          runSpacing: widget.runSpacing,
-                          children: widget.viewModel.dataList
-                              .map(widget.builder)
-                              .toList(growable: false),
+                      ? Wrap(
+                          spacing: widget.space ?? 0,
+                          runSpacing: widget.runSpacing ?? 0,
+                          children: List.from(widget.viewModel.dataList
+                              .map(widget.builder!)
+                              .toList(growable: false)),
                         )
-                      : widget.child,
-                  widget.footerView ?? new Container(),
+                      : widget.child!,
+                  widget.footerView ?? Container(),
                 ],
               ),
             ),
           ),
         ),
-        new Visibility(
+        Visibility(
           visible: widget.viewModel.dataList.length == 0 && !isPageLoading,
-          child: new Padding(
+          child: Padding(
             padding: EdgeInsets.symmetric(vertical: 80.0),
-            child: new Center(
-              child: new InkWell(
+            child: Center(
+              child: InkWell(
                 onTap: () => refreshData(),
-                child: new Wrap(
+                child: Wrap(
                   direction: Axis.vertical,
                   spacing: 8.0,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
-                    new Image.asset(
+                    Image.asset(
                       'assets/ic_common_empty.png',
                       package: "fast_app",
                     ),
-                    new Text('${widget.emptyMsg}',
-                        style: new TextStyle(
-                            color: Color(0xffCCCCCC), fontSize: 13)),
+                    Text('${widget.emptyMsg}',
+                        style:
+                            TextStyle(color: Color(0xffCCCCCC), fontSize: 13)),
                   ],
                 ),
               ),
             ),
           ),
         ),
-        new Visibility(
+        Visibility(
           visible: widget.viewModel.dataList.length == 0 && isPageLoading,
-          child: new Padding(
+          child: Padding(
               padding: EdgeInsets.symmetric(vertical: 80.0),
-              child: new Center(
-                  child: new Text('${widget.loadingTip}',
-                      style: new TextStyle(fontSize: 13)))),
+              child: Center(
+                  child: Text('${widget.loadingTip}',
+                      style: TextStyle(fontSize: 13)))),
         ),
       ],
     );
@@ -145,13 +145,13 @@ typedef Widget ItemWidgetBuilder(context, position);
 
 class FastListViewBuilder extends StatefulWidget {
   final FastViewModel viewModel;
-  final ItemWidgetBuilder builder;
-  final Widget headerView;
-  final Widget footerView;
+  final ItemWidgetBuilder? builder;
+  final Widget? headerView;
+  final Widget? footerView;
   final Decoration decoration;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
-  final Widget child;
+  final Widget? child;
   final double space;
   final double runSpacing;
   final String emptyMsg;
@@ -159,7 +159,7 @@ class FastListViewBuilder extends StatefulWidget {
   final ScrollController controller;
 
   FastListViewBuilder({
-    this.viewModel,
+    required this.viewModel,
     this.builder,
     this.headerView,
     this.footerView,
@@ -171,11 +171,11 @@ class FastListViewBuilder extends StatefulWidget {
     this.runSpacing = 0,
     this.emptyMsg = '暂无数据!点我刷新',
     this.loadingTip = '加载中',
-    this.controller,
+    required this.controller,
   });
 
   @override
-  State<StatefulWidget> createState() => new FastListViewBuilderState();
+  State<StatefulWidget> createState() => FastListViewBuilderState();
 }
 
 class FastListViewBuilderState extends State<FastListViewBuilder>
@@ -184,9 +184,7 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
   void initState() {
     super.initState();
 
-    if (widget.controller != null) {
-      pageScrollController = widget.controller;
-    }
+    pageScrollController = widget.controller;
 
     initPage();
 
@@ -217,15 +215,15 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
         (widget.headerView != null ? 1 : 0) +
         (widget.footerView != null ? 1 : 0);
 
-    return new Stack(
+    return Stack(
       children: <Widget>[
-        new Visibility(
+        Visibility(
           visible: widget.viewModel.dataList.length > 0 ||
               widget.headerView != null ||
               widget.footerView != null,
-          child: new Padding(
+          child: Padding(
             padding: widget.padding,
-            child: new ListView.builder(
+            child: ListView.builder(
               padding: EdgeInsets.all(0),
               controller: pageScrollController,
               physics: const BouncingScrollPhysics(),
@@ -233,24 +231,24 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
               itemBuilder: (context, index) {
                 if (widget.headerView != null) {
                   if (index == 0) {
-                    return widget.headerView;
+                    return widget.headerView!;
                   } else {
                     return widget.viewModel.dataList.length > 0
-                        ? widget.builder(context, index - 1)
-                        : new Center(
-                            child: new InkWell(
+                        ? widget.builder!(context, index - 1)
+                        : Center(
+                            child: InkWell(
                               onTap: () => refreshData(),
-                              child: new Wrap(
+                              child: Wrap(
                                 direction: Axis.vertical,
                                 spacing: 8.0,
                                 crossAxisAlignment: WrapCrossAlignment.center,
                                 children: <Widget>[
-                                  new Image.asset(
+                                  Image.asset(
                                     'assets/ic_common_empty.png',
                                     package: "fast_app",
                                   ),
-                                  new Text('${widget.emptyMsg}',
-                                      style: new TextStyle(
+                                  Text('${widget.emptyMsg}',
+                                      style: TextStyle(
                                           color: Color(0xffCCCCCC),
                                           fontSize: 13)),
                                 ],
@@ -259,49 +257,49 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
                           );
                   }
                 } else if (widget.footerView != null && index == count - 1) {
-                  return widget.footerView;
+                  return widget.footerView!;
                 } else {
-                  return widget.builder(context, index);
+                  return widget.builder!(context, index);
                 }
               },
             ),
           ),
         ),
-        new Visibility(
+        Visibility(
           visible: widget.viewModel.dataList.length == 0 &&
               !isPageLoading &&
               widget.headerView == null &&
               widget.footerView == null,
-          child: new Padding(
+          child: Padding(
             padding: EdgeInsets.symmetric(vertical: 80.0),
-            child: new Center(
-              child: new InkWell(
+            child: Center(
+              child: InkWell(
                 onTap: () => refreshData(),
-                child: new Wrap(
+                child: Wrap(
                   direction: Axis.vertical,
                   spacing: 8.0,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
-                    new Image.asset(
+                    Image.asset(
                       'assets/ic_common_empty.png',
                       package: "fast_app",
                     ),
-                    new Text('${widget.emptyMsg}',
-                        style: new TextStyle(
-                            color: Color(0xffCCCCCC), fontSize: 13)),
+                    Text('${widget.emptyMsg}',
+                        style:
+                            TextStyle(color: Color(0xffCCCCCC), fontSize: 13)),
                   ],
                 ),
               ),
             ),
           ),
         ),
-        new Visibility(
+        Visibility(
           visible: widget.viewModel.dataList.length == 0 && isPageLoading,
-          child: new Padding(
+          child: Padding(
               padding: EdgeInsets.symmetric(vertical: 80.0),
-              child: new Center(
-                  child: new Text('${widget.loadingTip}',
-                      style: new TextStyle(fontSize: 13)))),
+              child: Center(
+                  child: Text('${widget.loadingTip}',
+                      style: TextStyle(fontSize: 13)))),
         ),
       ],
     );
@@ -310,13 +308,13 @@ class FastListViewBuilderState extends State<FastListViewBuilder>
 
 class FastListViewRefreshBuilder extends StatefulWidget {
   final FastViewModel viewModel;
-  final ItemWidgetBuilder builder;
-  final Widget headerView;
-  final Widget footerView;
+  final ItemWidgetBuilder? builder;
+  final Widget? headerView;
+  final Widget? footerView;
   final Decoration decoration;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
-  final Widget child;
+  final Widget? child;
   final double space;
   final double runSpacing;
   final String emptyMsg;
@@ -324,7 +322,7 @@ class FastListViewRefreshBuilder extends StatefulWidget {
   final ScrollController controller;
 
   FastListViewRefreshBuilder({
-    this.viewModel,
+    required this.viewModel,
     this.builder,
     this.headerView,
     this.footerView,
@@ -336,11 +334,11 @@ class FastListViewRefreshBuilder extends StatefulWidget {
     this.runSpacing = 0,
     this.emptyMsg = '暂无数据!点我刷新',
     this.loadingTip = '加载中',
-    this.controller,
+    required this.controller,
   });
 
   @override
-  State<StatefulWidget> createState() => new FastListViewRefreshBuilderState();
+  State<StatefulWidget> createState() => FastListViewRefreshBuilderState();
 }
 
 class FastListViewRefreshBuilderState
@@ -374,42 +372,42 @@ class FastListViewRefreshBuilderState
         (widget.headerView != null ? 1 : 0) +
         (widget.footerView != null ? 1 : 0);
 
-    return new Stack(
+    return Stack(
       children: <Widget>[
-        new Visibility(
+        Visibility(
           visible: widget.viewModel.dataList.length > 0 ||
               widget.headerView != null ||
               widget.footerView != null,
-          child: new Padding(
+          child: Padding(
             padding: widget.padding,
             child: RefreshView(
               onRefresh: () => widget.viewModel.refreshData(),
               onLoading: () => widget.viewModel.loadMoreData(),
-              child: new ListView.builder(
+              child: ListView.builder(
                 padding: EdgeInsets.all(0),
                 physics: const BouncingScrollPhysics(),
                 itemCount: count,
                 itemBuilder: (context, index) {
                   if (widget.headerView != null) {
                     if (index == 0) {
-                      return widget.headerView;
+                      return widget.headerView!;
                     } else {
                       return widget.viewModel.dataList.length > 0
-                          ? widget.builder(context, index - 1)
-                          : new Center(
-                              child: new InkWell(
+                          ? widget.builder!(context, index - 1)
+                          : Center(
+                              child: InkWell(
                                 onTap: () => widget.viewModel.refreshData(),
-                                child: new Wrap(
+                                child: Wrap(
                                   direction: Axis.vertical,
                                   spacing: 8.0,
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: <Widget>[
-                                    new Image.asset(
+                                    Image.asset(
                                       'assets/ic_common_empty.png',
                                       package: "fast_app",
                                     ),
-                                    new Text('${widget.emptyMsg}',
-                                        style: new TextStyle(
+                                    Text('${widget.emptyMsg}',
+                                        style: TextStyle(
                                             color: Color(0xffCCCCCC),
                                             fontSize: 13)),
                                   ],
@@ -418,50 +416,50 @@ class FastListViewRefreshBuilderState
                             );
                     }
                   } else if (widget.footerView != null && index == count - 1) {
-                    return widget.footerView;
+                    return widget.footerView!;
                   } else {
-                    return widget.builder(context, index);
+                    return widget.builder!(context, index);
                   }
                 },
               ),
             ),
           ),
         ),
-        new Visibility(
+        Visibility(
           visible: widget.viewModel.dataList.length == 0 &&
               !isPageLoading &&
               widget.headerView == null &&
               widget.footerView == null,
-          child: new Padding(
+          child: Padding(
             padding: EdgeInsets.symmetric(vertical: 80.0),
-            child: new Center(
-              child: new InkWell(
+            child: Center(
+              child: InkWell(
                 onTap: () => widget.viewModel.refreshData(),
-                child: new Wrap(
+                child: Wrap(
                   direction: Axis.vertical,
                   spacing: 8.0,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
-                    new Image.asset(
+                    Image.asset(
                       'assets/ic_common_empty.png',
                       package: "fast_app",
                     ),
-                    new Text('${widget.emptyMsg}',
-                        style: new TextStyle(
-                            color: Color(0xffCCCCCC), fontSize: 13)),
+                    Text('${widget.emptyMsg}',
+                        style:
+                            TextStyle(color: Color(0xffCCCCCC), fontSize: 13)),
                   ],
                 ),
               ),
             ),
           ),
         ),
-        new Visibility(
+        Visibility(
           visible: widget.viewModel.dataList.length == 0 && isPageLoading,
-          child: new Padding(
+          child: Padding(
               padding: EdgeInsets.symmetric(vertical: 80.0),
-              child: new Center(
-                  child: new Text('${widget.loadingTip}',
-                      style: new TextStyle(fontSize: 13)))),
+              child: Center(
+                  child: Text('${widget.loadingTip}',
+                      style: TextStyle(fontSize: 13)))),
         ),
       ],
     );
@@ -475,15 +473,15 @@ class FastDataBind extends StatelessWidget {
   final String loadingTip;
 
   FastDataBind({
-    this.viewModel,
-    this.builder,
+    required this.viewModel,
+    required this.builder,
     this.isShowEmpty = false,
     this.loadingTip = '加载中',
   });
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       initialData: viewModel.dataList.isNotEmpty || viewModel.datas != null
           ? viewModel.dataList.isNotEmpty
               ? viewModel.dataList
@@ -493,28 +491,28 @@ class FastDataBind extends StatelessWidget {
       builder: (context, snapshot) {
         var data = snapshot.data;
 
-        return new Stack(
+        return Stack(
           children: <Widget>[
-            new Visibility(
+            Visibility(
               visible: (data is List && data.length > 0) ||
                   !(data is List) ||
                   !isShowEmpty,
               child: builder(context, snapshot),
             ),
-            new Visibility(
+            Visibility(
               visible: data is List && data.length == 0 && isShowEmpty,
-              child: new Center(
-                child: new Wrap(
+              child: Center(
+                child: Wrap(
                   direction: Axis.vertical,
                   spacing: 8.0,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
-                    new Image.asset(
+                    Image.asset(
                       'assets/ic_common_empty.png',
                       package: "fast_app",
                     ),
-                    new Text('$loadingTip',
-                        style: new TextStyle(color: Color(0xff888697))),
+                    Text('$loadingTip',
+                        style: TextStyle(color: Color(0xff888697))),
                   ],
                 ),
               ),
@@ -529,20 +527,20 @@ class FastDataBind extends StatelessWidget {
 class FastPageDataBind extends StatefulWidget {
   final FastViewModel viewModel;
   final ItemWidget itemWidget;
-  final Widget emptyView;
+  final Widget? emptyView;
   final String emptyMsg;
   final String loadingTip;
 
   FastPageDataBind({
-    this.viewModel,
-    this.itemWidget,
+    required this.viewModel,
+    required this.itemWidget,
     this.emptyView,
     this.emptyMsg = '暂无数据!点我刷新',
     this.loadingTip = '加载中',
   });
 
   @override
-  State<StatefulWidget> createState() => new FastPageDataBindState();
+  State<StatefulWidget> createState() => FastPageDataBindState();
 }
 
 class FastPageDataBindState extends State<FastPageDataBind> with PageMini {
@@ -573,7 +571,7 @@ class FastPageDataBindState extends State<FastPageDataBind> with PageMini {
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder(
+    return StreamBuilder(
       initialData:
           widget.viewModel.dataList.isNotEmpty || widget.viewModel.datas != null
               ? widget.viewModel.dataList.isNotEmpty
@@ -582,46 +580,49 @@ class FastPageDataBindState extends State<FastPageDataBind> with PageMini {
               : widget.viewModel.getData(),
       stream: widget.viewModel.stream,
       builder: (context, snapshot) {
-        List data = snapshot.data ?? [];
+        List data = [];
+        if (snapshot.data != null) {
+          data = snapshot.data as List;
+        }
 
-        return new Stack(
+        return Stack(
           children: <Widget>[
-            new Visibility(
+            Visibility(
               visible: data.length > 0,
-              child: new ListView(
+              child: ListView(
                 cacheExtent: 200,
                 padding: EdgeInsets.all(0),
                 controller: pageScrollController,
                 children: data.map(widget.itemWidget).toList(growable: false),
               ),
             ),
-            new Visibility(
+            Visibility(
               visible: data.length == 0 && !isPageLoading,
-              child: new Center(
-                child: new InkWell(
+              child: Center(
+                child: InkWell(
                   onTap: () => refreshData(),
-                  child: new Wrap(
+                  child: Wrap(
                     direction: Axis.vertical,
                     spacing: 8.0,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: <Widget>[
-                      new Image.asset(
+                      Image.asset(
                         'assets/ic_common_empty.png',
                         package: "fast_app",
                       ),
-                      new Text('${widget.emptyMsg}',
-                          style: new TextStyle(
+                      Text('${widget.emptyMsg}',
+                          style: TextStyle(
                               color: Color(0xff888697), fontSize: 13)),
                     ],
                   ),
                 ),
               ),
             ),
-            new Visibility(
+            Visibility(
               visible: data.length == 0 && isPageLoading,
-              child: new Center(
-                  child: new Text('${widget.loadingTip}',
-                      style: new TextStyle(fontSize: 13))),
+              child: Center(
+                  child: Text('${widget.loadingTip}',
+                      style: TextStyle(fontSize: 13))),
             ),
           ],
         );
@@ -631,7 +632,7 @@ class FastPageDataBindState extends State<FastPageDataBind> with PageMini {
 }
 
 class BitmapCache extends StatelessWidget {
-  BitmapCache({@required this.child});
+  BitmapCache({required this.child});
 
   final Widget child;
 
@@ -640,7 +641,7 @@ class BitmapCache extends StatelessWidget {
         future: Future<double>.value(1),
         builder: (BuildContext context, AsyncSnapshot<double> snapshot) =>
             Transform.scale(
-          scale: snapshot.hasData ? snapshot.data : 0.0001,
+          scale: snapshot.hasData ? snapshot.data! : 0.0001,
           alignment: Alignment.topLeft,
           child: RepaintBoundary(child: child),
         ),

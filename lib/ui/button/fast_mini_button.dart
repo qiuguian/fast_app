@@ -6,12 +6,12 @@ class FastCustomButton extends StatelessWidget {
   final String text;
   final double fontSize;
   final double height;
-  final double width;
-  final Widget icon;
-  final Color backgroundColor;
+  final double? width;
+  final Widget? icon;
+  final Color? backgroundColor;
   final double radius;
-  final Color borderColor;
-  final VoidCallback onTap;
+  final Color? borderColor;
+  final VoidCallback? onTap;
   final Axis direction;
 
   FastCustomButton({
@@ -32,11 +32,7 @@ class FastCustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new InkWell(
-      onTap: (){
-        if(onTap != null){
-          onTap();
-        }
-      },
+      onTap: onTap,
       child: Container(
         decoration: new BoxDecoration(
             gradient: backgroundColor != null ? null : gradient,
@@ -54,7 +50,7 @@ class FastCustomButton extends StatelessWidget {
           crossAxisAlignment: WrapCrossAlignment.center,
           alignment: WrapAlignment.center,
           children:  icon != null ? <Widget>[
-            icon,
+            icon!,
             new Text('$text',style: new TextStyle(color: color,fontSize: fontSize)),
           ] : <Widget>[
             new Text('$text',style: new TextStyle(color: color,fontSize: fontSize)),

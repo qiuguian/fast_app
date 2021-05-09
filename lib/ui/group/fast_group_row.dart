@@ -16,11 +16,11 @@ class FastGroupRow extends StatelessWidget {
   final int rowNum;
   final Color backgroundColor;
   final EdgeInsetsGeometry padding;
-  final FastGroupRowItem onTap;
+  final FastGroupRowItem? onTap;
   final double iconSize;
 
   FastGroupRow({
-    this.groups,
+    required this.groups,
     this.rowNum = 4,
     this.backgroundColor = Colors.transparent,
     this.padding = const EdgeInsets.all(10),
@@ -42,7 +42,7 @@ class FastGroupRow extends StatelessWidget {
           return new InkWell(
             onTap: () {
               if (onTap != null) {
-                onTap(model.index ?? 0);
+                onTap?.call(model.index);
               }
             },
             child: new Container(
@@ -86,10 +86,10 @@ class FastGroupRow extends StatelessWidget {
 }
 
 class FastGroupModel {
-  String name;
-  String icon;
-  String package;
-  int index;
+  String name = '';
+  String icon = '';
+  String package = '';
+  int index = 0;
 
-  FastGroupModel({this.name, this.icon, this.package, this.index});
+  FastGroupModel({required this.name, required this.icon, this.package = '', this.index = 0});
 }

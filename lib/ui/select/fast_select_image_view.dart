@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 typedef DidSelect(item);
 
 void fastSelectImageView(BuildContext context,
-    {DidSelect didSelect, VoidCallback didCancel,}) {
+    {DidSelect? didSelect, VoidCallback? didCancel,}) {
   showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -75,18 +75,15 @@ void fastSelectBottomView(BuildContext context,
     {
       String title = "Select",
       String cancelName = "Cancel",
-      List menu,
-      DidSelectItem didSelect,
-      VoidCallback didCancel,
+      required List menu,
+      DidSelectItem? didSelect,
+      VoidCallback? didCancel,
       Color titleColor = Colors.grey,
       Color valueColor = Colors.blue,
       Color cancelColor = Colors.blue,
       Color currentColor = Colors.red,
-      String currentValue,
+      String? currentValue,
     }) {
-  List data = menu ?? [
-    '请输入选项',
-  ];
 
   showModalBottomSheet(
       context: context,

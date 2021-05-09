@@ -3,7 +3,7 @@ import 'dart:convert';
 class FastResponseModel {
   int code;
   String message;
-  String serverMessage;
+  String? serverMessage;
   dynamic data;
 
   FastResponseModel({this.code = 0, this.message = '请求成功', this.data});
@@ -27,17 +27,17 @@ class FastResponseModel {
   * 请求返回成功
   *
   * */
-  factory FastResponseModel.fromSuccess(data) => new FastResponseModel()..data = data;
+  factory FastResponseModel.fromSuccess(data) => FastResponseModel()..data = data;
 
   /*
   * 请求返回单个数组成功
   *
   * */
-  factory FastResponseModel.fromSuccessList(data) => new FastResponseModel()..data = data.data;
+  factory FastResponseModel.fromSuccessList(data) => FastResponseModel()..data = data.data;
 
   /*
   * 参数校验
   *
   * */
-  factory FastResponseModel.fromParamError(String msg) => new FastResponseModel()..code=-1..message = '$msg';
+  factory FastResponseModel.fromParamError(String msg) => FastResponseModel()..code=-1..message = '$msg';
 }
