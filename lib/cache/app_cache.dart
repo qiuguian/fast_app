@@ -18,18 +18,18 @@ class AppCache {
   }
 
   static save(k, v) {
-    _prefs.setString(k, v);
+    _prefs?.setString(k, v);
   }
 
   static saveBool(k, v) {
-    _prefs.setBool(k, v);
+    _prefs?.setBool(k, v);
   }
 
   static saveInt(k, v) {
-    _prefs.setInt(k, v);
+    _prefs?.setInt(k, v);
   }
 
   static dynamic get(k) {
-    return _prefs.get(k);
+    return _prefs?.get(k);
   }
 }
