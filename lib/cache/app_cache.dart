@@ -5,9 +5,9 @@ storeKV(k, v) async {
   prefs.setString(k, v);
 }
 
-Future<Object?> getStoreByKey(String k) async {
+Future<String?> getStoreByKey(String k) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs?.get(k);
+  return prefs.get(k) as String;
 }
 
 class AppCache {

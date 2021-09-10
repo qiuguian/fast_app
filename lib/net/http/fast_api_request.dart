@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' show HttpStatus, Platform; //Cookie, HttpHeaders
+import 'dart:io' show HttpStatus;//Platform //Cookie, HttpHeaders
 
 import 'package:fast_app/net/fast_config.dart';
 import 'package:fast_app/net/fast_request.dart';
@@ -30,11 +30,10 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders? onHeaders,
       () => new Future.error('-1::当前无可用网络::$url-$id'),
     );
   } else {
-    String cacheKey;
     FastHttpResponse? response;
 
     if (EnvironmentConfig.share().environment == FastAppEnvironment.local) {
-      response = await _client?.getTestData(obj);
+      response = await _client.getTestData(obj);
     } else if (doPost) {
       if (obj is FastRequest) {
         requstBody = jsonDecode(jsonEncode(obj));
@@ -46,7 +45,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders? onHeaders,
           }
         }
 
-        int timestamp = new DateTime.now().millisecondsSinceEpoch;
+//        int timestamp = new DateTime.now().millisecondsSinceEpoch;
       } else {
         requstBody = obj;
       }
@@ -75,7 +74,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders? onHeaders,
 
           query..write(k)..write('=')..write(v)..write('&');
         });
-      } else if (query != null) {
+      } else {
         query.write(obj);
       }
 
@@ -103,11 +102,11 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders? onHeaders,
       }
     }
 
-    final statusCode = response?.code;
+    final statusCode = response.code;
 
     switch (statusCode) {
       case HttpStatus.ok:
-        final body = response?.body;
+        final body = response.body;
 
         if (obj.isShowLog()) {
           print('HTTP_RESPONSE_TIME::[$id]::${DateTime.now()}');
@@ -117,7 +116,7 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders? onHeaders,
         }
 
         if (retJson) {
-          final json = jsonDecode(body!);
+          final json = jsonDecode(body);
 
           List codes = obj.successCode();
 
@@ -130,22 +129,22 @@ Future<dynamic> api(String url, bool doPost, bool retJson, OnHeaders? onHeaders,
               result = json;
             }
 
-            var cacheIt = false;
-
-            if (cacheTime != null) {
-              if (result is List && result.isNotEmpty) {
-                cacheIt = true;
-              } else if (result is Map) {
-                final _ = result['data'];
-
-                if (_ == null || (_ is List && _.isNotEmpty)) {
-                  cacheIt = true;
-                }
-              }
-            }
+//            var cacheIt = false;
+//
+//            if (cacheTime != null) {
+//              if (result is List && result.isNotEmpty) {
+//                cacheIt = true;
+//              } else if (result is Map) {
+//                final _ = result['data'];
+//
+//                if (_ == null || (_ is List && _.isNotEmpty)) {
+//                  cacheIt = true;
+//                }
+//              }
+//            }
 
             if (onHeaders != null) {
-              onHeaders?.call(response?.headers);
+              onHeaders.call(response.headers);
             }
 
             return result;

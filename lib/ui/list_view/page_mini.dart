@@ -11,26 +11,24 @@ class PageMini {
   PageResultModel pageResultModel = PageResultModel.empty();
 
   initPage([PageMiniListener? pageMiniListener]) {
-    if (pageScrollController != null) {
-      pageScrollController.addListener(() {
-        if (pageScrollController.position.pixels >=
-                pageScrollController.position.maxScrollExtent - 100 &&
-            !isPageLoading) {
-          isPageLoading = true;
-          loadMoreData();
-        }
-        if (pageScrollController.position.pixels ==
-                pageScrollController.position.minScrollExtent &&
-            !isPageLoading) {
-          isPageLoading = true;
-          refreshData();
-        }
+    pageScrollController.addListener(() {
+      if (pageScrollController.position.pixels >=
+          pageScrollController.position.maxScrollExtent - 100 &&
+          !isPageLoading) {
+        isPageLoading = true;
+        loadMoreData();
+      }
+      if (pageScrollController.position.pixels ==
+          pageScrollController.position.minScrollExtent &&
+          !isPageLoading) {
+        isPageLoading = true;
+        refreshData();
+      }
 
-        if (pageMiniListener != null && pageMiniListener is PageMiniListener) {
-          pageMiniListener(pageScrollController.position.pixels);
-        }
-      });
-    }
+      if (pageMiniListener != null && pageMiniListener is PageMiniListener) {
+        pageMiniListener(pageScrollController.position.pixels);
+      }
+    });
   }
 
   @protected

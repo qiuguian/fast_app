@@ -109,6 +109,7 @@ class FastAppHttp {
           isReconnectStrategyStart: isReconnectStrategyStart,
           reconnectTime: reconnectTime--,
         );
+        // ignore: invalid_return_type_for_catch_error
         return httpResponse;
       } else {
         result = {
@@ -117,11 +118,12 @@ class FastAppHttp {
           "msgCode": "1"
         };
         httpResponse = FastHttpResponse(jsonEncode(result), -1, {}, result);
+        // ignore: invalid_return_type_for_catch_error
         return httpResponse;
       }
     });
 
-    if (response?.statusCode == HttpStatus.ok) {
+    if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
 
       if (data is String) {
@@ -131,17 +133,17 @@ class FastAppHttp {
       }
     } else {
       result = {
-        "code": response?.statusCode,
+        "code": response.statusCode,
         "msg": response.statusMessage,
         "data": ""
       };
       if (fastDio != null) {
-        throw result!; //新版本 兼容旧版本
+        throw Exception(result); //新版本 兼容旧版本
       }
     }
 
     httpResponse = FastHttpResponse(
-        jsonEncode(result), response?.statusCode, result!['headers'], result);
+        jsonEncode(result), response.statusCode, result!['headers'], result);
 
     return httpResponse;
   }
@@ -162,7 +164,7 @@ class FastAppHttp {
       connectTimeout: CONNECT_TIMEOUT,
       receiveTimeout: RECEIVE_TIMEOUT,
       headers: headers,
-      contentType: headers != null ? headers['Content-Type'] : "",
+      contentType: headers.isNotEmpty ? headers['Content-Type'] : "",
     );
 
     FormData? formData;
@@ -205,6 +207,7 @@ class FastAppHttp {
           isReconnectStrategyStart: isReconnectStrategyStart,
           reconnectTime: reconnectTime--,
         );
+        // ignore: invalid_return_type_for_catch_error
         return httpResponse;
       } else {
         result = {
@@ -213,11 +216,12 @@ class FastAppHttp {
           "msgCode": "1"
         };
         httpResponse = FastHttpResponse(jsonEncode(result), -1, {}, result);
+        // ignore: invalid_return_type_for_catch_error
         return httpResponse;
       }
     });
 
-    if (response?.statusCode == HttpStatus.ok) {
+    if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
       if (data is String) {
         result = jsonDecode(data);
@@ -227,7 +231,7 @@ class FastAppHttp {
     } else {
       result = {
         "msg": "Server busy",
-        "code": response?.statusCode,
+        "code": response.statusCode,
         "msgCode": "1"
       };
 
@@ -236,7 +240,7 @@ class FastAppHttp {
       }
     }
     httpResponse = FastHttpResponse(
-        jsonEncode(result), response?.statusCode, response.headers.map, result);
+        jsonEncode(result), response.statusCode, response.headers.map, result);
 
     return httpResponse;
   }
@@ -260,7 +264,7 @@ class FastAppHttp {
 
     print('request body => ${jsonEncode(body)}');
 
-    if (headers != null && headers['Content-Type'] == "application/formData") {
+    if (headers.isNotEmpty && headers['Content-Type'] == "application/formData") {
       formData = FormData.fromMap(body);
     }
 
@@ -297,6 +301,7 @@ class FastAppHttp {
           isReconnectStrategyStart: isReconnectStrategyStart,
           reconnectTime: reconnectTime--,
         );
+        // ignore: invalid_return_type_for_catch_error
         return httpResponse;
       } else {
         result = {
@@ -305,11 +310,12 @@ class FastAppHttp {
           "msgCode": "1"
         };
         httpResponse = FastHttpResponse(jsonEncode(result), -1, {}, result);
+        // ignore: invalid_return_type_for_catch_error
         return httpResponse;
       }
     });
 
-    if (response?.statusCode == HttpStatus.ok) {
+    if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
       if (data is String) {
         result = jsonDecode(data);
@@ -321,7 +327,7 @@ class FastAppHttp {
           "object response?.statusCoderesponse?.statusCoderesponse?.statusCoderesponse?.statusCode");
       result = {
         "msg": "Server busy",
-        "code": response?.statusCode,
+        "code": response.statusCode,
         "msgCode": "1"
       };
       if (fastDio != null) {
@@ -329,7 +335,7 @@ class FastAppHttp {
       }
     }
     httpResponse = FastHttpResponse(
-        jsonEncode(result), response?.statusCode, response.headers.map, result);
+        jsonEncode(result), response.statusCode, response.headers.map, result);
 
     return httpResponse;
   }
@@ -346,14 +352,14 @@ class FastAppHttp {
       connectTimeout: CONNECT_TIMEOUT,
       receiveTimeout: RECEIVE_TIMEOUT,
       headers: headers,
-      contentType: headers != null ? headers['Content-Type'] : "",
+      contentType: headers.isNotEmpty ? headers['Content-Type'] : "",
     );
 
     FormData? formData;
 
     print('request body => ${jsonEncode(body)}');
 
-    if (headers != null && headers['Content-Type'] == "application/formData") {
+    if (headers.isNotEmpty && headers['Content-Type'] == "application/formData") {
       formData = FormData.fromMap(body);
     }
 
@@ -390,6 +396,7 @@ class FastAppHttp {
           isReconnectStrategyStart: isReconnectStrategyStart,
           reconnectTime: reconnectTime--,
         );
+        // ignore: invalid_return_type_for_catch_error
         return httpResponse;
       } else {
         result = {
@@ -398,11 +405,12 @@ class FastAppHttp {
           "msgCode": "1"
         };
         httpResponse = FastHttpResponse(jsonEncode(result), -1, {}, result);
+        // ignore: invalid_return_type_for_catch_error
         return httpResponse;
       }
     });
 
-    if (response?.statusCode == HttpStatus.ok) {
+    if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
       if (data is String) {
         result = jsonDecode(data);
@@ -414,7 +422,7 @@ class FastAppHttp {
           "object response?.statusCoderesponse?.statusCoderesponse?.statusCoderesponse?.statusCode");
       result = {
         "msg": "Server busy",
-        "code": response?.statusCode,
+        "code": response.statusCode,
         "msgCode": "1"
       };
       if (fastDio != null) {
@@ -422,7 +430,7 @@ class FastAppHttp {
       }
     }
     httpResponse = FastHttpResponse(
-        jsonEncode(result), response?.statusCode, response.headers.map, result);
+        jsonEncode(result), response.statusCode, response.headers.map, result);
 
     return httpResponse;
   }
@@ -454,12 +462,11 @@ class FastAppHttp {
   * */
   Future<Map> downloadFile(String urlPath, String savePath,
       {int localId = 0, cDio, ProgressCallback? onReceiveProgress}) async {
-    adio.Response response;
     int _total = 0;
     adio.CancelToken cancelToken = adio.CancelToken();
     try {
       adio.Dio dio = cDio ?? adio.Dio();
-      response = await dio.download(urlPath, savePath, cancelToken: cancelToken,
+      await dio.download(urlPath, savePath, cancelToken: cancelToken,
           onReceiveProgress: (int count, int total) {
         if (onReceiveProgress != null) {
           onReceiveProgress(count, total);
@@ -523,14 +530,14 @@ class FastAppHttp {
       connectTimeout: CONNECT_TIMEOUT,
       receiveTimeout: RECEIVE_TIMEOUT,
       headers: headers,
-      contentType: headers != null ? headers['Content-Type'] : null,
+      contentType: headers.isNotEmpty ? headers['Content-Type'] : null,
     );
 
     adio.Dio dio = fastDio ?? adio.Dio(options);
     var response = await dio
         .post("$url", data: formData)
         .whenComplete(() => EasyLoading.dismiss());
-    if (response?.statusCode == HttpStatus.ok) {
+    if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
 
       if (data is String) {
@@ -539,11 +546,11 @@ class FastAppHttp {
         result = response.data;
       }
     } else {
-      result = {"msg": "error", "code": response?.statusCode, "msgCode": "1"};
+      result = {"msg": "error", "code": response.statusCode, "msgCode": "1"};
     }
 
     return FastHttpResponse(
-        jsonEncode(result), response?.statusCode, response.headers.map, result);
+        jsonEncode(result), response.statusCode, response.headers.map, result);
   }
 }
 

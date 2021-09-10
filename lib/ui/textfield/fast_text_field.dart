@@ -15,6 +15,7 @@ enum FastTextFieldType {
   readonly,
 }
 
+// ignore: must_be_immutable
 class FastTextField extends StatefulWidget {
   final String? name;
   final String? placeholder;

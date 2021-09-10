@@ -1,15 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 fastToast(BuildContext context, String msg, {duration = 1}) {
-  return Toast.show(
-    msg,
-    context,
-    duration: duration,
-    gravity: 3,
-    backgroundRadius: 10.0,
-    backgroundColor: Color.fromRGBO(0, 0, 0, 0.7),
+//  return Toast.show(
+//    msg,
+//    context,
+//    duration: duration,
+//    gravity: 3,
+//    backgroundRadius: 10.0,
+//    backgroundColor: Color.fromRGBO(0, 0, 0, 0.7),
+//  );
+  Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0
   );
 }
 

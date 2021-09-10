@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fast_app/cache/app_cache.dart';
 
 _FastCutDownButtonState? _state;
 

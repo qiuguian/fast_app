@@ -33,7 +33,7 @@ class FastRowView extends StatelessWidget {
     return new InkWell(
       onTap: () => actions(_title),
       child: Container(
-        height: height ?? 50,
+        height: height,
         padding: padding,
         margin: margin,
         decoration: BoxDecoration(
@@ -106,7 +106,7 @@ class FastCustomRowView extends StatelessWidget {
         padding: padding,
         color: Colors.white,
         child: Container(
-          height: height ?? 50.0,
+          height: height,
           padding: EdgeInsets.only(right: 10.0),
           decoration: BoxDecoration(
               color: Colors.white,

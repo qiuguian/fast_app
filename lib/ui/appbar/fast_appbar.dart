@@ -28,7 +28,7 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool showBackIcon;
   final bool showShadow;
-  final List<Widget> rightDMActions;
+  final List<Widget>? rightDMActions;
   final Color? backgroundColor;
   final Color? mainColor;
   final Widget? titleW;
