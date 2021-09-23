@@ -16,7 +16,7 @@ fastToast(BuildContext context, String msg, {duration = 1}) {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.black.withAlpha(200),
       textColor: Colors.white,
       fontSize: 16.0
   );
