@@ -40,36 +40,42 @@ class FastCutDownButton extends StatefulWidget {
   }
 }
 
+int _cutDownNum = 0;
+
 class _FastCutDownButtonState extends State<FastCutDownButton> {
   String text = "";
   Timer? _timer;
-  int num = 0;
 
   @override
   void initState() {
     text = widget.text;
     super.initState();
     setState(() {});
+
+    /// 如果没倒计时完，重新进来时继续倒计时
+    if(_cutDownNum > 0){
+      createTimer(_cutDownNum);
+    }
   }
 
   //发送请求成功后 开始倒计时
-  sendSuccess([int? cutDownTime]) {
+  void sendSuccess([int? cutDownTime]) {
     createTimer(cutDownTime);
   }
 
-  createTimer([int? cutDownTime]) async {
-    num = 60;
+  void createTimer([int? cutDownTime]) async {
+    _cutDownNum = 60;
 
     if (cutDownTime != null && cutDownTime > 0) {
-      num = cutDownTime;
+      _cutDownNum = cutDownTime;
     }
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (num > 0) {
+      if (_cutDownNum > 0) {
         if (mounted) {
-          num--;
+          _cutDownNum--;
           // AppCache.save(cutDownDurationKey, num.toString());
-          text = "重新发送($num)";
+          text = "重新发送($_cutDownNum)";
           setState(() {});
         }
       } else {
@@ -80,7 +86,7 @@ class _FastCutDownButtonState extends State<FastCutDownButton> {
     });
   }
 
-  stopTimer() {
+  void stopTimer() {
     _timer?.cancel();
   }
 
@@ -91,9 +97,9 @@ class _FastCutDownButtonState extends State<FastCutDownButton> {
       child: Container(
         padding: widget.padding,
         decoration: BoxDecoration(
-          color: num == 0 ? widget.backgroundColor : Colors.grey.withAlpha(50),
+          color: _cutDownNum == 0 ? widget.backgroundColor : Colors.grey.withAlpha(50),
           borderRadius: widget.borderRadius,
-          border: num == 0
+          border: _cutDownNum == 0
               ? widget.border
               : Border.all(
             width: 0,
@@ -103,7 +109,7 @@ class _FastCutDownButtonState extends State<FastCutDownButton> {
         child: Text(text, style: widget.textStyle),
       ),
       onTap: () {
-        if (num == 0) {
+        if (_cutDownNum == 0) {
           widget.onTap?.call();
         }
       },

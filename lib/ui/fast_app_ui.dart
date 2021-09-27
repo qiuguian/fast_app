@@ -10,6 +10,7 @@
 library fast_app_ui;
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fast_app/cache/app_cache.dart';
 import 'package:fast_app/data/fast_data.dart';
 import 'package:fast_app/notice/fast_notification.dart';
 import 'package:flutter/cupertino.dart';

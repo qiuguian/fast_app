@@ -75,7 +75,7 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
       unselectedItemColor: Colors.grey,
       onTap: (int index) {
         if (widget.checkLogin != null && widget.needLogins.contains(index) &&
-            !FastData.isLogin) {
+            !(AppCache.get(FastActions.isLogin())??false)) {
           widget.checkLogin?.call(index);
         } else {
           FastNotification.push(FastActions.toTab(index));
