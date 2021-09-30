@@ -66,7 +66,7 @@ class FastAppHttp {
   * */
   static Future<FastHttpResponse> doGet({
     required String url,
-    body,
+    Map<String, dynamic>? body,
     Map<String, dynamic> headers = const {},
     bool isReconnectStrategyStart = false,
     int reconnectTime = 0,
@@ -75,6 +75,7 @@ class FastAppHttp {
     adio.BaseOptions options = adio.BaseOptions(
       connectTimeout: CONNECT_TIMEOUT,
       receiveTimeout: RECEIVE_TIMEOUT,
+      baseUrl: fastDio?.options.baseUrl ?? '',
     );
 
     Map? result;
@@ -89,9 +90,8 @@ class FastAppHttp {
     adio.Response response = await dio
         .get(
           url,
-          options: adio.Options(
-            headers: headers,
-          ),
+          options: adio.Options(headers: headers),
+          queryParameters: body,
         )
         .whenComplete(() => EasyLoading.dismiss())
         .catchError((e) async {
@@ -142,8 +142,8 @@ class FastAppHttp {
       }
     }
 
-    httpResponse = FastHttpResponse(
-        jsonEncode(result), response.statusCode, result!['headers'], result);
+    httpResponse = FastHttpResponse(jsonEncode(result), response.statusCode,
+        result?['headers'] ?? {}, result);
 
     return httpResponse;
   }
@@ -221,6 +221,8 @@ class FastAppHttp {
       }
     });
 
+    print('catchError => ----------');
+
     if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
       if (data is String) {
@@ -264,7 +266,8 @@ class FastAppHttp {
 
     print('request body => ${jsonEncode(body)}');
 
-    if (headers.isNotEmpty && headers['Content-Type'] == "application/formData") {
+    if (headers.isNotEmpty &&
+        headers['Content-Type'] == "application/formData") {
       formData = FormData.fromMap(body);
     }
 
@@ -359,7 +362,8 @@ class FastAppHttp {
 
     print('request body => ${jsonEncode(body)}');
 
-    if (headers.isNotEmpty && headers['Content-Type'] == "application/formData") {
+    if (headers.isNotEmpty &&
+        headers['Content-Type'] == "application/formData") {
       formData = FormData.fromMap(body);
     }
 

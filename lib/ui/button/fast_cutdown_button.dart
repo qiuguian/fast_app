@@ -70,6 +70,10 @@ class _FastCutDownButtonState extends State<FastCutDownButton> {
       _cutDownNum = cutDownTime;
     }
 
+    if(_timer?.isActive??false){
+      stopTimer();
+    }
+
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_cutDownNum > 0) {
         if (mounted) {
