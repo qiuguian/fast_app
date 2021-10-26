@@ -221,8 +221,6 @@ class FastAppHttp {
       }
     });
 
-    print('catchError => ----------');
-
     if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
       if (data is String) {
