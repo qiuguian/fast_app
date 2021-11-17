@@ -4,12 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class RefreshView extends StatefulWidget {
-  RefreshView({required this.child, this.onRefresh, this.onLoading,this.hasNextPage});
+  RefreshView({
+    required this.child,
+    this.onRefresh,
+    this.onLoading,
+    this.hasNextPage,
+    this.dataController,
+    this.emptyMsg = '暂无数据',
+  });
 
   final Widget child;
   final Function()? onRefresh;
   final Function()? onLoading;
   final bool Function()? hasNextPage;
+  final BaseController? dataController;
+  final String emptyMsg;
 
   @override
   _RefreshViewState createState() => _RefreshViewState();
@@ -17,17 +26,27 @@ class RefreshView extends StatefulWidget {
 
 class _RefreshViewState extends State<RefreshView> {
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
+
+  late Future<void> _future;
 
   @override
   void initState() {
     super.initState();
+
+    if (widget.dataController != null) {
+      _future = widget.dataController!.onLoadData();
+    } else {
+      _future = withoutApi();
+    }
 
     FastNotification.addListener("RefreshViewFinish", (data) {
       _refreshController.refreshCompleted();
       _refreshController.loadComplete();
     });
   }
+
+  Future<void> withoutApi() async {}
 
   @override
   void dispose() {
@@ -37,6 +56,27 @@ class _RefreshViewState extends State<RefreshView> {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _future,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          case ConnectionState.done:
+            // if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+            return $SmartRefresher();
+          default:
+            return SizedBox();
+        }
+      },
+    );
+  }
+
+  Widget $SmartRefresher() {
     return SmartRefresher(
       enablePullDown: true,
       enablePullUp: true,
@@ -66,18 +106,59 @@ class _RefreshViewState extends State<RefreshView> {
       controller: _refreshController,
       onRefresh: () async {
         _refreshController.resetNoData();
-        await widget.onRefresh?.call();
+        if (widget.dataController != null) {
+          await widget.dataController!.reloadData();
+        } else {
+          await widget.onRefresh?.call();
+        }
+        if (!(widget.dataController?.hasNextPage ??
+            (widget.hasNextPage?.call() ?? true))) {
+          _refreshController.loadNoData();
+        }
         _refreshController.refreshCompleted();
       },
       onLoading: () async {
-        if (widget.hasNextPage?.call() ?? true) {
-          List data = await widget.onLoading?.call() ?? [];
+        if (!(widget.dataController?.hasNextPage ??
+            (widget.hasNextPage?.call() ?? true))) {
+          if (widget.dataController != null) {
+            await widget.dataController!.loadMoreData();
+          } else {
+            await widget.onLoading?.call();
+          }
           _refreshController.loadComplete();
         } else {
           _refreshController.loadNoData();
         }
       },
-      child: widget.child,
+      child: widget.dataController != null
+          ? widget.dataController!.dataList.isNotEmpty
+              ? widget.child
+              : emptyView()
+          : widget.child,
+    );
+  }
+
+  Widget emptyView() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 80.0),
+      child: Center(
+        child: InkWell(
+          onTap: () => widget.dataController?.reloadData(),
+          child: Wrap(
+            direction: Axis.vertical,
+            spacing: 8.0,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                'assets/ic_common_empty.png',
+                package: "fast_app",
+              ),
+              Text('${widget.emptyMsg}',
+                  style: TextStyle(color: Color(0xffCCCCCC), fontSize: 13)),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

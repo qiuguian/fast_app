@@ -42,8 +42,6 @@ class FastButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color _color = color??color!.withOpacity(enable ? 1 : 0.3);
-
     return new Visibility(
       visible: isShow,
       child: new Container(
@@ -58,7 +56,7 @@ class FastButton extends StatelessWidget {
                 ?
             BoxDecoration()
                 : BoxDecoration(
-              color: _color,
+              color: color!.withOpacity(enable ? 1 : 0.3),
               boxShadow: boxShadow,
               border: isBorder
                   ? Border.all(width: 0.5, color: Color(borderColor))
