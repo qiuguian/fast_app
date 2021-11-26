@@ -64,7 +64,8 @@ class _RefreshViewState extends State<RefreshView> {
           case ConnectionState.active:
           case ConnectionState.waiting:
             return Center(
-              child: CircularProgressIndicator(),
+              // child: CircularProgressIndicator(),
+              child: CupertinoActivityIndicator(),
             );
           case ConnectionState.done:
             // if (snapshot.hasError) return Text('Error: ${snapshot.error}');
@@ -85,17 +86,32 @@ class _RefreshViewState extends State<RefreshView> {
         builder: (BuildContext context, LoadStatus? mode) {
           Widget body;
           if (mode == LoadStatus.noMore) {
-            body = Text("无更多数据");
+            body = Text(
+              "无更多数据",
+              style: TextStyle(color: Colors.grey, fontSize: 13),
+            );
           } else if (mode == LoadStatus.idle) {
-            body = Text("向上拉加载更多");
+            body = Text(
+              "向上拉加载更多",
+              style: TextStyle(color: Colors.grey, fontSize: 13),
+            );
           } else if (mode == LoadStatus.loading) {
             body = CupertinoActivityIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text("加载失败!");
+            body = Text(
+              "加载失败!",
+              style: TextStyle(color: Colors.grey, fontSize: 13),
+            );
           } else if (mode == LoadStatus.canLoading) {
-            body = Text("放开加载更多");
+            body = Text(
+              "放开加载更多",
+              style: TextStyle(color: Colors.grey, fontSize: 13),
+            );
           } else {
-            body = Text("无更多数据");
+            body = Text(
+              "无更多数据",
+              style: TextStyle(color: Colors.grey, fontSize: 13),
+            );
           }
           return Container(
             height: 55.0,
@@ -111,14 +127,10 @@ class _RefreshViewState extends State<RefreshView> {
         } else {
           await widget.onRefresh?.call();
         }
-        if (!(widget.dataController?.hasNextPage ??
-            (widget.hasNextPage?.call() ?? true))) {
-          _refreshController.loadNoData();
-        }
         _refreshController.refreshCompleted();
       },
       onLoading: () async {
-        if (!(widget.dataController?.hasNextPage ??
+        if ((widget.dataController?.hasNextPage ??
             (widget.hasNextPage?.call() ?? true))) {
           if (widget.dataController != null) {
             await widget.dataController!.loadMoreData();

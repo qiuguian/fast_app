@@ -42,12 +42,13 @@ class FastButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Visibility(
+    return Visibility(
       visible: isShow,
-      child: new Container(
+      child: Container(
         margin: margin,
-        child: new InkWell(
-          child: new Container(
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          child: Container(
             alignment: Alignment.center,
             padding: padding,
             width: width,
@@ -65,7 +66,7 @@ class FastButton extends StatelessWidget {
                 Radius.circular(radius),
               ),
             ),
-            child: new Text(
+            child: Text(
               '$text',
               style: style,
             ),

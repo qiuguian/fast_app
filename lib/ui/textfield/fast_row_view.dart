@@ -30,7 +30,8 @@ class FastRowView extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isNeed = title.contains("*");
     String _title = title.replaceAll("*", "");
-    return new InkWell(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () => actions(_title),
       child: Container(
         height: height,
