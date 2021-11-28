@@ -39,11 +39,11 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBack;
 
   @override
-  Size get preferredSize => new Size(100, bottom != null ? 100 : 50);
+  Size get preferredSize => Size(100, bottom != null ? 100 : 50);
 
   onBackAction(BuildContext context) async {
     FocusScope.of(context)
-        .requestFocus(new FocusNode());
+        .requestFocus(FocusNode());
     if (onBack != null) {
       onBack?.call();
     } else {
@@ -53,83 +53,84 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    Brightness _brightness = brightness ?? fastTheme.brightness;
+    SystemUiOverlayStyle _brightness = brightness == Brightness.light ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
     Color _backgroundColor = backgroundColor ?? fastTheme.appBarColor;
     Color _mainColor = mainColor ?? fastTheme.appBarTextColor;
 
-    return showShadow
-        ? new Container(
-      decoration: BoxDecoration(
-          border: Border(
-              bottom: new BorderSide(
-                  color: fastTheme.lineColor,
-                  width: showShadow ? 0.5 : 0.0))),
-      child: new AppBar(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark,
+      child: showShadow
+          ? Container(
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                    color: fastTheme.lineColor,
+                    width: showShadow ? 0.5 : 0.0))),
+        child: AppBar(
+          title: titleW == null
+              ? Text(
+            title,
+            style: TextStyle(color: _mainColor, fontSize: 16),
+          )
+              : titleW,
+          backgroundColor: _backgroundColor,
+          elevation: 0.0,
+          leading: leading == null
+              ? showBackIcon
+              ? InkWell(
+            child: Padding(
+              padding:
+              EdgeInsets.only(top: 10, bottom: 10, right: 10),
+              child: Container(
+                width: 15,
+                height: 28,
+                child: Icon(
+                  CupertinoIcons.left_chevron,
+                  color: _mainColor,
+                ),
+              ),
+            ),
+            onTap: () => onBackAction(context),
+          )
+              : null
+              : leading,
+          centerTitle: isCenterTitle,
+          actions: rightDMActions ?? [Center()],
+          bottom: bottom != null ? bottom : null,
+        ),
+      )
+          : AppBar(
         title: titleW == null
-            ? new Text(
+            ? Text(
           title,
-          style: new TextStyle(color: _mainColor, fontSize: 16),
+          style: TextStyle(color: _mainColor, fontSize: 16),
         )
             : titleW,
         backgroundColor: _backgroundColor,
         elevation: 0.0,
-        brightness: _brightness,
         leading: leading == null
             ? showBackIcon
-            ? new InkWell(
-          child: new Padding(
-            padding:
-            EdgeInsets.only(top: 10, bottom: 10, right: 10),
-            child: new Container(
-              width: 15,
-              height: 28,
-              child: new Icon(
-                CupertinoIcons.left_chevron,
-                color: _mainColor,
+            ? InkWell(
+            child: Padding(
+              padding:
+              EdgeInsets.only(top: 10, bottom: 10, right: 10),
+              child: Container(
+                width: 15,
+                height: 28,
+                child: Icon(
+                  CupertinoIcons.left_chevron,
+                  color: _mainColor,
+                ),
               ),
             ),
-          ),
-          onTap: () => onBackAction(context),
+            onTap: () => onBackAction(context)
         )
             : null
             : leading,
         centerTitle: isCenterTitle,
-        actions: rightDMActions ?? [new Center()],
         bottom: bottom != null ? bottom : null,
+        actions: rightDMActions ?? [Center()],
       ),
-    )
-        : new AppBar(
-      title: titleW == null
-          ? new Text(
-        title,
-        style: new TextStyle(color: _mainColor, fontSize: 16),
-      )
-          : titleW,
-      backgroundColor: _backgroundColor,
-      elevation: 0.0,
-      brightness: _brightness,
-      leading: leading == null
-          ? showBackIcon
-          ? new InkWell(
-          child: new Padding(
-            padding:
-            EdgeInsets.only(top: 10, bottom: 10, right: 10),
-            child: new Container(
-              width: 15,
-              height: 28,
-              child: new Icon(
-                CupertinoIcons.left_chevron,
-                color: _mainColor,
-              ),
-            ),
-          ),
-          onTap: () => onBackAction(context)
-      )
-          : null
-          : leading,
-      centerTitle: isCenterTitle,
-      bottom: bottom != null ? bottom : null,
-      actions: rightDMActions ?? [new Center()],
     );
   }
 }

@@ -29,7 +29,7 @@ class FastTheme {
     this.backgroundColor = const Color(0xFFF7F6FB),
     this.mainColor = const Color(0xFFCC1D2A),
     this.lineColor = const Color(0xffF7F7F7),
-    this.brightness = Brightness.light,
+    this.brightness = Brightness.dark,
     this.fontColor = const Color(0xFF3C3C3C),
   });
 }

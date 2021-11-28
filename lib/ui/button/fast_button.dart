@@ -42,14 +42,13 @@ class FastButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color _color = color??color!.withOpacity(enable ? 1 : 0.3);
-
-    return new Visibility(
+    return Visibility(
       visible: isShow,
-      child: new Container(
+      child: Container(
         margin: margin,
-        child: new InkWell(
-          child: new Container(
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          child: Container(
             alignment: Alignment.center,
             padding: padding,
             width: width,
@@ -58,7 +57,7 @@ class FastButton extends StatelessWidget {
                 ?
             BoxDecoration()
                 : BoxDecoration(
-              color: _color,
+              color: color!.withOpacity(enable ? 1 : 0.3),
               boxShadow: boxShadow,
               border: isBorder
                   ? Border.all(width: 0.5, color: Color(borderColor))
@@ -67,7 +66,7 @@ class FastButton extends StatelessWidget {
                 Radius.circular(radius),
               ),
             ),
-            child: new Text(
+            child: Text(
               '$text',
               style: style,
             ),

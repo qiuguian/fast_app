@@ -16,6 +16,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
     this.alignment = Alignment.bottomCenter,
     this.padding = EdgeInsets.zero,
     this.backgroundColor = Colors.transparent,
+    this.pagination = true,
   });
 
   final double height;
@@ -27,6 +28,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
   final Alignment alignment;
   final EdgeInsetsGeometry padding;
   final Color backgroundColor;
+  final bool pagination;
 
   @override
   Size get preferredSize =>
@@ -45,6 +47,10 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
 
     for (int i = 0; i < banners.length; i++) {
       indexS.add(i);
+    }
+
+    if(banners.isEmpty){
+      return Container(height: height);
     }
 
     return new Container(
@@ -70,7 +76,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
             ? AlwaysScrollableScrollPhysics()
             : NeverScrollableScrollPhysics(),
         autoplay: banners.length > 1,
-        pagination: banners.length > 1 ? SwiperPagination(
+        pagination: (banners.length > 1 && pagination) ? SwiperPagination(
           alignment: alignment,
           builder: new SwiperCustomPagination(
             builder: (context, config) {
