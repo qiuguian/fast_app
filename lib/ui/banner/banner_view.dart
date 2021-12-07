@@ -17,6 +17,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
     this.padding = EdgeInsets.zero,
     this.backgroundColor = Colors.transparent,
     this.pagination = true,
+    this.onIndexChanged,
   });
 
   final double height;
@@ -29,6 +30,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
   final EdgeInsetsGeometry padding;
   final Color backgroundColor;
   final bool pagination;
+  final ValueChanged<int>? onIndexChanged;
 
   @override
   Size get preferredSize =>
@@ -59,6 +61,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
       color: backgroundColor,
       child: new Swiper(
         itemCount: banners.length,
+        onIndexChanged: onIndexChanged,
         itemBuilder: (BuildContext context, int index) {
           String imgSrc = banners[index];
           return new InkWell(

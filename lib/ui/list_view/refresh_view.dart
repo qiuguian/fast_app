@@ -122,22 +122,30 @@ class _RefreshViewState extends State<RefreshView> {
       controller: _refreshController,
       onRefresh: () async {
         _refreshController.resetNoData();
-        if (widget.dataController != null) {
-          await widget.dataController!.reloadData();
-        } else {
-          await widget.onRefresh?.call();
+        try {
+          if (widget.dataController != null) {
+            await widget.dataController!.reloadData();
+          } else {
+            await widget.onRefresh?.call();
+          }
+          _refreshController.refreshCompleted();
+        } catch (e) {
+          _refreshController.refreshFailed();
         }
-        _refreshController.refreshCompleted();
       },
       onLoading: () async {
         if ((widget.dataController?.hasNextPage ??
             (widget.hasNextPage?.call() ?? true))) {
-          if (widget.dataController != null) {
-            await widget.dataController!.loadMoreData();
-          } else {
-            await widget.onLoading?.call();
+          try {
+            if (widget.dataController != null) {
+              await widget.dataController!.loadMoreData();
+            } else {
+              await widget.onLoading?.call();
+            }
+            _refreshController.loadComplete();
+          } catch (e) {
+            _refreshController.loadFailed();
           }
-          _refreshController.loadComplete();
         } else {
           _refreshController.loadNoData();
         }

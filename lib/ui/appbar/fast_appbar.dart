@@ -53,53 +53,20 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemUiOverlayStyle _brightness = brightness == Brightness.light ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
+    SystemUiOverlayStyle _brightness = brightness == Brightness.light
+        ? SystemUiOverlayStyle.light
+        : SystemUiOverlayStyle.dark;
     Color _backgroundColor = backgroundColor ?? fastTheme.appBarColor;
     Color _mainColor = mainColor ?? fastTheme.appBarTextColor;
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
-      child: showShadow
-          ? Container(
-        decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-                    color: fastTheme.lineColor,
-                    width: showShadow ? 0.5 : 0.0))),
-        child: AppBar(
-          title: titleW == null
-              ? Text(
-            title,
-            style: TextStyle(color: _mainColor, fontSize: 16),
-          )
-              : titleW,
-          backgroundColor: _backgroundColor,
-          elevation: 0.0,
-          leading: leading == null
-              ? showBackIcon
-              ? InkWell(
-            child: Padding(
-              padding:
-              EdgeInsets.only(top: 10, bottom: 10, right: 10),
-              child: Container(
-                width: 15,
-                height: 28,
-                child: Icon(
-                  CupertinoIcons.left_chevron,
-                  color: _mainColor,
-                ),
-              ),
-            ),
-            onTap: () => onBackAction(context),
-          )
-              : null
-              : leading,
-          centerTitle: isCenterTitle,
-          actions: rightDMActions ?? [Center()],
-          bottom: bottom != null ? bottom : null,
-        ),
-      )
-          : AppBar(
+    return showShadow
+        ? Container(
+      decoration: BoxDecoration(
+          border: Border(
+              bottom: BorderSide(
+                  color: fastTheme.lineColor,
+                  width: showShadow ? 0.5 : 0.0))),
+      child: AppBar(
         title: titleW == null
             ? Text(
           title,
@@ -108,29 +75,63 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
             : titleW,
         backgroundColor: _backgroundColor,
         elevation: 0.0,
+        systemOverlayStyle: _brightness,
         leading: leading == null
             ? showBackIcon
             ? InkWell(
-            child: Padding(
-              padding:
-              EdgeInsets.only(top: 10, bottom: 10, right: 10),
-              child: Container(
-                width: 15,
-                height: 28,
-                child: Icon(
-                  CupertinoIcons.left_chevron,
-                  color: _mainColor,
-                ),
+          child: Padding(
+            padding:
+            EdgeInsets.only(top: 10, bottom: 10, right: 10),
+            child: Container(
+              width: 15,
+              height: 28,
+              child: Icon(
+                CupertinoIcons.left_chevron,
+                color: _mainColor,
               ),
             ),
-            onTap: () => onBackAction(context)
+          ),
+          onTap: () => onBackAction(context),
         )
             : null
             : leading,
         centerTitle: isCenterTitle,
-        bottom: bottom != null ? bottom : null,
         actions: rightDMActions ?? [Center()],
+        bottom: bottom != null ? bottom : null,
       ),
+    )
+        : AppBar(
+      title: titleW == null
+          ? Text(
+        title,
+        style: TextStyle(color: _mainColor, fontSize: 16),
+      )
+          : titleW,
+      backgroundColor: _backgroundColor,
+      elevation: 0.0,
+      systemOverlayStyle: _brightness,
+      leading: leading == null
+          ? showBackIcon
+          ? InkWell(
+          child: Padding(
+            padding:
+            EdgeInsets.only(top: 10, bottom: 10, right: 10),
+            child: Container(
+              width: 15,
+              height: 28,
+              child: Icon(
+                CupertinoIcons.left_chevron,
+                color: _mainColor,
+              ),
+            ),
+          ),
+          onTap: () => onBackAction(context)
+      )
+          : null
+          : leading,
+      centerTitle: isCenterTitle,
+      bottom: bottom != null ? bottom : null,
+      actions: rightDMActions ?? [Center()],
     );
   }
 }
