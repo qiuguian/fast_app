@@ -28,11 +28,11 @@ class FastViewModel extends Model with PageControlModel{
 
   dynamic getData() => null;
 
-  refreshData(){}
+  void refreshData(){}
 
-  loadMoreData(){}
+  void loadMoreData(){}
 
-  dispose() {
+  void dispose() {
     dataController.close();
   }
 
