@@ -68,14 +68,15 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
   Widget build(BuildContext context) {
     final BottomNavigationBar bottomNavigationBar = BottomNavigationBar(
       items: pages,
+      selectedFontSize: 11,
+      unselectedFontSize: 11,
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
-//      fixedColor: Color.fromRGBO(45, 45, 45, 1.0),
       selectedItemColor: widget.color ?? Colors.blue,
       unselectedItemColor: Colors.grey,
       onTap: (int index) {
         if (widget.checkLogin != null && widget.needLogins.contains(index) &&
-            !(AppCache.get(FastActions.isLogin())??false)) {
+            !(AppCache.get(FastActions.isLogin()) ?? false)) {
           widget.checkLogin?.call(index);
         } else {
           FastNotification.push(FastActions.toTab(index));
@@ -94,9 +95,10 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
 
     return Scaffold(
       bottomNavigationBar: Theme(
-          data: ThemeData(
-              canvasColor: currentIndex == 0 && widget.isFirtBlackColor ? Colors.black : Colors.white),
-          child: bottomNavigationBar),
+        data: ThemeData(
+            canvasColor: currentIndex == 0 && widget.isFirtBlackColor ? Colors
+                .black : Colors.white),
+        child: bottomNavigationBar,),
       body: Stack(
         children: contents.toList(growable: false),
       ),
@@ -105,7 +107,8 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
 }
 
 class FastTabBarModel {
-  const FastTabBarModel({this.title = '', required this.page, required this.icon, required this.selectIcon});
+  const FastTabBarModel(
+      {this.title = '', required this.page, required this.icon, required this.selectIcon});
 
   final String title;
   final Widget icon;

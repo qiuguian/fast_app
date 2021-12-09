@@ -8,7 +8,6 @@ import 'dart:convert';
 ///
 /// website: http://www.fastapp.top
 ///
-
 import 'dart:io';
 
 import 'package:dio/adapter.dart';
@@ -89,11 +88,10 @@ class FastAppHttp {
 
     adio.Response response = await dio
         .get(
-          url,
-          options: adio.Options(headers: headers),
-          queryParameters: body,
-        )
-        .whenComplete(() => EasyLoading.dismiss())
+      url,
+      options: adio.Options(headers: headers),
+      queryParameters: body,
+    )
         .catchError((e) async {
       DioError error = e;
       if (reconnectTime > 0 &&
@@ -123,6 +121,10 @@ class FastAppHttp {
       }
     });
 
+    if (hud != null && hud.isNotEmpty) {
+      EasyLoading.dismiss();
+    }
+
     if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
 
@@ -143,7 +145,7 @@ class FastAppHttp {
     }
 
     httpResponse = FastHttpResponse(jsonEncode(result), response.statusCode,
-        result?['headers'] ?? {}, result);
+        response.headers.map, result);
 
     return httpResponse;
   }
@@ -185,10 +187,9 @@ class FastAppHttp {
 
     adio.Response response = await dio
         .post(
-          url,
-          data: formData ?? body,
-        )
-        .whenComplete(() => EasyLoading.dismiss())
+      url,
+      data: formData ?? body,
+    )
         .catchError((e) async {
       DioError error = e;
 
@@ -221,6 +222,10 @@ class FastAppHttp {
       }
     });
 
+    if (hud != null && hud.isNotEmpty) {
+      EasyLoading.dismiss();
+    }
+
     if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
       if (data is String) {
@@ -236,7 +241,10 @@ class FastAppHttp {
       };
 
       if (fastDio != null) {
-        throw result; //新版本 兼容旧版本
+        throw DioError(
+          requestOptions: response.requestOptions,
+          response: response,
+        ); //新版本 兼容旧版本
       }
     }
     httpResponse = FastHttpResponse(
@@ -280,10 +288,9 @@ class FastAppHttp {
 
     adio.Response response = await dio
         .put(
-          url,
-          data: formData ?? body,
-        )
-        .whenComplete(() => EasyLoading.dismiss())
+      url,
+      data: formData ?? body,
+    )
         .catchError((e) async {
       DioError error = e;
 
@@ -315,6 +322,10 @@ class FastAppHttp {
         return httpResponse;
       }
     });
+
+    if (hud != null && hud.isNotEmpty) {
+      EasyLoading.dismiss();
+    }
 
     if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
@@ -376,10 +387,9 @@ class FastAppHttp {
 
     adio.Response response = await dio
         .delete(
-          url,
-          data: formData ?? body,
-        )
-        .whenComplete(() => EasyLoading.dismiss())
+      url,
+      data: formData ?? body,
+    )
         .catchError((e) async {
       DioError error = e;
 
@@ -412,6 +422,10 @@ class FastAppHttp {
       }
     });
 
+    if (hud != null && hud.isNotEmpty) {
+      EasyLoading.dismiss();
+    }
+
     if (response.statusCode == HttpStatus.ok) {
       var data = response.data;
       if (data is String) {
@@ -437,8 +451,8 @@ class FastAppHttp {
     return httpResponse;
   }
 
-  static Future<FastHttpResponse> doGetTestData(
-      FastRequest request, body, Map<String, String> headers) async {
+  static Future<FastHttpResponse> doGetTestData(FastRequest request, body,
+      Map<String, String> headers) async {
     late FastHttpResponse httpResponse;
 
     String data = await loadAsset(request.localTestData()!);
@@ -470,19 +484,19 @@ class FastAppHttp {
       adio.Dio dio = cDio ?? adio.Dio();
       await dio.download(urlPath, savePath, cancelToken: cancelToken,
           onReceiveProgress: (int count, int total) {
-        if (onReceiveProgress != null) {
-          onReceiveProgress(count, total);
-        }
+            if (onReceiveProgress != null) {
+              onReceiveProgress(count, total);
+            }
 
-        //进度
-        _total = total;
-        FastCache('$localId').value = {
-          'count': count,
-          'total': total,
-          'dio': dio,
-          'cancelToken': cancelToken
-        };
-      }).catchError((e) {
+            //进度
+            _total = total;
+            FastCache('$localId').value = {
+              'count': count,
+              'total': total,
+              'dio': dio,
+              'cancelToken': cancelToken
+            };
+          }).catchError((e) {
         throw e;
       });
       return {'savePath': savePath, 'total': _total};
