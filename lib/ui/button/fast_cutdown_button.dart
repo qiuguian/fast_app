@@ -80,11 +80,15 @@ class _FastCutDownButtonState extends State<FastCutDownButton> {
           _cutDownNum--;
           // AppCache.save(cutDownDurationKey, num.toString());
           text = "重新发送($_cutDownNum)";
-          setState(() {});
+          if(mounted){
+            setState(() {});
+          }
         }
       } else {
         text = "重新发送";
-        setState(() {});
+        if(mounted){
+          setState(() {});
+        }
         stopTimer();
       }
     });

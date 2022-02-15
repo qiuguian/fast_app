@@ -80,9 +80,7 @@ class _FastTextFieldState extends State<FastTextField> {
         color: widget.backgroundColor,
         border: Border(
           bottom: new BorderSide(
-              color: widget.type == FastTextFieldType.readonly
-                  ? Colors.transparent
-                  : widget.borderColor,
+              color: widget.borderColor,
               width: 0.5),
         ),
       ),

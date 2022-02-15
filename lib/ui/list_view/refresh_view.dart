@@ -10,15 +10,25 @@ class RefreshView extends StatefulWidget {
     this.onLoading,
     this.hasNextPage,
     this.dataController,
-    this.emptyMsg = '暂无数据',
+    this.emptyMsg,
+    this.emptyIcon,
   });
 
   final Widget child;
+  final Widget? emptyIcon;
   final Function()? onRefresh;
   final Function()? onLoading;
   final bool Function()? hasNextPage;
   final BaseController? dataController;
-  final String emptyMsg;
+  final String? emptyMsg;
+
+  static Widget? emptyView; //全局
+  static String emptyString = '暂无数据'; //全局
+
+  static initEmptyView(Widget? icon, String? msg) {
+    RefreshView.emptyView = icon;
+    RefreshView.emptyString = msg ?? '暂无数据';
+  }
 
   @override
   _RefreshViewState createState() => _RefreshViewState();
@@ -26,7 +36,7 @@ class RefreshView extends StatefulWidget {
 
 class _RefreshViewState extends State<RefreshView> {
   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
 
   late Future<void> _future;
 
@@ -68,7 +78,7 @@ class _RefreshViewState extends State<RefreshView> {
               child: CupertinoActivityIndicator(),
             );
           case ConnectionState.done:
-            // if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+          // if (snapshot.hasError) return Text('Error: ${snapshot.error}');
             return $SmartRefresher();
           default:
             return SizedBox();
@@ -152,8 +162,8 @@ class _RefreshViewState extends State<RefreshView> {
       },
       child: widget.dataController != null
           ? widget.dataController!.dataList.isNotEmpty
-              ? widget.child
-              : emptyView()
+          ? widget.child
+          : emptyView()
           : widget.child,
     );
   }
@@ -169,11 +179,11 @@ class _RefreshViewState extends State<RefreshView> {
             spacing: 8.0,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: <Widget>[
-              Image.asset(
+              widget.emptyIcon ?? RefreshView.emptyView ?? Image.asset(
                 'assets/ic_common_empty.png',
                 package: "fast_app",
               ),
-              Text('${widget.emptyMsg}',
+              Text('${widget.emptyMsg ?? RefreshView.emptyString}',
                   style: TextStyle(color: Color(0xffCCCCCC), fontSize: 13)),
             ],
           ),

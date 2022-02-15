@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 class FastRowView extends StatelessWidget {
   final String title;
   final bool hiddenRightArrow;
+  final bool hiddenDivider;
   final Widget? trail;
+  final Widget? left;
   final Widget? prefix;
   final BuildContext? context;
   final VoidCallback? onTap;
@@ -16,11 +18,13 @@ class FastRowView extends StatelessWidget {
     required this.title,
     this.hiddenRightArrow = false,
     this.trail,
+    this.left,
     this.prefix,
     this.context,
     this.onTap,
     this.height = 60.0,
     this.margin = EdgeInsets.zero,
+    this.hiddenDivider = false,
     this.padding = const EdgeInsets.only(left: 15, right: 10.0),
   });
 
@@ -39,7 +43,7 @@ class FastRowView extends StatelessWidget {
         margin: margin,
         decoration: BoxDecoration(
             color: Colors.white,
-            border: new Border(
+            border: hiddenDivider ? null : new Border(
                 bottom: new BorderSide(
                     color: Color(0xfff9f9f9), width: 1.0))),
         child: new Row(
@@ -56,7 +60,10 @@ class FastRowView extends StatelessWidget {
                 style: TextStyle(color: Colors.red),
               ),
             ),
-            Expanded(child: Container()),
+            Expanded(child: Container(
+              margin: EdgeInsets.only(left: 20),
+              child:  left ?? Container(),
+            )),
             new Wrap(
               spacing: 10.0,
               crossAxisAlignment: WrapCrossAlignment.center,

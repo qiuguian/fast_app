@@ -10,66 +10,51 @@
 ///
 part of 'fast_util.dart';
 
-/*
-* FastValidate
-*
-* */
+/// 正则表达式
+class FastRegExp {
+  /// 金额
+  static Pattern get money => RegExp("[0-9.]");
+
+  /// 手机号
+  static Pattern get phone => RegExp(r"(0|86|17951)?(1[0-9][0-9])[0-9]{8}");
+
+  /// 网络地址
+  static Pattern get webUrl =>
+      RegExp(r"^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+");
+}
+
+/// FastValidate
 class FastValidate {
-  /*
-  * 验证参数是否为空
-  *
-  * */
+  /// 验证参数是否为空
   static bool isNull(value) {
-    return value == null || value
-        .toString()
-        .trim()
-        .length == 0;
+    return value == null || value.toString().trim().length == 0;
   }
 
-  /*
-  * 验证参数是否为空
-  *
-  * */
+  /// 验证参数是否为空
   static bool isNotNull(value) {
-    return value != null && value
-        .toString()
-        .trim()
-        .length > 0;
+    return value != null && value.toString().trim().length > 0;
   }
 
-  /*
-  * 验证参数是否为空
-  *
-  * */
+  /// 验证参数是否为空
   static bool isNumberNotNull(value) {
-    return value != null && value
-        .toString()
-        .trim()
-        .length > 0 && value.toString().trim() != '0';
+    return value != null &&
+        value.toString().trim().length > 0 &&
+        value.toString().trim() != '0';
   }
 
-  /*
-  * 验证手机号
-  *
-  * */
+  /// 验证手机号
   static bool isMobilePhone(String value) {
     RegExp mobile = new RegExp(r"(0|86|17951)?(1[0-9][0-9])[0-9]{8}");
     return mobile.hasMatch(value);
   }
 
-  /*
-  * 验证手机号
-  *
-  * */
+  /// url
   static bool isWebUrl(String value) {
     RegExp url = new RegExp(r"^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+");
     return url.hasMatch(value);
   }
 
-  /*
-  * 正则表达式
-  *
-  * */
+  /// 正则表达式
   static bool expHasMatch(String value, String express) {
     String exp = 'r"$express"';
     RegExp url = new RegExp(exp);
@@ -77,35 +62,33 @@ class FastValidate {
   }
 }
 
-/*
-* FastFormat
-*
-* */
+/// FastFormat
 class FastFormat {
-
   static String deleteHtmlTag(String context) {
     String _context = '';
 
     var document = parse('$context');
 
-    _context = parse(document.body?.text).documentElement?.text??'';
+    _context = parse(document.body?.text).documentElement?.text ?? '';
 
     return _context;
   }
 
-  /*
-  * 时间戳转换格式
-  *
-  * */
+  /// 手机号缩略显示
+  static String phoneShort(String phone) {
+    if (phone.length == 11) {
+      return '${phone.substring(0, 3)}*****${phone.substring(8, 11)}';
+    }
+    return '';
+  }
+
+  /// 时间戳转换格式
   static String stringToString(v, format) {
     return FastFormat.timeStampToString(
         FastFormat.getMilliseconds(formartDate: v), format);
   }
 
-  /*
-  * 时间戳转换格式
-  *
-  * */
+  /// 时间戳转换格式
   static String timeStampToString(timestamp, format) {
     assert(timestamp != null);
 
@@ -131,7 +114,7 @@ class FastFormat {
   static int getMilliseconds({String formartDate = "1970-10-01 00:00:00"}) {
     formartDate.replaceAll("T", " ");
 
-    //年必须大于1970年
+    /// 年必须大于1970年
     String mYear = formartDate.substring(0, 4);
     if (int.parse(mYear) < 1970) {
       mYear = "1970";
@@ -143,21 +126,15 @@ class FastFormat {
           formartDate.substring(5, 7) +
           "-" +
           formartDate.substring(8, 10);
-      if (formartDate
-          .toString()
-          .length >= 13 &&
+      if (formartDate.toString().length >= 13 &&
           formartDate.substring(10, 13).isNotEmpty) {
         result += "" + formartDate.substring(10, 13);
       }
-      if (formartDate
-          .toString()
-          .length >= 17 &&
+      if (formartDate.toString().length >= 17 &&
           formartDate.toString().substring(14, 16).isNotEmpty) {
         result += ":" + formartDate.substring(14, 16);
       }
-      if (formartDate
-          .toString()
-          .length >= 19 &&
+      if (formartDate.toString().length >= 19 &&
           formartDate.substring(17, 19).isNotEmpty) {
         result += ":" + formartDate.substring(17, 19);
       }
@@ -186,21 +163,15 @@ class FastFormat {
           formartDate.substring(5, 7) +
           "-" +
           formartDate.substring(8, 10);
-      if (formartDate
-          .toString()
-          .length >= 13 &&
+      if (formartDate.toString().length >= 13 &&
           formartDate.substring(10, 13).isNotEmpty) {
         result += "" + formartDate.substring(10, 13);
       }
-      if (formartDate
-          .toString()
-          .length >= 17 &&
+      if (formartDate.toString().length >= 17 &&
           formartDate.toString().substring(14, 16).isNotEmpty) {
         result += ":" + formartDate.substring(14, 16);
       }
-      if (formartDate
-          .toString()
-          .length >= 19 &&
+      if (formartDate.toString().length >= 19 &&
           formartDate.substring(17, 19).isNotEmpty) {
         result += ":" + formartDate.substring(17, 19);
       }
@@ -211,6 +182,7 @@ class FastFormat {
     }
   }
 
+  /// 周转换
   static String getWeek(int week, [type = 2]) {
     String weekString = '';
     List data = [];
@@ -242,6 +214,7 @@ class FastFormat {
     return weekString;
   }
 
+  /// 月转换
   static String getMonth(int month, [type = 2]) {
     String monthString = '';
     List data = [];
@@ -307,6 +280,7 @@ class FastFormat {
     return vStr;
   }
 
+  /// 距离现在多久
   static String timeFromNow(timeStamp, [bad = false]) {
     int time = 0;
 
@@ -352,5 +326,3 @@ class FastFormat {
     return timeSting;
   }
 }
-
-
