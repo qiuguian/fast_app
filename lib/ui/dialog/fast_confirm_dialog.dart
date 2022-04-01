@@ -6,6 +6,7 @@ Future<void> fastConfirmDialog(BuildContext context, {
   String info = "",
   String cancelBtn = "Cancel",
   String sureBtn = "Sure",
+  Color sureColor = Colors.blue,
   Callback? onTap,
 }) async {
   showDialog(
@@ -86,7 +87,7 @@ Future<void> fastConfirmDialog(BuildContext context, {
                             .of(context)
                             .size
                             .width * 0.4 - 1,
-                        style: new TextStyle(color: Colors.blue),
+                        style: new TextStyle(color: sureColor),
                         onTap: () {
                           if (onTap != null) {
                             Navigator.pop(context);

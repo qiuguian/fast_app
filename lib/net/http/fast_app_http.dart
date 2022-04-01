@@ -39,7 +39,7 @@ class FastAppHttp {
   static Dio initDio(
       {required String baseUrl, Interceptor? interceptor, String proxy = ''}) {
     if (fastDio == null) {
-      final adio.BaseOptions options = adio.BaseOptions(
+      final BaseOptions options = BaseOptions(
         connectTimeout: CONNECT_TIMEOUT,
         receiveTimeout: RECEIVE_TIMEOUT,
         baseUrl: baseUrl,
@@ -77,8 +77,12 @@ class FastAppHttp {
       baseUrl: fastDio?.options.baseUrl ?? '',
     );
 
+    options.headers = fastDio?.options.headers;
+
     Map? result;
-    adio.Dio dio = fastDio ?? adio.Dio(options);
+    Dio dio = Dio(options);
+    dio.interceptors.clear();
+    dio.interceptors.addAll(fastDio?.interceptors ?? []);
     FastHttpResponse httpResponse;
 
     //如果要提示加载中之类的hud
@@ -167,6 +171,7 @@ class FastAppHttp {
       receiveTimeout: RECEIVE_TIMEOUT,
       headers: headers,
       contentType: headers.isNotEmpty ? headers['Content-Type'] : "",
+      baseUrl: fastDio?.options.baseUrl ?? '',
     );
 
     FormData? formData;
@@ -177,8 +182,16 @@ class FastAppHttp {
     }
 
     Map result = {};
-    adio.Dio dio = fastDio ?? adio.Dio(options);
+
+    options.headers = fastDio?.options.headers;
+
+    Dio dio = Dio(options);
+    dio.interceptors.clear();
+    dio.interceptors.addAll(fastDio?.interceptors ?? []);
     FastHttpResponse httpResponse;
+
+    // adio.Dio dio = fastDio ?? adio.Dio(options);
+    // FastHttpResponse httpResponse;
 
     //如果要提示加载中之类的hud
     if (hud != null && hud.isNotEmpty) {

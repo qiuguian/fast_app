@@ -71,6 +71,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
               child: imgSrc.contains('http') ? new CachedNetworkImage(
                 imageUrl: '$imgSrc',
                 fit: BoxFit.cover,
+                height: height,
               ) : new Image.asset('$imgSrc', fit: BoxFit.cover,),
             ),
           );

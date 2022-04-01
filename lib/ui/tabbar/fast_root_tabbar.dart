@@ -139,7 +139,7 @@ class RootTabBarState extends State<RootTabBar> {
   void initState() {
     super.initState();
 
-    FastNotification.addListener('1', (index) {
+    FastNotification.addListener('tab', (index) {
       if (mounted) {
         setState(() {
           currentIndex = index;
@@ -201,7 +201,7 @@ class RootTabBarState extends State<RootTabBar> {
         selectedFontSize: 16,
         unselectedFontSize: 15,
         onTap: (int index) {
-          FastNotification.push("111");
+          FastNotification.push("tab_$index");
           setState(() => currentIndex = index);
         },
         iconSize: 18.0,

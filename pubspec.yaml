@@ -10,17 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
   dio: ^4.0.0
-  grpc: ^3.0.0
-  protobuf: ^2.0.0
   intl: ^0.17.0
   scoped_model: ^2.0.0-nullsafety.0
   shared_preferences: ^2.0.5
-  dio_http2_adapter: ^2.0.0
   html: ^0.15.0
   flutter_swiper_null_safety:  ^1.0.1
-  cached_network_image: ^3.0.0
+  cached_network_image: ^3.0.0 #only app
   cupertino_icons: ^1.0.3
-#  fluwx: any
   json_annotation: ^4.4.0
   fluttertoast: ^8.0.8
   url_launcher: ^6.0.3
