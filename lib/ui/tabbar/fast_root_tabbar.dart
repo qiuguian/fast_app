@@ -157,32 +157,33 @@ class RootTabBarState extends State<RootTabBar> {
       FastTabBarModel model = widget.pages[i];
       barItems.add(
         BottomNavigationBarItem(
-          icon: Container(),
-          activeIcon: Container(),
-          title: Wrap(
-            spacing: 3,
-            direction: Axis.vertical,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: <Widget>[
-              Text(model.title, style: TextStyle(fontSize: 12.0)),
-              Visibility(
-                visible: currentIndex == i,
-                child: Container(
-                  height: 2,
-                  width: 25,
-                  decoration: BoxDecoration(
-                    gradient:
-                    LinearGradient(colors: [Colors.amber[500]!, Colors.red]),
-                    borderRadius: BorderRadius.circular(1),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: currentIndex == i,
-                child: model.icon,
-              ),
-            ],
-          ),
+          icon: model.icon,
+          activeIcon: model.selectIcon,
+          label: model.title,
+//          title: Wrap(
+//            spacing: 3,
+//            direction: Axis.vertical,
+//            crossAxisAlignment: WrapCrossAlignment.center,
+//            children: <Widget>[
+//              Text(model.title, style: TextStyle(fontSize: 12.0)),
+//              Visibility(
+//                visible: currentIndex == i,
+//                child: Container(
+//                  height: 2,
+//                  width: 25,
+//                  decoration: BoxDecoration(
+//                    gradient:
+//                    LinearGradient(colors: [Colors.amber[500]!, Colors.red]),
+//                    borderRadius: BorderRadius.circular(1),
+//                  ),
+//                ),
+//              ),
+//              Visibility(
+//                visible: currentIndex == i,
+//                child: model.icon,
+//              ),
+//            ],
+//          ),
         ),
       );
     }

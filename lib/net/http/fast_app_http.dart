@@ -80,7 +80,7 @@ class FastAppHttp {
     options.headers = fastDio?.options.headers;
 
     Map? result;
-    Dio dio = Dio(options);
+    Dio dio = fastDio ?? Dio(options);
     dio.interceptors.clear();
     dio.interceptors.addAll(fastDio?.interceptors ?? []);
     FastHttpResponse httpResponse;
@@ -89,6 +89,8 @@ class FastAppHttp {
     if (hud != null && hud.isNotEmpty) {
       EasyLoading.show(status: hud);
     }
+
+    print("---------------0------------");
 
     adio.Response response = await dio
         .get(
@@ -185,7 +187,7 @@ class FastAppHttp {
 
     options.headers = fastDio?.options.headers;
 
-    Dio dio = Dio(options);
+    Dio dio = fastDio ?? Dio(options);
     dio.interceptors.clear();
     dio.interceptors.addAll(fastDio?.interceptors ?? []);
     FastHttpResponse httpResponse;
