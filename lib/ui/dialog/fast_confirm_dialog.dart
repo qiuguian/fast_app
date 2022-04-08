@@ -8,10 +8,12 @@ Future<void> fastConfirmDialog(BuildContext context, {
   String sureBtn = "Sure",
   Color sureColor = Colors.blue,
   Callback? onTap,
+  bool isOnlySureBtn = false,
+  bool barrierDismissible = true,
 }) async {
   showDialog(
     context: context,
-    barrierDismissible: true,
+    barrierDismissible: barrierDismissible,
     builder: (_) {
       return new Material(
         type: MaterialType.transparency,
@@ -62,7 +64,7 @@ Future<void> fastConfirmDialog(BuildContext context, {
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      new FastButton(
+                      if(!isOnlySureBtn) new FastButton(
                         text: '$cancelBtn',
                         width: MediaQuery
                             .of(context)
@@ -76,14 +78,17 @@ Future<void> fastConfirmDialog(BuildContext context, {
                           }
                         },
                       ),
-                      new Container(
+                      if(!isOnlySureBtn) new Container(
                         width: 0.5,
                         height: 45,
                         color: Color(0xff4d4d4d).withAlpha(100),
                       ),
                       new FastButton(
                         text: '$sureBtn',
-                        width: MediaQuery
+                        width: isOnlySureBtn ? MediaQuery
+                            .of(context)
+                            .size
+                            .width - 80 : MediaQuery
                             .of(context)
                             .size
                             .width * 0.4 - 1,

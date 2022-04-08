@@ -81,16 +81,12 @@ class FastAppHttp {
 
     Map? result;
     Dio dio = fastDio ?? Dio(options);
-    dio.interceptors.clear();
-    dio.interceptors.addAll(fastDio?.interceptors ?? []);
     FastHttpResponse httpResponse;
 
     //如果要提示加载中之类的hud
     if (hud != null && hud.isNotEmpty) {
       EasyLoading.show(status: hud);
     }
-
-    print("---------------0------------");
 
     adio.Response response = await dio
         .get(
@@ -188,12 +184,7 @@ class FastAppHttp {
     options.headers = fastDio?.options.headers;
 
     Dio dio = fastDio ?? Dio(options);
-    dio.interceptors.clear();
-    dio.interceptors.addAll(fastDio?.interceptors ?? []);
     FastHttpResponse httpResponse;
-
-    // adio.Dio dio = fastDio ?? adio.Dio(options);
-    // FastHttpResponse httpResponse;
 
     //如果要提示加载中之类的hud
     if (hud != null && hud.isNotEmpty) {
