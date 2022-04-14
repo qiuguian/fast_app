@@ -88,7 +88,7 @@ Future<void> fastConfirmDialog(BuildContext context, {
                         width: isOnlySureBtn ? MediaQuery
                             .of(context)
                             .size
-                            .width - 80 : MediaQuery
+                            .width * 0.8 : MediaQuery
                             .of(context)
                             .size
                             .width * 0.4 - 1,
