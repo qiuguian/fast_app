@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:get/get.dart';
 
 part 'param_util.dart';
 
@@ -24,7 +25,7 @@ Future<T?>? fastRoutePush<T extends Object?>(Widget widget) {
   Route<T> route = CupertinoPageRoute(
     builder: (BuildContext context) => widget,
     settings: RouteSettings(
-      name: widget.toStringShort(),
+      name: '/${widget.toStringShort()}',
 //      isInitialRoute: false,
     ),
   );
@@ -65,7 +66,7 @@ fastCall([url = '18176681925']) async {
 fastOpenUrl([url]) async {
   if (await canLaunch(url)) {
     await launch(url);
-  }else{
+  } else {
     print("bad url");
   }
 }
