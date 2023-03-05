@@ -88,6 +88,9 @@ class FastAppHttp {
       EasyLoading.show(status: hud);
     }
 
+    print("请求地址");
+    print(dio.options.baseUrl + url);
+
     adio.Response response = await dio
         .get(
       url,
@@ -95,6 +98,7 @@ class FastAppHttp {
       queryParameters: body,
     )
         .catchError((e) async {
+          print("error =====>$e");
       DioError error = e;
       if (reconnectTime > 0 &&
           isReconnectStrategyStart &&
@@ -185,6 +189,9 @@ class FastAppHttp {
 
     Dio dio = fastDio ?? Dio(options);
     FastHttpResponse httpResponse;
+
+    print("请求地址");
+    print(dio.options.baseUrl + url);
 
     //如果要提示加载中之类的hud
     if (hud != null && hud.isNotEmpty) {

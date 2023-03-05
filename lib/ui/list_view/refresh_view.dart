@@ -32,6 +32,27 @@ class RefreshView extends StatefulWidget {
 
   @override
   _RefreshViewState createState() => _RefreshViewState();
+
+  static Widget emptyWidget({String? msg}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 80.0),
+      child: Center(
+        child: Wrap(
+          direction: Axis.vertical,
+          spacing: 8.0,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: <Widget>[
+            RefreshView.emptyView ?? Image.asset(
+              'assets/ic_common_empty.png',
+              package: "fast_app",
+            ),
+            Text('${msg ?? RefreshView.emptyString}',
+                style: TextStyle(color: Color(0xffCCCCCC), fontSize: 13)),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _RefreshViewState extends State<RefreshView> {
