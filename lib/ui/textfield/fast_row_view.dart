@@ -13,6 +13,7 @@ class FastRowView extends StatelessWidget {
   final double height;
   final EdgeInsets margin;
   final EdgeInsets padding;
+  final TextStyle? style;
 
   FastRowView({
     required this.title,
@@ -26,6 +27,7 @@ class FastRowView extends StatelessWidget {
     this.margin = EdgeInsets.zero,
     this.hiddenDivider = false,
     this.padding = const EdgeInsets.only(left: 15, right: 10.0),
+    this.style,
   });
 
   actions(v) => onTap?.call();
@@ -52,6 +54,7 @@ class FastRowView extends StatelessWidget {
             prefix ?? Container(),
             new Text(
               '$_title',
+              style: style,
             ),
             Visibility(
               visible: isNeed,
