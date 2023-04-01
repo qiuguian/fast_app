@@ -95,6 +95,7 @@ class _FastRootTabBarState extends State<FastRootTabBar> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       bottomNavigationBar: Theme(
         data: ThemeData(
             canvasColor: currentIndex == 0 && widget.isFirtBlackColor ? Colors

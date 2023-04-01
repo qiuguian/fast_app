@@ -51,7 +51,7 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
       indexS.add(i);
     }
 
-    if(banners.isEmpty){
+    if (banners.isEmpty) {
       return Container(height: height);
     }
 
@@ -72,7 +72,9 @@ class FastBannerView extends StatelessWidget implements PreferredSizeWidget {
                 imageUrl: '$imgSrc',
                 fit: BoxFit.cover,
                 height: height,
-              ) : new Image.asset('$imgSrc', fit: BoxFit.cover,),
+              ) : imgSrc != ''
+                  ? new Image.asset('$imgSrc', fit: BoxFit.cover,)
+                  : Container(),
             ),
           );
         },

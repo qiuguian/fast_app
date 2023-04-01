@@ -56,12 +56,16 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
     SystemUiOverlayStyle _brightness = brightness == Brightness.light
         ? SystemUiOverlayStyle.light
         : SystemUiOverlayStyle.dark;
+    if (brightness == null) {
+      _brightness = SystemUiOverlayStyle.light;
+    }
     Color _backgroundColor = backgroundColor ?? fastTheme.appBarColor;
     Color _mainColor = mainColor ?? fastTheme.appBarTextColor;
 
     return showShadow
         ? Container(
       decoration: BoxDecoration(
+          color: Colors.white,
           border: Border(
               bottom: BorderSide(
                   color: fastTheme.lineColor,
@@ -109,7 +113,9 @@ class FastAppBar extends StatelessWidget implements PreferredSizeWidget {
           : titleW,
       backgroundColor: _backgroundColor,
       elevation: 0.0,
-      systemOverlayStyle: _brightness,
+      // systemOverlayStyle: SystemUiOverlayStyle(
+      //   statusBarBrightness: Brightness.dark,
+      // ),
       leading: leading == null
           ? showBackIcon
           ? InkWell(

@@ -102,11 +102,11 @@ class _FastTextFieldState extends State<FastTextField> {
                       child: new TextFormField(
                         controller: widget.controller,
                         keyboardType: widget.keyboardType ?? null,
-                        style: widget.style,
                         maxLines: widget.maxLine,
                         decoration: InputDecoration(
                           hintText: widget.placeholder,
-                          hintStyle: widget.hintStyle,
+                          hintStyle: widget.hintStyle ?? TextStyle(color: Color(0xffCCCCCC), fontSize: 15.0),
+                          // labelStyle: widget.style,
                           hintMaxLines: 2,
                           border: InputBorder.none,
                         ),
@@ -137,14 +137,14 @@ class _FastTextFieldState extends State<FastTextField> {
                     child: new TextFormField(
                       controller: widget.controller,
                       keyboardType: widget.keyboardType ?? null,
-                      style: widget.style,
                       enabled: widget.type != FastTextFieldType.readonly &&
                           widget.enable,
                       maxLines: widget.maxLine,
                       decoration: InputDecoration(
                         hintText: widget.placeholder,
+                        labelStyle: widget.style,
                         hintStyle:
-                            TextStyle(color: Color(0xffDFE0EB), fontSize: 15.0),
+                        widget.hintStyle ?? TextStyle(color: Color(0xffCCCCCC), fontSize: 15.0),
                         border: InputBorder.none,
                       ),
                       onChanged: widget.onChanged ?? (str) {},

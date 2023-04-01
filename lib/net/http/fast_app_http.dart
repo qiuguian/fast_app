@@ -562,6 +562,8 @@ class FastAppHttp {
       contentType: headers.isNotEmpty ? headers['Content-Type'] : null,
     );
 
+    // options.headers = fastDio?.options.headers;
+
     adio.Dio dio = fastDio ?? adio.Dio(options);
     var response = await dio
         .post("$url", data: formData)

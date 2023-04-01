@@ -40,14 +40,14 @@ class FastRowView extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: () => actions(_title),
       child: Container(
-        height: height,
+        height: height == 0 ? null : height,
         padding: padding,
         margin: margin,
         decoration: BoxDecoration(
-            color: Colors.white,
-            border: hiddenDivider ? null : new Border(
-                bottom: new BorderSide(
-                    color: Color(0xfff9f9f9), width: 1.0))),
+          color: Colors.white,
+          border: hiddenDivider ? null : new Border(
+            bottom: BorderSide(
+              color: Color(0xfff9f9f9), width: 1.0,),),),
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -65,17 +65,18 @@ class FastRowView extends StatelessWidget {
             ),
             Expanded(child: Container(
               margin: EdgeInsets.only(left: 20),
-              child:  left ?? Container(),
+              child: left ?? Container(),
             )),
             new Wrap(
-              spacing: 10.0,
+              spacing: 5.0,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
                 trail ?? new Container(),
                 new Visibility(
                     visible: !hiddenRightArrow,
                     child: new Icon(
-                        CupertinoIcons.right_chevron, color: Colors.grey)
+                      CupertinoIcons.right_chevron, color: Colors.grey,
+                      size: 16,)
                 ),
               ],
             ),

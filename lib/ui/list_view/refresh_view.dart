@@ -12,6 +12,7 @@ class RefreshView extends StatefulWidget {
     this.dataController,
     this.emptyMsg,
     this.emptyIcon,
+    this.isShowEmptyNoMoreTips = true,
   });
 
   final Widget child;
@@ -21,6 +22,7 @@ class RefreshView extends StatefulWidget {
   final bool Function()? hasNextPage;
   final BaseController? dataController;
   final String? emptyMsg;
+  final bool isShowEmptyNoMoreTips;
 
   static Widget? emptyView; //全局
   static String emptyString = '暂无数据'; //全局
@@ -117,14 +119,17 @@ class _RefreshViewState extends State<RefreshView> {
         builder: (BuildContext context, LoadStatus? mode) {
           Widget body;
           if (mode == LoadStatus.noMore) {
-            body = Text(
-              "无更多数据",
-              style: TextStyle(color: Colors.grey, fontSize: 13),
-            );
+            if(widget.isShowEmptyNoMoreTips){
+              body = Text(
+                  "无更多数据",
+                  style: TextStyle(color: Colors.grey, fontSize: 13));
+            }else{
+              body = SizedBox();
+            }
           } else if (mode == LoadStatus.idle) {
             body = Text(
               "向上拉加载更多",
-              style: TextStyle(color: Colors.grey, fontSize: 13),
+              style: TextStyle(color: Colors.grey, fontSize: 13)
             );
           } else if (mode == LoadStatus.loading) {
             body = CupertinoActivityIndicator();
